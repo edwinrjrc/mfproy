@@ -1,0 +1,15 @@
+spring:
+  application:    name: mf-gateway
+    
+server:  port: 7000
+  
+zuul:  routes:    serv-greet:
+        path: //mf-jpa-platos/**/**
+        serviceId: mf-jpa-platos
+ 
+#Eureka Configuration Properties
+eureka: 
+  client:
+    serviceUrl:
+      defaultZone: http://mf-eureka-server:8761/eureka
+      

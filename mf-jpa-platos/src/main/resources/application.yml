@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: mf-jpa-platos
+  datasource:
+    url: jdbc:postgresql://localhost:5432/menufamiliatest
+    username: postgres
+    password: admin
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+ 
+#Tomcat Embedded Server Configuration
+server: 
+  port: 24230
+ 
+#Eureka Configuration Properties  
+eureka: 
+  client:
+    serviceUrl:
+      defaultZone: http://mf-eureka-server:8761/eureka
+      
