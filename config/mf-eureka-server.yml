@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: mf-eureka-server
+ 
+#Tomcat Embedded Server Configuration
+server: 
+  port: 8761
+ 
+#Eureka Configuration Properties
+eureka:
+  client:
+    registerWithEureka: false
+    fetchRegistry: false
