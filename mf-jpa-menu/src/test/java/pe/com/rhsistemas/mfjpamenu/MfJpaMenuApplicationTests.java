@@ -1,10 +1,10 @@
-package pe.com.rhsistemas.mfserplatos;
+package pe.com.rhsistemas.mfjpamenu;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class MfServicePlatosApplicationTests {
+class MfJpaMenuApplicationTests {
 
 	@Test
 	void contextLoads() {

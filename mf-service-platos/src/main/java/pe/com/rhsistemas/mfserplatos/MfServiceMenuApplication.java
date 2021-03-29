@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class MfServicePlatosApplication {
+public class MfServiceMenuApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(MfServicePlatosApplication.class, args);
+		SpringApplication.run(MfServiceMenuApplication.class, args);
 	}
 
 }

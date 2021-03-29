@@ -17,7 +17,7 @@ import javax.persistence.Table;
  * 
  */
 @Entity
-@Table(name="plato_ingrediente")
+@Table(name="plato_ingrediente", schema = "sistema")
 @NamedQuery(name="PlatoIngrediente.findAll", query="SELECT p FROM PlatoIngrediente p")
 public class PlatoIngrediente implements Serializable {
 	private static final long serialVersionUID = 1L;

@@ -9,8 +9,10 @@ import java.util.List;
 
 import org.springframework.util.StringUtils;
 
+import pe.com.rhsistemas.mf.cross.dto.BaseValor;
 import pe.com.rhsistemas.mf.cross.dto.IngredienteDto;
 import pe.com.rhsistemas.mf.cross.dto.PasoPreparacionDto;
+import pe.com.rhsistemas.mf.cross.dto.PersonaDto;
 import pe.com.rhsistemas.mf.cross.dto.PlatoDto;
 import pe.com.rhsistemas.mf.cross.dto.PlatoIngredienteDto;
 import pe.com.rhsistemas.mf.cross.dto.ValorNutricionalDto;
@@ -52,6 +54,31 @@ public class Utilmfjpa {
 		}
 		
 		return entity;
+	}
+	
+	public static PlatoDto parsePlatoEntity(Plato entity) {
+		PlatoDto dto = new PlatoDto();
+		if (entity != null) {
+			dto.setAcompaniamiento("S".equalsIgnoreCase(entity.getInAcompaniamiento()));
+			dto.setFechaModificacion(entity.getFeModificacion());
+			dto.setFechaRegistro(entity.getFeRegistro());
+			dto.setId(parseaNullInt(entity.getIdPlato()));
+			dto.setIdEstado(parseaNullInt(entity.getIdEstaPlat()));
+			dto.setIdTipoPlato(parseaNullInt(entity.getIdTipoPlato()));
+			dto.setIdUsuarioModificacion(parseaNullInt(entity.getIdUsuaModi()));
+			dto.setIdUsuarioRegistro(parseaNullInt(entity.getIdUsuaCrea()));
+			dto.setNombrePlato(entity.getNoPlato());
+			PersonaDto persona = new PersonaDto();
+			persona.setId(parseaNullLong(entity.getIdPersona()));
+			dto.setPersona(persona);
+			TipoCocina tipoCocina = entity.getTipoCocina();
+			BaseValor tipoCocinaV = new BaseValor();
+			tipoCocinaV.setCodigo(tipoCocina.getIdTipoCoci().toString());
+			tipoCocinaV.setNombre(tipoCocina.getDeTipoCoci());
+			dto.setTipoCocina(tipoCocinaV);
+		}
+		
+		return dto;
 	}
 	
 	public static Ingrediente parseIngredienteDto(IngredienteDto dto) {
@@ -184,4 +211,19 @@ public class Utilmfjpa {
 		return entity;
 	}
 	
+	
+	public static int parseaNullInt(Integer valor) {
+		int dato = 0;
+		if (valor != null) {
+			dato = valor.intValue();
+		}
+		return dato;
+	}
+	public static long parseaNullLong(Long valor) {
+		long dato = 0;
+		if (valor != null) {
+			dato = valor.longValue();
+		}
+		return dato;
+	}
 }

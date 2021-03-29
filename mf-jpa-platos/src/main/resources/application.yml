@@ -2,7 +2,7 @@ spring:
   application:
     name: mf-jpa-platos
   datasource:
-    url: jdbc:postgresql://localhost:5432/menufamiliatest
+    url: jdbc:postgresql://localhost:5432/menufamilia
     username: postgres
     password: admin
     driver-class-name: org.postgresql.Driver
@@ -19,5 +19,5 @@ server:
 eureka: 
   client:
     serviceUrl:
-      defaultZone: http://mf-eureka-server:8761/eureka
+      defaultZone: http://localhost:8761/eureka
       

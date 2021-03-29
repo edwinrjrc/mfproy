@@ -3,6 +3,7 @@
  */
 package pe.com.rhsistemas.mfjpaplatos.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import pe.com.rhsistemas.mf.cross.compartido.Constantes;
 import pe.com.rhsistemas.mf.cross.dto.PlatoDto;
 import pe.com.rhsistemas.mfjpaplatos.dao.PlatoRepository;
 import pe.com.rhsistemas.mfjpaplatos.entity.Plato;
@@ -28,7 +30,7 @@ import pe.com.rhsistemas.mfjpaplatos.util.Utilmfjpa;
  *
  */
 @RestController
-@RequestMapping( value = "/mf-jpa-platos")
+@RequestMapping( value = "/PlatoController")
 public class PlatoController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(PlatoController.class);
@@ -71,13 +73,17 @@ public class PlatoController {
     	ResponseEntity<Map<String, Object>> salida = null;
 		try {
 			Map<String, Object> mapeo = new HashMap<String, Object>();
-
 			List<Plato> platos =  platoRepository.findAll();
-			mapeo.put("platos", platos);
+			List<PlatoDto> platosDto = new ArrayList<>();
+			for (Plato plato : platos) {
+				platosDto.add(Utilmfjpa.parsePlatoEntity(plato));
+			}
+			mapeo.put(Constantes.VALOR_DATA_MAP, platosDto);
 			
 			salida = new ResponseEntity<>(mapeo, HttpStatus.OK);
 			
 		} catch (Exception e) {
+			logger.error("Error en consultarPlatos", e);
 			logger.error(e.getMessage(), e);
 			salida = new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}

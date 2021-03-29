@@ -1,0 +1,15 @@
+pe\com\rhsistemas\mf\cross\dto\PlatoDto.class
+pe\com\rhsistemas\mf\cross\dto\PlatoIngredienteDto.class
+pe\com\rhsistemas\mf\cross\dto\ValorNutricionalDto.class
+pe\com\rhsistemas\mf\cross\dto\IngredienteDto.class
+pe\com\rhsistemas\mf\cross\dto\UsuarioDto.class
+pe\com\rhsistemas\mf\cross\dto\PersonaNaturalDto.class
+pe\com\rhsistemas\mf\cross\dto\RolDto.class
+pe\com\rhsistemas\mf\cross\compartido\Constantes.class
+pe\com\rhsistemas\mf\cross\dto\BaseDto.class
+pe\com\rhsistemas\mf\cross\dto\BaseValor.class
+pe\com\rhsistemas\mf\cross\dto\PasoPreparacionDto.class
+pe\com\rhsistemas\mf\cross\dto\PersonaDto.class
+pe\com\rhsistemas\mf\cross\dto\UsuarioRolesDto.class
+pe\com\rhsistemas\mf\cross\dto\PersonaJuridicaDto.class
+pe\com\rhsistemas\mf\cross\dto\DocumentoIdentidadDto.class
