@@ -14,7 +14,8 @@ spring:
 #Tomcat Embedded Server Configuration
 server: 
   port: 24230
- 
+
+
 #Eureka Configuration Properties  
 eureka: 
   client:

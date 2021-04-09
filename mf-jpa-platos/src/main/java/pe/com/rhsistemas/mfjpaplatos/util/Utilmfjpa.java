@@ -17,6 +17,7 @@ import pe.com.rhsistemas.mf.cross.dto.PlatoDto;
 import pe.com.rhsistemas.mf.cross.dto.PlatoIngredienteDto;
 import pe.com.rhsistemas.mf.cross.dto.ValorNutricionalDto;
 import pe.com.rhsistemas.mfjpaplatos.entity.Ingrediente;
+import pe.com.rhsistemas.mfjpaplatos.entity.Persona;
 import pe.com.rhsistemas.mfjpaplatos.entity.Plato;
 import pe.com.rhsistemas.mfjpaplatos.entity.PlatoIngrediente;
 import pe.com.rhsistemas.mfjpaplatos.entity.PlatoIngredientePK;
@@ -39,7 +40,9 @@ public class Utilmfjpa {
 			entity.setFeModificacion(new Timestamp(System.currentTimeMillis()));
 			entity.setFeRegistro(new Timestamp(System.currentTimeMillis()));
 			entity.setIdEstaPlat(dto.getIdEstado());
-			entity.setIdPersona(dto.getPersona().getId());
+			Persona persona = new Persona();
+			persona.setIdPersona(dto.getPersona().getId());
+			entity.setPersona(persona);
 			entity.setIdPlato(dto.getId());
 			entity.setIdTipoPlato(dto.getIdTipoPlato());
 			entity.setIdUsuaCrea(dto.getIdUsuarioRegistro());
@@ -69,7 +72,7 @@ public class Utilmfjpa {
 			dto.setIdUsuarioRegistro(parseaNullInt(entity.getIdUsuaCrea()));
 			dto.setNombrePlato(entity.getNoPlato());
 			PersonaDto persona = new PersonaDto();
-			persona.setId(parseaNullLong(entity.getIdPersona()));
+			persona.setId(parseaNullLong(entity.getPersona().getIdPersona()));
 			dto.setPersona(persona);
 			TipoCocina tipoCocina = entity.getTipoCocina();
 			BaseValor tipoCocinaV = new BaseValor();
@@ -141,8 +144,8 @@ public class Utilmfjpa {
 			entity.setFeRegistro(new Timestamp(System.currentTimeMillis()));
 			
 			PlatoIngredientePK entityPk = new PlatoIngredientePK();
-			entityPk.setIngredienteIdIngrediente(dto.getIngrediente().getId());
-			entityPk.setPlatoIdPlato(dto.getIdPlato());
+			entityPk.setIdIngrediente(dto.getIngrediente().getId());
+			entityPk.setIdPlato(dto.getIdPlato());
 			entity.setId(entityPk);
 			entity.setIdUnidMedi(Integer.valueOf(dto.getUnidadMedida().getCodigo()));
 			entity.setIdUsuaCrea(dto.getIdUsuarioRegistro());

@@ -25,20 +25,8 @@ public class PlatoIngrediente implements Serializable {
 	@EmbeddedId
 	private PlatoIngredientePK id;
 
-	@Column(name="fe_modificacion", nullable=false)
-	private Timestamp feModificacion;
-
-	@Column(name="fe_registro", nullable=false)
-	private Timestamp feRegistro;
-
 	@Column(name="id_unid_medi")
 	private Integer idUnidMedi;
-
-	@Column(name="id_usua_crea", nullable=false)
-	private Integer idUsuaCrea;
-
-	@Column(name="id_usua_modi", nullable=false)
-	private Integer idUsuaModi;
 
 	@Column(name="nu_cantidad")
 	private float nuCantidad;
@@ -48,15 +36,27 @@ public class PlatoIngrediente implements Serializable {
 
 	@Column(name="ti_ingrediente", length=254)
 	private String tiIngrediente;
+	
+	@Column(name="fe_modificacion", nullable=false)
+	private Timestamp feModificacion;
+
+	@Column(name="fe_registro", nullable=false)
+	private Timestamp feRegistro;
+
+	@Column(name="id_usua_crea", nullable=false)
+	private Integer idUsuaCrea;
+
+	@Column(name="id_usua_modi", nullable=false)
+	private Integer idUsuaModi;
 
 	//bi-directional many-to-one association to Ingrediente
 	@ManyToOne
-	@JoinColumn(name="ingrediente_id_ingrediente", nullable=false, insertable=false, updatable=false)
+	@JoinColumn(name="id_ingrediente", nullable=false, insertable=false, updatable=false)
 	private Ingrediente ingrediente;
 
 	//bi-directional many-to-one association to Plato
 	@ManyToOne
-	@JoinColumn(name="plato_id_plato", nullable=false, insertable=false, updatable=false)
+	@JoinColumn(name="id_plato", nullable=false, insertable=false, updatable=false)
 	private Plato plato;
 
 	public PlatoIngrediente() {
@@ -70,44 +70,12 @@ public class PlatoIngrediente implements Serializable {
 		this.id = id;
 	}
 
-	public Timestamp getFeModificacion() {
-		return this.feModificacion;
-	}
-
-	public void setFeModificacion(Timestamp feModificacion) {
-		this.feModificacion = feModificacion;
-	}
-
-	public Timestamp getFeRegistro() {
-		return this.feRegistro;
-	}
-
-	public void setFeRegistro(Timestamp feRegistro) {
-		this.feRegistro = feRegistro;
-	}
-
 	public Integer getIdUnidMedi() {
 		return this.idUnidMedi;
 	}
 
 	public void setIdUnidMedi(Integer idUnidMedi) {
 		this.idUnidMedi = idUnidMedi;
-	}
-
-	public Integer getIdUsuaCrea() {
-		return this.idUsuaCrea;
-	}
-
-	public void setIdUsuaCrea(Integer idUsuaCrea) {
-		this.idUsuaCrea = idUsuaCrea;
-	}
-
-	public Integer getIdUsuaModi() {
-		return this.idUsuaModi;
-	}
-
-	public void setIdUsuaModi(Integer idUsuaModi) {
-		this.idUsuaModi = idUsuaModi;
 	}
 
 	public float getNuCantidad() {
@@ -150,4 +118,35 @@ public class PlatoIngrediente implements Serializable {
 		this.plato = plato;
 	}
 
+	public Timestamp getFeModificacion() {
+		return this.feModificacion;
+	}
+
+	public void setFeModificacion(Timestamp feModificacion) {
+		this.feModificacion = feModificacion;
+	}
+
+	public Timestamp getFeRegistro() {
+		return this.feRegistro;
+	}
+
+	public void setFeRegistro(Timestamp feRegistro) {
+		this.feRegistro = feRegistro;
+	}
+
+	public Integer getIdUsuaCrea() {
+		return this.idUsuaCrea;
+	}
+
+	public void setIdUsuaCrea(Integer idUsuaCrea) {
+		this.idUsuaCrea = idUsuaCrea;
+	}
+
+	public Integer getIdUsuaModi() {
+		return this.idUsuaModi;
+	}
+
+	public void setIdUsuaModi(Integer idUsuaModi) {
+		this.idUsuaModi = idUsuaModi;
+	}
 }

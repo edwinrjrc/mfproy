@@ -62,6 +62,14 @@ public class Ingrediente implements Serializable {
 	@JoinColumn(name="id_tipo_ingr", nullable=false)
 	private TipoIngrediente tipoIngrediente;
 
+	//bi-directional many-to-one association to PlatoIngrediente
+	@OneToMany(mappedBy="ingrediente")
+	private List<PlatoIngrediente> platoIngredientes;
+
+	//bi-directional many-to-one association to Receta
+	@OneToMany(mappedBy="ingrediente")
+	private List<Receta> recetas;
+
 	//bi-directional many-to-one association to ValorNutricional
 	@OneToMany(mappedBy="ingrediente")
 	private List<ValorNutricional> valorNutricionals;
@@ -147,6 +155,50 @@ public class Ingrediente implements Serializable {
 
 	public void setTipoIngrediente(TipoIngrediente tipoIngrediente) {
 		this.tipoIngrediente = tipoIngrediente;
+	}
+
+	public List<PlatoIngrediente> getPlatoIngredientes() {
+		return this.platoIngredientes;
+	}
+
+	public void setPlatoIngredientes(List<PlatoIngrediente> platoIngredientes) {
+		this.platoIngredientes = platoIngredientes;
+	}
+
+	public PlatoIngrediente addPlatoIngrediente(PlatoIngrediente platoIngrediente) {
+		getPlatoIngredientes().add(platoIngrediente);
+		platoIngrediente.setIngrediente(this);
+
+		return platoIngrediente;
+	}
+
+	public PlatoIngrediente removePlatoIngrediente(PlatoIngrediente platoIngrediente) {
+		getPlatoIngredientes().remove(platoIngrediente);
+		platoIngrediente.setIngrediente(null);
+
+		return platoIngrediente;
+	}
+
+	public List<Receta> getRecetas() {
+		return this.recetas;
+	}
+
+	public void setRecetas(List<Receta> recetas) {
+		this.recetas = recetas;
+	}
+
+	public Receta addReceta(Receta receta) {
+		getRecetas().add(receta);
+		receta.setIngrediente(this);
+
+		return receta;
+	}
+
+	public Receta removeReceta(Receta receta) {
+		getRecetas().remove(receta);
+		receta.setIngrediente(null);
+
+		return receta;
 	}
 
 	public List<ValorNutricional> getValorNutricionals() {

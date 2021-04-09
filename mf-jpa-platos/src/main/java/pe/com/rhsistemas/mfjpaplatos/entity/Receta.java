@@ -47,8 +47,8 @@ public class Receta implements Serializable {
 	private Integer nuMinuComp;
 
 	//bi-directional many-to-one association to Ingrediente
-	@ManyToOne()
-	@JoinColumn(name="id_ingrediente", nullable=false)
+	@ManyToOne
+	@JoinColumn(name="id_ingrediente", nullable=false, insertable=false, updatable=false)
 	private Ingrediente ingrediente;
 
 	//bi-directional many-to-one association to Plato

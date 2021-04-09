@@ -3,48 +3,37 @@
  */
 package pe.com.rhsistemas.mfserplatos.controller;
 
-import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.client.loadbalancer.LoadBalanced;
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
 
-import pe.com.rhsistemas.mf.cross.dto.PlatoDto;
-import pe.com.rhsistemas.mfserplatos.exception.MfServiceMenuException;
-import pe.com.rhsistemas.mfserplatos.service.RemoteServer;
+import pe.com.rhsistemas.mfserplatos.service.MenuLogicaService;
 
 /**
  * @author Edwin
  *
  */
 @RestController
-@RequestMapping( value = "/mf-service-menu")
+@RequestMapping( value = "/MenuRService")
 public class MenuController {
 	
-	private static final Logger logger = LoggerFactory.getLogger(MenuController.class);
+	private static final Logger log = LoggerFactory.getLogger(MenuController.class);
 	
 	@Autowired
-    private RemoteServer remoteService;
-	
-	@Bean
-    @LoadBalanced
-    public RestTemplate restTemplate() {
-        return new RestTemplate();
-    }
+	private MenuLogicaService menuLogicaService;
 	
 	@GetMapping(value = "/generarMenu")
-	public ResponseEntity<Map<String, Object>> generarMenu() throws MfServiceMenuException {
-		List<PlatoDto> platos = remoteService.consultarPlatos();
+	public ResponseEntity<Map<String, Object>> generarMenu(@RequestParam(name = "idPersona", required = true) Integer idPersona) {
+		ResponseEntity<Map<String, Object>> salida = null;
 		
-		return null;
+		return salida;
 	}
 	
 	@GetMapping(value = "/consultarMenu")

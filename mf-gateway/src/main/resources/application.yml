@@ -3,13 +3,17 @@ spring:
     
 server:  port: 7000
   
-zuul:  routes:    serv-greet:
+zuul:  routes:    serv-jpa-platos:
         path: //mf-jpa-platos/**/**
         serviceId: mf-jpa-platos
+    serv-jpa-menu:
+        path: //mf-jpa-menu/**/**
+        serviceId: mf-jpa-menu
+
  
 #Eureka Configuration Properties
 eureka: 
   client:
     serviceUrl:
-      defaultZone: http://mf-eureka-server:8761/eureka
+      defaultZone: http://localhost:8761/eureka
       

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import pe.com.rhsistemas.mf.cross.compartido.Constantes;
@@ -30,7 +31,7 @@ import pe.com.rhsistemas.mfjpaplatos.util.Utilmfjpa;
  *
  */
 @RestController
-@RequestMapping( value = "/PlatoController")
+@RequestMapping(value = "/PlatoRJPAService")
 public class PlatoController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(PlatoController.class);
@@ -88,5 +89,24 @@ public class PlatoController {
 			salida = new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		return salida;
+	}
+	
+	@GetMapping(value = "/consultarPlatos2")
+	@ResponseBody
+	public List<PlatoDto> consultarPlatos2() {
+		List<PlatoDto> platosDto = new ArrayList<>();
+		try {
+			Map<String, Object> mapeo = new HashMap<String, Object>();
+			List<Plato> platos =  platoRepository.findAll();
+			for (Plato plato : platos) {
+				platosDto.add(Utilmfjpa.parsePlatoEntity(plato));
+			}
+			mapeo.put(Constantes.VALOR_DATA_MAP, platosDto);
+			
+		} catch (Exception e) {
+			logger.error("Error en consultarPlatos", e);
+			logger.error(e.getMessage(), e);
+		}
+		return platosDto;
 	}
 }

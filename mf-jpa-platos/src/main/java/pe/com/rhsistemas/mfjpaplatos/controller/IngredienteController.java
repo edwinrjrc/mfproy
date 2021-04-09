@@ -21,7 +21,6 @@ import pe.com.rhsistemas.mfjpaplatos.util.Utilmfjpa;
 @RequestMapping( value = "/mf-jpa-platos")
 public class IngredienteController {
 
-
 	private static final Logger logger = LoggerFactory.getLogger(IngredienteController.class);
 	
 	@Autowired

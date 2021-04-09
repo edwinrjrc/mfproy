@@ -1,7 +1,7 @@
 /**
  * 
  */
-package pe.com.rhsistemas.mfserplatos.service;
+package pe.com.rhsistemas.mfserplatos.service.impl;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -30,30 +30,14 @@ import pe.com.rhsistemas.mfserplatos.exception.MfServiceMenuException;
  *
  */
 @Service
-public class RemoteServer {
+public class RemoteServicePlato {
 
-	private static final Logger logger = LoggerFactory.getLogger(RemoteServer.class);
+	private static final Logger logger = LoggerFactory.getLogger(RemoteServicePlato.class);
 
-	private static final String URL_SERVICE = "http://mf-jpa-platos/PlatoController/consultarPlatos";
+	private static final String URL_SERVICE = "http://mf-jpa-platos/PlatoRJPAService/consultarPlatos";
 
 	@Autowired
 	private RestTemplate restTemplate;
-
-	/*
-	 * public void consultarPlatos() { HttpEntity requestEntity = new
-	 * HttpEntity(null); ResponseEntity<Map> response =
-	 * restTemplate.getForEntity(URL_SERVICE, Map.class);
-	 * //ResponseEntity<Map<String, Object>> response = (ResponseEntity<Map<String,
-	 * Object>>) restTemplate.exchange(URL_SERVICE, Map.class , String.class);
-	 * 
-	 * logger.info("Ya se tiene la respuesta");
-	 * 
-	 * 
-	 * int valorStatus = response.getStatusCode().value();
-	 * 
-	 * logger.info(response.toString()); logger.info("valorStatus ::"+valorStatus);
-	 * }
-	 */
 
 	public List<PlatoDto> consultarPlatos() throws MfServiceMenuException {
 		List<PlatoDto> listaPlatos = null;

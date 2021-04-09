@@ -57,16 +57,16 @@ public class PlatoControllerTest {
 	
 	@Test
 	public void consultarPlatos() throws UnsupportedEncodingException, Exception {
-		apiRootPath = "/PlatoController";
+		apiRootPath = "/PlatoRJPAService";
 
 		String resultado = mockMvc.perform(
 				MockMvcRequestBuilders.get(apiRootPath + "/consultarPlatos").contentType(MediaType.APPLICATION_JSON))
 				.andExpect(MockMvcResultMatchers.status().is(HttpStatus.OK.value())).andReturn().getResponse().getContentAsString();
 	}
 	
-	@Test
+	//@Test
 	public void tamanioConsultarPlatos() throws UnsupportedEncodingException, Exception {
-		apiRootPath = "/PlatoController";
+		apiRootPath = "/PlatoRJPAService";
 
 		String resultado = mockMvc.perform(
 				MockMvcRequestBuilders.get(apiRootPath + "/consultarPlatos").contentType(MediaType.APPLICATION_JSON)).andReturn().getResponse().getContentAsString();

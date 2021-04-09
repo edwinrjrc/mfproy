@@ -42,9 +42,6 @@ public class Plato implements Serializable {
 	@Column(name="id_esta_plat")
 	private Integer idEstaPlat;
 
-	@Column(name="id_persona", nullable=false)
-	private Long idPersona;
-
 	@Column(name="id_tipo_plato")
 	private Integer idTipoPlato;
 
@@ -60,10 +57,23 @@ public class Plato implements Serializable {
 	@Column(name="no_plato", length=100)
 	private String noPlato;
 
+	//bi-directional many-to-one association to MenuDetalle
+	@OneToMany(mappedBy="plato")
+	private List<MenuDetalle> menuDetalles;
+
+	//bi-directional many-to-one association to Persona
+	@ManyToOne
+	@JoinColumn(name="id_persona", nullable=false)
+	private Persona persona;
+
 	//bi-directional many-to-one association to TipoCocina
 	@ManyToOne
 	@JoinColumn(name="id_tipo_coci", nullable=false)
 	private TipoCocina tipoCocina;
+
+	//bi-directional many-to-one association to PlatoFavorito
+	@OneToMany(mappedBy="plato")
+	private List<PlatoFavorito> platoFavoritos;
 
 	//bi-directional many-to-one association to PlatoIngrediente
 	@OneToMany(mappedBy="plato")
@@ -108,14 +118,6 @@ public class Plato implements Serializable {
 		this.idEstaPlat = idEstaPlat;
 	}
 
-	public Long getIdPersona() {
-		return this.idPersona;
-	}
-
-	public void setIdPersona(Long idPersona) {
-		this.idPersona = idPersona;
-	}
-
 	public Integer getIdTipoPlato() {
 		return this.idTipoPlato;
 	}
@@ -156,12 +158,64 @@ public class Plato implements Serializable {
 		this.noPlato = noPlato;
 	}
 
+	public List<MenuDetalle> getMenuDetalles() {
+		return this.menuDetalles;
+	}
+
+	public void setMenuDetalles(List<MenuDetalle> menuDetalles) {
+		this.menuDetalles = menuDetalles;
+	}
+
+	public MenuDetalle addMenuDetalle(MenuDetalle menuDetalle) {
+		getMenuDetalles().add(menuDetalle);
+		menuDetalle.setPlato(this);
+
+		return menuDetalle;
+	}
+
+	public MenuDetalle removeMenuDetalle(MenuDetalle menuDetalle) {
+		getMenuDetalles().remove(menuDetalle);
+		menuDetalle.setPlato(null);
+
+		return menuDetalle;
+	}
+
+	public Persona getPersona() {
+		return this.persona;
+	}
+
+	public void setPersona(Persona persona) {
+		this.persona = persona;
+	}
+
 	public TipoCocina getTipoCocina() {
 		return this.tipoCocina;
 	}
 
 	public void setTipoCocina(TipoCocina tipoCocina) {
 		this.tipoCocina = tipoCocina;
+	}
+
+	public List<PlatoFavorito> getPlatoFavoritos() {
+		return this.platoFavoritos;
+	}
+
+	public void setPlatoFavoritos(List<PlatoFavorito> platoFavoritos) {
+		this.platoFavoritos = platoFavoritos;
+	}
+
+	public PlatoFavorito addPlatoFavorito(PlatoFavorito platoFavorito) {
+		getPlatoFavoritos().add(platoFavorito);
+		platoFavorito.setPlato(this);
+
+		return platoFavorito;
+	}
+
+	public PlatoFavorito removePlatoFavorito(PlatoFavorito platoFavorito) {
+		getPlatoFavoritos().remove(platoFavorito);
+		platoFavorito.setPlato(null);
+
+		return platoFavorito;
 	}
 
 	public List<PlatoIngrediente> getPlatoIngredientes() {

@@ -14,25 +14,25 @@ public class PlatoIngredientePK implements Serializable {
 	//default serial version id, required for serializable classes.
 	private static final long serialVersionUID = 1L;
 
-	@Column(name="plato_id_plato", insertable=false, updatable=false, unique=true, nullable=false)
-	private Integer platoIdPlato;
+	@Column(name="id_plato", insertable=false, updatable=false, unique=true, nullable=false)
+	private Integer idPlato;
 
-	@Column(name="ingrediente_id_ingrediente", insertable=false, updatable=false, unique=true, nullable=false)
-	private Integer ingredienteIdIngrediente;
+	@Column(name="id_ingrediente", insertable=false, updatable=false, unique=true, nullable=false)
+	private Integer idIngrediente;
 
 	public PlatoIngredientePK() {
 	}
-	public Integer getPlatoIdPlato() {
-		return this.platoIdPlato;
+	public Integer getIdPlato() {
+		return this.idPlato;
 	}
-	public void setPlatoIdPlato(Integer platoIdPlato) {
-		this.platoIdPlato = platoIdPlato;
+	public void setIdPlato(Integer idPlato) {
+		this.idPlato = idPlato;
 	}
-	public Integer getIngredienteIdIngrediente() {
-		return this.ingredienteIdIngrediente;
+	public Integer getIdIngrediente() {
+		return this.idIngrediente;
 	}
-	public void setIngredienteIdIngrediente(Integer ingredienteIdIngrediente) {
-		this.ingredienteIdIngrediente = ingredienteIdIngrediente;
+	public void setIdIngrediente(Integer idIngrediente) {
+		this.idIngrediente = idIngrediente;
 	}
 
 	public boolean equals(Object other) {
@@ -44,15 +44,15 @@ public class PlatoIngredientePK implements Serializable {
 		}
 		PlatoIngredientePK castOther = (PlatoIngredientePK)other;
 		return 
-			this.platoIdPlato.equals(castOther.platoIdPlato)
-			&& this.ingredienteIdIngrediente.equals(castOther.ingredienteIdIngrediente);
+			this.idPlato.equals(castOther.idPlato)
+			&& this.idIngrediente.equals(castOther.idIngrediente);
 	}
 
 	public int hashCode() {
 		final int prime = 31;
 		int hash = 17;
-		hash = hash * prime + this.platoIdPlato.hashCode();
-		hash = hash * prime + this.ingredienteIdIngrediente.hashCode();
+		hash = hash * prime + this.idPlato.hashCode();
+		hash = hash * prime + this.idIngrediente.hashCode();
 		
 		return hash;
 	}

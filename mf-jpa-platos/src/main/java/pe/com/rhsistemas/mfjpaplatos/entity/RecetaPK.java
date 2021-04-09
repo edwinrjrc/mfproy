@@ -20,6 +20,9 @@ public class RecetaPK implements Serializable {
 	@Column(name="id_plato", insertable=false, updatable=false, unique=true, nullable=false)
 	private Integer idPlato;
 
+	@Column(name="id_ingrediente", insertable=false, updatable=false, unique=true, nullable=false)
+	private Integer idIngrediente;
+
 	public RecetaPK() {
 	}
 	public Integer getIdPaso() {
@@ -34,6 +37,12 @@ public class RecetaPK implements Serializable {
 	public void setIdPlato(Integer idPlato) {
 		this.idPlato = idPlato;
 	}
+	public Integer getIdIngrediente() {
+		return this.idIngrediente;
+	}
+	public void setIdIngrediente(Integer idIngrediente) {
+		this.idIngrediente = idIngrediente;
+	}
 
 	public boolean equals(Object other) {
 		if (this == other) {
@@ -45,7 +54,8 @@ public class RecetaPK implements Serializable {
 		RecetaPK castOther = (RecetaPK)other;
 		return 
 			this.idPaso.equals(castOther.idPaso)
-			&& this.idPlato.equals(castOther.idPlato);
+			&& this.idPlato.equals(castOther.idPlato)
+			&& this.idIngrediente.equals(castOther.idIngrediente);
 	}
 
 	public int hashCode() {
@@ -53,6 +63,7 @@ public class RecetaPK implements Serializable {
 		int hash = 17;
 		hash = hash * prime + this.idPaso.hashCode();
 		hash = hash * prime + this.idPlato.hashCode();
+		hash = hash * prime + this.idIngrediente.hashCode();
 		
 		return hash;
 	}

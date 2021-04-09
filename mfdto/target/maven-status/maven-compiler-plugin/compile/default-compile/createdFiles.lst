@@ -1,3 +1,4 @@
+pe\com\rhsistemas\mf\cross\dto\MenuDetalleDto.class
 pe\com\rhsistemas\mf\cross\dto\PlatoDto.class
 pe\com\rhsistemas\mf\cross\dto\PlatoIngredienteDto.class
 pe\com\rhsistemas\mf\cross\dto\ValorNutricionalDto.class
@@ -12,4 +13,6 @@ pe\com\rhsistemas\mf\cross\dto\PasoPreparacionDto.class
 pe\com\rhsistemas\mf\cross\dto\PersonaDto.class
 pe\com\rhsistemas\mf\cross\dto\UsuarioRolesDto.class
 pe\com\rhsistemas\mf\cross\dto\PersonaJuridicaDto.class
+pe\com\rhsistemas\mf\cross\util\UtilMf.class
+pe\com\rhsistemas\mf\cross\dto\MenuGeneradoDto.class
 pe\com\rhsistemas\mf\cross\dto\DocumentoIdentidadDto.class
