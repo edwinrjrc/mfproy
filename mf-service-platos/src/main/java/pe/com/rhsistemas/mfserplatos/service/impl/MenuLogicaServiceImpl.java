@@ -53,7 +53,14 @@ public class MenuLogicaServiceImpl implements MenuLogicaService{
 			menuGeneradoDto.setIdUsuarioRegistro(idUsuario);
 			menuGeneradoDto.setIdUsuarioModificacion(idUsuario);
 			
-			List<MenuDetalleDto> listaMenu = remoteServiceMenu.ultimoMenu(idPersona);
+			Date fechaCorte = null;
+			
+			Calendar cal = Calendar.getInstance();
+			cal.add(Calendar.MONTH, -3);
+			fechaCorte = cal.getTime();
+			
+			//List<MenuDetalleDto> listaMenu = remoteServiceMenu.ultimoMenu(idPersona);
+			List<PlatoDto> listaMenu = remoteServicePlato.ultimosPlatosConsumidos(idPersona, fechaCorte);
 			UtilMf.pintaLog(listaMenu, "listaMenu");
 			
 			int cantidadSemanas = 1;
@@ -80,8 +87,8 @@ public class MenuLogicaServiceImpl implements MenuLogicaService{
 				if (platosTotal != null && !platosTotal.isEmpty()) {
 					for (PlatoDto dto : platosTotal) {
 						boolean yaEsta = false;
-						for (MenuDetalleDto detalleDto : listaMenu) {
-							if (dto.getId() == detalleDto.getIdPlato()) {
+						for (PlatoDto detalleDto : listaMenu) {
+							if (dto.getId() == detalleDto.getId()) {
 								yaEsta = true;
 								break;
 							}
