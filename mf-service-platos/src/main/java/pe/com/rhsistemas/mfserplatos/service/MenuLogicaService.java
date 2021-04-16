@@ -9,4 +9,7 @@ package pe.com.rhsistemas.mfserplatos.service;
  */
 public interface MenuLogicaService {
 
+	public void generarMenu(Integer idPersona, Integer idUsuario);
+	
+	
 }

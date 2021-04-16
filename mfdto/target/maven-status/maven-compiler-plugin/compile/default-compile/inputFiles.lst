@@ -13,6 +13,8 @@ C:\git\mfproy\mfdto\src\main\java\pe\com\rhsistemas\mf\cross\dto\MenuGeneradoDto
 C:\git\mfproy\mfdto\src\main\java\pe\com\rhsistemas\mf\cross\dto\BaseDto.java
 C:\git\mfproy\mfdto\src\main\java\pe\com\rhsistemas\mf\cross\dto\ValorNutricionalDto.java
 C:\git\mfproy\mfdto\src\main\java\pe\com\rhsistemas\mf\cross\dto\PersonaDto.java
-C:\git\mfproy\mfdto\src\main\java\pe\com\rhsistemas\mf\cross\util\UtilMf.java
+C:\git\mfproy\mfdto\src\main\java\pe\com\rhsistemas\mf\post\dto\GenerarMenuDto.java
+C:\git\mfproy\mfdto\src\main\java\pe\com\rhsistemas\mf\cross\exception\UtilMfDtoException.java
+C:\git\mfproy\mfdto\src\main\java\pe\com\rhsistemas\mf\cross\util\UtilMfDto.java
 C:\git\mfproy\mfdto\src\main\java\pe\com\rhsistemas\mf\cross\dto\MenuDetalleDto.java
 C:\git\mfproy\mfdto\src\main\java\pe\com\rhsistemas\mf\cross\dto\PersonaJuridicaDto.java

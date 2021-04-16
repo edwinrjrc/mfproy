@@ -3,6 +3,7 @@
  */
 package pe.com.rhsistemas.mf.cross.dto;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -14,6 +15,7 @@ public class MenuGeneradoDto extends BaseDto {
 	private static final long serialVersionUID = 1440805495819436622L;
 	
 	private long idGenerado;
+	private Date fechaGenerado;
 	private int numeroDias;
 	private int idPersona;
 	private List<MenuDetalleDto> listaPlatos;
@@ -76,6 +78,20 @@ public class MenuGeneradoDto extends BaseDto {
 	 */
 	public void setListaPlatos(List<MenuDetalleDto> listaPlatos) {
 		this.listaPlatos = listaPlatos;
+	}
+
+	/**
+	 * @return the fechaGenerado
+	 */
+	public Date getFechaGenerado() {
+		return fechaGenerado;
+	}
+
+	/**
+	 * @param fechaGenerado the fechaGenerado to set
+	 */
+	public void setFechaGenerado(Date fechaGenerado) {
+		this.fechaGenerado = fechaGenerado;
 	}
 
 }

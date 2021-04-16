@@ -24,6 +24,7 @@ import org.springframework.web.client.RestTemplate;
 
 import pe.com.rhsistemas.mf.cross.compartido.Constantes;
 import pe.com.rhsistemas.mf.cross.dto.MenuDetalleDto;
+import pe.com.rhsistemas.mf.cross.dto.MenuGeneradoDto;
 import pe.com.rhsistemas.mfserplatos.exception.MfServiceMenuException;
 
 /**
@@ -36,6 +37,8 @@ public class RemoteServiceMenu {
 	private static final Logger logger = LoggerFactory.getLogger(RemoteServicePlato.class);
 
 	private static final String URL_SERVICE = "http://mf-jpa-menu/MenuRJPAService/ultimoMenu";
+	
+	private static final String URL_SERVICE_2 = "http://mf-jpa-menu/MenuRJPAService/registrarMenu";
 
 	@Autowired
 	private RestTemplate restTemplate;
@@ -67,11 +70,34 @@ public class RemoteServiceMenu {
 		}
 		return listaMenus;
 	}
+	
+	public void grabarMenuGenerado(MenuGeneradoDto menuGeneradoDto) throws MfServiceMenuException {
+		try {
+			Class<Map> responseType = Map.class;
+			
+			restTemplate.postForEntity(obtenerUri2(), menuGeneradoDto, responseType);
+			
+		} catch (RestClientException e) {
+			logger.error(e.getMessage(),e);
+			throw new MfServiceMenuException(e);
+		}
+	}
 
 	private URI obtenerUri(String parametro) throws MfServiceMenuException {
 		URI url = null;
 		try {
 			url = new URI(URL_SERVICE+"?idPersona="+parametro);
+		} catch (URISyntaxException e) {
+			logger.error(e.getMessage(), e);
+			throw new MfServiceMenuException(e);
+		}
+		return url;
+	}
+	
+	private URI obtenerUri2() throws MfServiceMenuException {
+		URI url = null;
+		try {
+			url = new URI(URL_SERVICE_2);
 		} catch (URISyntaxException e) {
 			logger.error(e.getMessage(), e);
 			throw new MfServiceMenuException(e);

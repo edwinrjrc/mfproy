@@ -12,15 +12,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import pe.com.rhsistemas.mf.cross.dto.MenuDetalleDto;
 import pe.com.rhsistemas.mf.cross.dto.MenuGeneradoDto;
 import pe.com.rhsistemas.mf.cross.dto.PlatoDto;
-import pe.com.rhsistemas.mf.cross.util.UtilMf;
+import pe.com.rhsistemas.mf.cross.util.UtilMfDto;
 import pe.com.rhsistemas.mfserplatos.exception.MfServiceMenuException;
 import pe.com.rhsistemas.mfserplatos.service.MenuLogicaService;
 
@@ -46,9 +44,13 @@ public class MenuLogicaServiceImpl implements MenuLogicaService{
     }
 	
 	public void generarMenu(Integer idPersona, Integer idUsuario) {
-		ResponseEntity<Map<String, Object>> salida = null;
+		MenuGeneradoDto menuGeneradoDto = null;
 		try {
-			MenuGeneradoDto menuGeneradoDto = new MenuGeneradoDto();
+			log.info("Recibiendo parametros");
+			UtilMfDto.pintaLog(idPersona, "idPersona");
+			UtilMfDto.pintaLog(idUsuario, "idUsuario");
+			
+			menuGeneradoDto = new MenuGeneradoDto();
 			menuGeneradoDto.setIdPersona(idPersona);
 			menuGeneradoDto.setIdUsuarioRegistro(idUsuario);
 			menuGeneradoDto.setIdUsuarioModificacion(idUsuario);
@@ -59,9 +61,7 @@ public class MenuLogicaServiceImpl implements MenuLogicaService{
 			cal.add(Calendar.MONTH, -3);
 			fechaCorte = cal.getTime();
 			
-			//List<MenuDetalleDto> listaMenu = remoteServiceMenu.ultimoMenu(idPersona);
-			List<PlatoDto> listaMenu = remoteServicePlato.ultimosPlatosConsumidos(idPersona, fechaCorte);
-			UtilMf.pintaLog(listaMenu, "listaMenu");
+			List<PlatoDto> listaPlatosNoConsumidos = remoteServicePlato.ultimosPlatosConsumidos(idPersona, fechaCorte);
 			
 			int cantidadSemanas = 1;
 			
@@ -75,43 +75,25 @@ public class MenuLogicaServiceImpl implements MenuLogicaService{
 			
 			Date fechaFin = calendario.getTime();
 			
+			menuGeneradoDto.setFechaGenerado(fechaHoy);
 			menuGeneradoDto.setFechaRegistro(fechaHoy);
 			menuGeneradoDto.setFechaModificacion(fechaHoy);
 			menuGeneradoDto.setNumeroDias(7 * cantidadSemanas);
 			
-			List<PlatoDto> platosTotal = remoteServicePlato.consultarPlatos();
+			log.info("platosTotal::"+listaPlatosNoConsumidos.size());
 			
-			List<MenuDetalleDto> listaMenuDetalle = new ArrayList<>();
-			if (listaMenu != null && !listaMenu.isEmpty()) {
-				List<PlatoDto> platos2 = new ArrayList<>();
-				if (platosTotal != null && !platosTotal.isEmpty()) {
-					for (PlatoDto dto : platosTotal) {
-						boolean yaEsta = false;
-						for (PlatoDto detalleDto : listaMenu) {
-							if (dto.getId() == detalleDto.getId()) {
-								yaEsta = true;
-								break;
-							}
-						}
-						if (!yaEsta) {
-							platos2.add(dto);
-						}
-					}
-				}
-				generarDetalleMenuDto(fechaInicio, fechaFin, idUsuario, platos2);
-			}
-			else {
-				
-				generarDetalleMenuDto(fechaInicio, fechaFin, idUsuario, platosTotal);
-			}
-			menuGeneradoDto.setListaPlatos(listaMenuDetalle);
+			menuGeneradoDto.setListaPlatos(generarDetalleMenuDto(fechaInicio, fechaFin, idUsuario, listaPlatosNoConsumidos));
+			
+			this.remoteServiceMenu.grabarMenuGenerado(menuGeneradoDto);
+			
 		} catch (MfServiceMenuException e) {
 			log.error(e.getMessage(), e);
-			salida = new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 	
 	private List<MenuDetalleDto> generarDetalleMenuDto(Date fechaInicio, Date fechaFin, int idUsuario, List<PlatoDto> platosTotal) throws MfServiceMenuException {
+		log.info("platos llegan::"+platosTotal.size());
+		
 		Date fechaHoy = new Date();
 		
 		Map<Integer,Integer> mapeoTipoPlato = new HashMap<Integer,Integer>();
@@ -142,8 +124,10 @@ public class MenuLogicaServiceImpl implements MenuLogicaService{
 				}
 			}
 			int cantidadPlatos1 = platosTipoDia.size();
-			int numeroElegido = UtilMf.numeroEnteroAleatorio(1, cantidadPlatos1);
-			idPlatoElegido = platosTipoDia.get(numeroElegido - 1).getId();
+			log.info("Num platos ::"+cantidadPlatos1);
+			int numeroElegido = UtilMfDto.numeroEnteroAleatorio(1, cantidadPlatos1);
+			log.info("Num Elegido ::"+numeroElegido);
+			idPlatoElegido = platosTipoDia.get((numeroElegido == 0 ? 1:numeroElegido) - 1).getId();
 			
 			menuDetalleDto = new MenuDetalleDto();
 			menuDetalleDto.setFechaRegistro(fechaHoy);

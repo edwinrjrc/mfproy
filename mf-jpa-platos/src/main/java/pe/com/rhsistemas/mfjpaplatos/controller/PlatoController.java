@@ -12,7 +12,9 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,7 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import pe.com.rhsistemas.mf.cross.compartido.Constantes;
 import pe.com.rhsistemas.mf.cross.dto.PlatoDto;
-import pe.com.rhsistemas.mf.cross.util.UtilMf;
+import pe.com.rhsistemas.mf.cross.util.UtilMfDto;
 import pe.com.rhsistemas.mfjpaplatos.dao.PlatoRepository;
 import pe.com.rhsistemas.mfjpaplatos.entity.Plato;
 import pe.com.rhsistemas.mfjpaplatos.util.Utilmfjpa;
@@ -72,7 +74,7 @@ public class PlatoController {
 		return salida;
 	}
 	
-	@GetMapping(value = "/consultarPlatos")
+	@GetMapping(value = "/consultarPlatos", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Map<String, Object>> consultarPlatos() {
     	ResponseEntity<Map<String, Object>> salida = null;
 		try {
@@ -94,19 +96,26 @@ public class PlatoController {
 		return salida;
 	}
 	
-	@GetMapping(value = "/platosNoConsumidos")
+	@GetMapping(value = "/platosNoConsumidos", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Map<String, Object>> platosNoConsumidos(@RequestParam(name = "idPersona", required = true) Integer idPersona, @RequestParam(name = "fechaRango", required = true) Date fechaRango) {
     	ResponseEntity<Map<String, Object>> salida = null;
 		try {
+			logger.info("recibiendo parametros");
+			UtilMfDto.pintaLog(idPersona, "idPersona");
+			UtilMfDto.pintaLog(fechaRango, "fechaRango");
+			
 			Map<String, Object> mapeo = new HashMap<String, Object>();
-			List<Plato> platos =  platoRepository.platosNoConsumidos(idPersona, UtilMf.convertirUtilDateASqlDate(fechaRango));
+			List<Plato> platos =  platoRepository.platosNoConsumidos(idPersona, UtilMfDto.convertirUtilDateASqlDate(fechaRango));
 			List<PlatoDto> platosDto = new ArrayList<>();
 			for (Plato plato : platos) {
 				platosDto.add(Utilmfjpa.parsePlatoEntity(plato));
 			}
 			mapeo.put(Constantes.VALOR_DATA_MAP, platosDto);
 			
-			salida = new ResponseEntity<>(mapeo, HttpStatus.OK);
+			HttpHeaders headers = new HttpHeaders();
+			headers.setContentType(MediaType.APPLICATION_JSON);
+			
+			salida = new ResponseEntity<>(mapeo, headers, HttpStatus.OK);
 			
 		} catch (Exception e) {
 			logger.error("Error en platosNoConsumidos", e);

@@ -5,9 +5,11 @@ package pe.com.rhsistemas.mfserplatos.service.impl;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -23,8 +25,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonParser.Feature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import pe.com.rhsistemas.mf.cross.compartido.Constantes;
 import pe.com.rhsistemas.mf.cross.dto.PlatoDto;
+import pe.com.rhsistemas.mf.cross.exception.UtilMfDtoException;
+import pe.com.rhsistemas.mf.cross.util.UtilMfDto;
 import pe.com.rhsistemas.mfserplatos.exception.MfServiceMenuException;
 
 /**
@@ -34,15 +42,12 @@ import pe.com.rhsistemas.mfserplatos.exception.MfServiceMenuException;
 @Service
 public class RemoteServicePlato {
 
-	private static final Logger logger = LoggerFactory.getLogger(RemoteServicePlato.class);
+	private static final Logger log = LoggerFactory.getLogger(RemoteServicePlato.class);
 
 	private static final String URL_SERVICE_1 = "http://mf-jpa-platos/PlatoRJPAService/consultarPlatos";
 	
 	private static final String URL_SERVICE_2 = "http://mf-jpa-platos/PlatoRJPAService/platosNoConsumidos";
 	
-	private Integer idPersona;
-	private Date fechaCorte;
-
 	@Autowired
 	private RestTemplate restTemplate;
 
@@ -53,15 +58,27 @@ public class RemoteServicePlato {
 			
 			HttpHeaders headers = new HttpHeaders();
 		    headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-			HttpEntity requestEntity = new HttpEntity<Map>(headers);
-			Class responseType = Map.class;
+			HttpEntity<Map<String, Object>> requestEntity = new HttpEntity<Map<String,Object>>(headers);
+			Class<Map> responseType = Map.class;
 			
-			ResponseEntity<Map> respuesta = restTemplate.exchange(obtenerUri(1), metodoServicio, requestEntity, responseType);
+			String url = URL_SERVICE_1;
 			
-			listaPlatos = (List<PlatoDto>) respuesta.getBody().get(Constantes.VALOR_DATA_MAP);
+			ResponseEntity<Map> respuesta = restTemplate.exchange(obtenerUri(url), metodoServicio, requestEntity, responseType);
+			
+			JsonFactory factory = new JsonFactory();
+		    factory.enable(Feature.ALLOW_SINGLE_QUOTES);
+		    ObjectMapper mapper = new ObjectMapper(factory);
+			
+		    List<Map> datosLista = (List<Map>) respuesta.getBody().get(Constantes.VALOR_DATA_MAP);
+		    listaPlatos = new ArrayList<>();
+		    for (Object objeto : datosLista) {
+		    	LinkedHashMap<String,Object> map = (LinkedHashMap<String,Object>) objeto;
+		    	
+		    	listaPlatos.add(mapper.convertValue(map, PlatoDto.class));
+			}
 			
 		} catch (RestClientException e) {
-			logger.error(e.getMessage(),e);
+			log.error(e.getMessage(),e);
 			throw new MfServiceMenuException(e);
 		}
 		return listaPlatos;
@@ -70,39 +87,53 @@ public class RemoteServicePlato {
 	public List<PlatoDto> ultimosPlatosConsumidos(Integer idPersona, Date fechaCorte) throws MfServiceMenuException {
 		List<PlatoDto> listaPlatos = null;
 		try {
+			log.info("Recibiendo parametros");
+			UtilMfDto.pintaLog(idPersona, "idPersona");
+			UtilMfDto.pintaLog(fechaCorte, "fechaCorte");
 			HttpMethod metodoServicio = HttpMethod.GET;
 			
-			this.idPersona = idPersona;
-			this.fechaCorte = fechaCorte;
-			
+			Map<String, String> params = new HashMap<String, String>();
+		    params.put("idPersona", idPersona.toString());
+		    params.put("fechaRango", UtilMfDto.parseDateAString(fechaCorte, ""));
+		    
 			HttpHeaders headers = new HttpHeaders();
-		    headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+			headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
 			HttpEntity requestEntity = new HttpEntity<Map>(headers);
-			Class responseType = Map.class;
-			ResponseEntity<Map> respuesta = restTemplate.exchange(obtenerUri(2), metodoServicio, requestEntity, responseType);
+			Class<Map> responseType = Map.class;
 			
-			listaPlatos = (List<PlatoDto>) respuesta.getBody().get(Constantes.VALOR_DATA_MAP);
+			String url = URL_SERVICE_2 + "?idPersona="+idPersona.toString()+"&fechaRango="+UtilMfDto.parseDateAString(fechaCorte, "");
+			
+			ResponseEntity<Map> respuesta = restTemplate.exchange(obtenerUri(url), metodoServicio, requestEntity, responseType);
+			
+			JsonFactory factory = new JsonFactory();
+		    factory.enable(Feature.ALLOW_SINGLE_QUOTES);
+		    ObjectMapper mapper = new ObjectMapper(factory);
+			
+		    List datosLista = (List) respuesta.getBody().get(Constantes.VALOR_DATA_MAP);
+		    listaPlatos = new ArrayList<>();
+		    for (Object objeto : datosLista) {
+		    	LinkedHashMap map = (LinkedHashMap) objeto;
+		    	
+		    	listaPlatos.add(mapper.convertValue(map, PlatoDto.class));
+			}
 			
 		} catch (RestClientException e) {
-			logger.error(e.getMessage(),e);
+			log.error(e.getMessage(),e);
+			throw new MfServiceMenuException(e);
+		} catch (UtilMfDtoException e) {
+			log.error(e.getMessage(),e);
 			throw new MfServiceMenuException(e);
 		}
 		return listaPlatos;
 	}
 
-	private URI obtenerUri(int u) throws MfServiceMenuException {
+	private URI obtenerUri(String cadenaUrl) throws MfServiceMenuException {
 		URI url = null;
 		try {
-			if (u == 1) {
-				url = new URI(URL_SERVICE_1);
-			}
-			else if (u == 2) {
-				SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-				url = new URI(URL_SERVICE_2+"?idPersona="+this.idPersona.toString()+"&fechaRango="+sdf.format(fechaCorte));
-			}
+			url = new URI(cadenaUrl);
 			
 		} catch (URISyntaxException e) {
-			logger.error(e.getMessage(), e);
+			log.error(e.getMessage(), e);
 			throw new MfServiceMenuException(e);
 		}
 		return url;

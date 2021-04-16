@@ -5,6 +5,7 @@ spring:
 #Tomcat Embedded Server Configuration
 server: 
   port: 24209
+    servlet:    context-path: /mf-service-menu
  
 #Eureka Configuration Properties  
 eureka: 

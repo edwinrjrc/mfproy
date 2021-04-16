@@ -13,6 +13,8 @@ pe\com\rhsistemas\mf\cross\dto\PasoPreparacionDto.class
 pe\com\rhsistemas\mf\cross\dto\PersonaDto.class
 pe\com\rhsistemas\mf\cross\dto\UsuarioRolesDto.class
 pe\com\rhsistemas\mf\cross\dto\PersonaJuridicaDto.class
-pe\com\rhsistemas\mf\cross\util\UtilMf.class
 pe\com\rhsistemas\mf\cross\dto\MenuGeneradoDto.class
+pe\com\rhsistemas\mf\post\dto\GenerarMenuDto.class
 pe\com\rhsistemas\mf\cross\dto\DocumentoIdentidadDto.class
+pe\com\rhsistemas\mf\cross\exception\UtilMfDtoException.class
+pe\com\rhsistemas\mf\cross\util\UtilMfDto.class

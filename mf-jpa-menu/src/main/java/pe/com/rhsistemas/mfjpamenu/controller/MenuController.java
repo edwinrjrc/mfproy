@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -22,10 +23,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import pe.com.rhsistemas.mf.cross.compartido.Constantes;
 import pe.com.rhsistemas.mf.cross.dto.MenuDetalleDto;
-import pe.com.rhsistemas.mf.cross.util.UtilMf;
+import pe.com.rhsistemas.mf.cross.dto.MenuGeneradoDto;
+import pe.com.rhsistemas.mf.cross.util.UtilMfDto;
 import pe.com.rhsistemas.mfjpamenu.dao.MenuRepository;
 import pe.com.rhsistemas.mfjpamenu.entity.MenuDetalle;
+import pe.com.rhsistemas.mfjpamenu.entity.MenuGenerado;
 import pe.com.rhsistemas.mfjpamenu.entity.Persona;
+import pe.com.rhsistemas.mfjpamenu.util.Utilmfjpa;
 
 /**
  * @author Edwin
@@ -44,7 +48,7 @@ public class MenuController {
 	public ResponseEntity<Map<String, Object>> consultarUltimoMenu(@RequestParam(name = "idPersona", required = true) Integer idPersona, @RequestParam(name = "fechaRango", required = true) Date fechaRango) {
 		ResponseEntity<Map<String, Object>> salida = null;
 		log.debug("Parametros recibidos");
-		UtilMf.pintaLog(idPersona,"idPersona");
+		UtilMfDto.pintaLog(idPersona,"idPersona");
 		try {
 			Persona persona = new Persona();
 			persona.setIdPersona(Long.valueOf(idPersona));
@@ -71,10 +75,15 @@ public class MenuController {
 		return salida;
 	}
 	
-	public ResponseEntity<Map<String, Object>> registrarMenu(@RequestBody List<MenuDetalle> detalleMenuGenerado){
+	@PostMapping(value = "/registrarMenu")
+	public ResponseEntity<Map<String, Object>> registrarMenu(@RequestBody MenuGeneradoDto menuGeneradoDto){
 		ResponseEntity<Map<String, Object>> salida = null;
 		log.debug("Parametros recibidos");
-		UtilMf.pintaLog(detalleMenuGenerado,"detalleMenuGenerado");
+		UtilMfDto.pintaLog(menuGeneradoDto,"menuGeneradoDto");
+		
+		MenuGenerado menuEntity = Utilmfjpa.parsePlatoDto(menuGeneradoDto);
+		menuRepository.saveAndFlush(menuEntity);
+		salida = new ResponseEntity<>(HttpStatus.OK);
 		
 		return salida;
 	}

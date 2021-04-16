@@ -5,6 +5,7 @@ import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -31,7 +32,7 @@ public class MenuGenerado implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="MENU_GENERADO_IDGENERADO_GENERATOR", sequenceName="SEQ_MENU", schema = "sistema")
+	@SequenceGenerator(name="MENU_GENERADO_IDGENERADO_GENERATOR", sequenceName="SEQ_MENU", schema = "sistema", allocationSize = 1, initialValue = 1)
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="MENU_GENERADO_IDGENERADO_GENERATOR")
 	@Column(name="id_generado", unique=true, nullable=false)
 	private Long idGenerado;
@@ -56,11 +57,11 @@ public class MenuGenerado implements Serializable {
 	private Integer nuDias;
 
 	//bi-directional many-to-one association to MenuDetalle
-	@OneToMany(mappedBy="menuGenerado")
+	@OneToMany(mappedBy="menuGenerado", cascade = {CascadeType.PERSIST})
 	private List<MenuDetalle> menuDetalles;
 
 	//bi-directional many-to-one association to Persona
-	@ManyToOne
+	@ManyToOne()
 	@JoinColumn(name="id_persona", nullable=false)
 	private Persona persona;
 
