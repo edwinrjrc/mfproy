@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -57,8 +58,8 @@ public class MenuController {
 			MenuDetalleDto menuDetalleDto = null;
 			for (MenuDetalle menuDetalle : listaMenus) {
 				menuDetalleDto = new MenuDetalleDto();
-				menuDetalleDto.setFechaConsumo(menuDetalle.getFeConsumo());
-				menuDetalleDto.setIdPlato(menuDetalle.getPlato().getIdPlato());
+				menuDetalleDto.setFechaConsumo(menuDetalle.getId().getFeConsumo());
+				menuDetalleDto.setIdPlato(menuDetalle.getId().getIdPlato());
 				menuDetalleDto.setFechaRegistro(menuDetalle.getFeRegistro());
 				menuDetalleDto.setIdUsuarioRegistro(menuDetalle.getIdUsuaCrea());
 				listaMenuDto.add(menuDetalleDto);
@@ -75,15 +76,39 @@ public class MenuController {
 		return salida;
 	}
 	
-	@PostMapping(value = "/registrarMenu")
+	@PostMapping(value = "/menuGenerado")
 	public ResponseEntity<Map<String, Object>> registrarMenu(@RequestBody MenuGeneradoDto menuGeneradoDto){
 		ResponseEntity<Map<String, Object>> salida = null;
 		log.debug("Parametros recibidos");
 		UtilMfDto.pintaLog(menuGeneradoDto,"menuGeneradoDto");
 		
-		MenuGenerado menuEntity = Utilmfjpa.parsePlatoDto(menuGeneradoDto);
+		MenuGenerado menuEntity = Utilmfjpa.parseMenuDto(menuGeneradoDto);
 		menuRepository.saveAndFlush(menuEntity);
 		salida = new ResponseEntity<>(HttpStatus.OK);
+		
+		return salida;
+	}
+	
+	@GetMapping(value = "/menuGenerado/{idPersona}")
+	public ResponseEntity<Map<String, Object>> consultaMenuGenerado(@PathVariable Integer idPersona){
+		ResponseEntity<Map<String, Object>> salida = null;
+		
+		log.debug("Parametros recibidos");
+		UtilMfDto.pintaLog(idPersona,"idPersona");
+		
+		Persona persona = new Persona();
+		persona.setIdPersona(Long.valueOf(idPersona));
+		
+		List<MenuGeneradoDto> listaMenuDto = new ArrayList<MenuGeneradoDto>();
+		
+		List<MenuGenerado> ultimoMenu = menuRepository.findByUltimoMenu(persona);
+		for (MenuGenerado menuGenerado : ultimoMenu) {
+			listaMenuDto.add(Utilmfjpa.parseMenuGenerado(menuGenerado));
+		}
+		
+		Map<String, Object> mapeo = new HashMap<String, Object>();
+		mapeo.put(Constantes.VALOR_DATA_MAP, listaMenuDto);
+		salida = new ResponseEntity<>(mapeo, HttpStatus.FOUND);
 		
 		return salida;
 	}

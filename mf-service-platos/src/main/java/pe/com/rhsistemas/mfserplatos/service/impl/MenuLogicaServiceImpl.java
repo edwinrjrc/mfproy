@@ -43,52 +43,48 @@ public class MenuLogicaServiceImpl implements MenuLogicaService{
         return new RestTemplate();
     }
 	
-	public void generarMenu(Integer idPersona, Integer idUsuario) {
+	public void generarMenu(Integer idPersona, Integer idUsuario) throws MfServiceMenuException {
 		MenuGeneradoDto menuGeneradoDto = null;
-		try {
-			log.info("Recibiendo parametros");
-			UtilMfDto.pintaLog(idPersona, "idPersona");
-			UtilMfDto.pintaLog(idUsuario, "idUsuario");
-			
-			menuGeneradoDto = new MenuGeneradoDto();
-			menuGeneradoDto.setIdPersona(idPersona);
-			menuGeneradoDto.setIdUsuarioRegistro(idUsuario);
-			menuGeneradoDto.setIdUsuarioModificacion(idUsuario);
-			
-			Date fechaCorte = null;
-			
-			Calendar cal = Calendar.getInstance();
-			cal.add(Calendar.MONTH, -3);
-			fechaCorte = cal.getTime();
-			
-			List<PlatoDto> listaPlatosNoConsumidos = remoteServicePlato.ultimosPlatosConsumidos(idPersona, fechaCorte);
-			
-			int cantidadSemanas = 1;
-			
-			Date fechaHoy = new Date();
-			Calendar calendario = Calendar.getInstance();
-			calendario.setTime(fechaHoy);
-			
-			Date fechaInicio = calendario.getTime();
-			
-			calendario.add(Calendar.DATE, 7*cantidadSemanas - calendario.get(Calendar.DAY_OF_WEEK) );
-			
-			Date fechaFin = calendario.getTime();
-			
-			menuGeneradoDto.setFechaGenerado(fechaHoy);
-			menuGeneradoDto.setFechaRegistro(fechaHoy);
-			menuGeneradoDto.setFechaModificacion(fechaHoy);
-			menuGeneradoDto.setNumeroDias(7 * cantidadSemanas);
-			
-			log.info("platosTotal::"+listaPlatosNoConsumidos.size());
-			
-			menuGeneradoDto.setListaPlatos(generarDetalleMenuDto(fechaInicio, fechaFin, idUsuario, listaPlatosNoConsumidos));
-			
-			this.remoteServiceMenu.grabarMenuGenerado(menuGeneradoDto);
-			
-		} catch (MfServiceMenuException e) {
-			log.error(e.getMessage(), e);
-		}
+		
+		log.info("Recibiendo parametros");
+		UtilMfDto.pintaLog(idPersona, "idPersona");
+		UtilMfDto.pintaLog(idUsuario, "idUsuario");
+		
+		menuGeneradoDto = new MenuGeneradoDto();
+		menuGeneradoDto.setIdPersona(idPersona);
+		menuGeneradoDto.setIdUsuarioRegistro(idUsuario);
+		menuGeneradoDto.setIdUsuarioModificacion(idUsuario);
+		
+		Date fechaCorte = null;
+		
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.MONTH, -3);
+		fechaCorte = cal.getTime();
+		
+		List<PlatoDto> listaPlatosNoConsumidos = remoteServicePlato.platosNoConsumidos(idPersona, fechaCorte);
+		
+		int cantidadSemanas = 1;
+		
+		Date fechaHoy = new Date();
+		Calendar calendario = Calendar.getInstance();
+		calendario.setTime(fechaHoy);
+		
+		Date fechaInicio = calendario.getTime();
+		
+		calendario.add(Calendar.DATE, 7*cantidadSemanas - calendario.get(Calendar.DAY_OF_WEEK) );
+		
+		Date fechaFin = calendario.getTime();
+		
+		menuGeneradoDto.setFechaGenerado(fechaHoy);
+		menuGeneradoDto.setFechaRegistro(fechaHoy);
+		menuGeneradoDto.setFechaModificacion(fechaHoy);
+		menuGeneradoDto.setNumeroDias(7 * cantidadSemanas);
+		
+		log.info("platosTotal::"+listaPlatosNoConsumidos.size());
+		
+		menuGeneradoDto.setListaPlatos(generarDetalleMenuDto(fechaInicio, fechaFin, idUsuario, listaPlatosNoConsumidos));
+		
+		this.remoteServiceMenu.grabarMenuGenerado(menuGeneradoDto);
 	}
 	
 	private List<MenuDetalleDto> generarDetalleMenuDto(Date fechaInicio, Date fechaFin, int idUsuario, List<PlatoDto> platosTotal) throws MfServiceMenuException {
@@ -143,5 +139,28 @@ public class MenuLogicaServiceImpl implements MenuLogicaService{
 		}
 		
 		return listaMenuDetalle;
+	}
+	
+	public MenuGeneradoDto consultarMenuActivo(Integer idPersona) throws MfServiceMenuException {
+		MenuGeneradoDto menuDto = null;
+		
+		List<MenuGeneradoDto> salidaCabecera = remoteServiceMenu.obtenerMenuGeneradoCabecera(idPersona);
+		
+		if (UtilMfDto.listaNoVacia(salidaCabecera)) {
+			if (salidaCabecera.size() > 1) {
+				menuDto = salidaCabecera.get(0);
+				
+				if (!UtilMfDto.listaNoVacia(menuDto.getListaPlatos())) {
+					List<MenuDetalleDto> listaDetalle = remoteServiceMenu.obtenerMenuGeneradoDetalle(Long.valueOf(menuDto.getIdGenerado()).intValue());
+					menuDto.setListaPlatos(listaDetalle);
+				}
+			}
+			else {
+				throw new MfServiceMenuException("Lista con mas de 1 Menu devuelto");
+			}
+		}
+		
+		
+		return menuDto;
 	}
 }

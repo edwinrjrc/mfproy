@@ -6,18 +6,16 @@ import java.util.List;
 
 import pe.com.rhsistemas.mf.cross.dto.MenuDetalleDto;
 import pe.com.rhsistemas.mf.cross.dto.MenuGeneradoDto;
+import pe.com.rhsistemas.mf.cross.util.UtilMfDto;
 import pe.com.rhsistemas.mfjpamenu.entity.MenuDetalle;
+import pe.com.rhsistemas.mfjpamenu.entity.MenuDetallePK;
 import pe.com.rhsistemas.mfjpamenu.entity.MenuGenerado;
 import pe.com.rhsistemas.mfjpamenu.entity.Persona;
-import pe.com.rhsistemas.mfjpamenu.entity.Plato;
 
 public class Utilmfjpa {
 
-	public Utilmfjpa() {
-		// TODO Auto-generated constructor stub
-	}
 	
-	public static MenuGenerado parsePlatoDto(MenuGeneradoDto dto) {
+	public static MenuGenerado parseMenuDto(MenuGeneradoDto dto) {
 		MenuGenerado entity = new MenuGenerado();
 		if (dto != null) {
 			entity.setFeGenerado(dto.getFechaGenerado());
@@ -32,15 +30,17 @@ public class Utilmfjpa {
 			MenuDetalle menuDetalle = null;
 			for (MenuDetalleDto detaDto : dto.getListaPlatos()) {
 				menuDetalle = new MenuDetalle();
-				menuDetalle.setFeConsumo(detaDto.getFechaConsumo());
+				MenuDetallePK menuDetalleId = new MenuDetallePK();
+				menuDetalleId.setFeConsumo(detaDto.getFechaConsumo());
+				menuDetalleId.setIdGenerado(entity.getIdGenerado());
+				menuDetalleId.setIdPlato(detaDto.getIdPlato());
+				
+				menuDetalle.setId(menuDetalleId);
 				menuDetalle.setFeModificacion(new Timestamp(System.currentTimeMillis()));
 				menuDetalle.setFeRegistro(new Timestamp(System.currentTimeMillis()));
 				menuDetalle.setIdUsuaCrea(detaDto.getIdUsuarioRegistro());
 				menuDetalle.setIdUsuaModi(detaDto.getIdUsuarioModificacion());
 				menuDetalle.setMenuGenerado(entity);
-				Plato plato = new Plato();
-				plato.setIdPlato(detaDto.getIdPlato());
-				menuDetalle.setPlato(plato);
 				menuDetalles.add(menuDetalle);
 			}
 			entity.setMenuDetalles(menuDetalles);
@@ -48,6 +48,53 @@ public class Utilmfjpa {
 		}
 		
 		return entity;
+	}
+	
+	public static MenuGeneradoDto parseMenuGenerado(MenuGenerado entity) {
+		MenuGeneradoDto dto = new MenuGeneradoDto();
+		
+		dto = new MenuGeneradoDto();
+		dto.setFechaGenerado(entity.getFeGenerado());
+		dto.setFechaModificacion(entity.getFeModificacion());
+		dto.setFechaRegistro(entity.getFeRegistro());
+		dto.setIdGenerado(entity.getIdGenerado());
+		dto.setIdPersona(entity.getPersona().getIdPersona().intValue());
+		dto.setIdUsuarioModificacion(entity.getIdUsuaModi());
+		dto.setIdUsuarioRegistro(entity.getIdUsuaModi());
+		dto.setNumeroDias(entity.getNuDias());
+		if (UtilMfDto.listaNoVacia(entity.getMenuDetalles())) {
+			List<MenuDetalleDto> menuDetalles = new ArrayList<>();
+			MenuDetalleDto menuDetalleDto = null;
+			for (MenuDetalle detaEntity : entity.getMenuDetalles()) {
+				menuDetalleDto = new MenuDetalleDto();
+				
+				menuDetalleDto.setFechaConsumo(detaEntity.getId().getFeConsumo());
+				menuDetalleDto.setFechaModificacion(detaEntity.getFeModificacion());
+				menuDetalleDto.setFechaRegistro(detaEntity.getFeRegistro());
+				menuDetalleDto.setIdPlato(detaEntity.getId().getIdPlato());
+				menuDetalleDto.setIdUsuarioModificacion(detaEntity.getIdUsuaModi());
+				menuDetalleDto.setIdUsuarioRegistro(detaEntity.getIdUsuaCrea());
+
+				menuDetalles.add(menuDetalleDto);
+			}
+			dto.setListaPlatos(menuDetalles);
+		}
+		entity.setNuDias(dto.getNumeroDias());
+		
+		return dto;
+	}
+	
+	public static MenuDetalleDto parseMenuDetalle(MenuDetalle entity) {
+		MenuDetalleDto dto = new MenuDetalleDto();
+		
+		dto.setFechaConsumo(entity.getId().getFeConsumo());
+		dto.setFechaModificacion(entity.getFeModificacion());
+		dto.setFechaRegistro(entity.getFeRegistro());
+		dto.setIdPlato(entity.getId().getIdPlato());
+		dto.setIdUsuarioModificacion(entity.getIdUsuaModi());
+		dto.setIdUsuarioRegistro(entity.getIdUsuaCrea());
+		
+		return dto;
 	}
 
 }

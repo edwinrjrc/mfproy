@@ -26,7 +26,7 @@ public class IngredienteController {
 	@Autowired
 	private IngredienteRepository ingredienteRepository;
 	
-    @PostMapping(value = "/registrarIngrediente")
+    @PostMapping(value = "/ingrediente")
 	public ResponseEntity<Map<String, Object>> registraIngrediente(@RequestBody IngredienteDto dto) {
     	ResponseEntity<Map<String, Object>> salida = null;
 		try {

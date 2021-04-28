@@ -26,4 +26,6 @@ public interface MenuRepository extends JpaRepository<MenuGenerado, Long> {
 	
 	@Query(value = "select M from MenuDetalle M where M.menuGenerado in (select G.idGenerado from MenuGenerado G where G.persona = ?1 and fe_generado >= ?2)")
 	List<MenuDetalle> ultimosMenusRango(Persona persona, Date fechaAnterior);
+	
+	List<MenuGenerado> findByUltimoMenu(Persona persona);
 }

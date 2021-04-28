@@ -84,7 +84,7 @@ public class RemoteServicePlato {
 		return listaPlatos;
 	}
 	
-	public List<PlatoDto> ultimosPlatosConsumidos(Integer idPersona, Date fechaCorte) throws MfServiceMenuException {
+	public List<PlatoDto> platosNoConsumidos(Integer idPersona, Date fechaCorte) throws MfServiceMenuException {
 		List<PlatoDto> listaPlatos = null;
 		try {
 			log.info("Recibiendo parametros");

@@ -28,6 +28,7 @@ import javax.persistence.TemporalType;
 @Entity
 @Table(name="menu_generado", schema = "sistema")
 @NamedQuery(name="MenuGenerado.findAll", query="SELECT m FROM MenuGenerado m")
+@NamedQuery(name="MenuGenerado.findByUltimoMenu", query="SELECT g FROM MenuGenerado g WHERE g.idGenerado = (SELECT MAX(m.idGenerado) FROM MenuGenerado m WHERE M.persona = ?1)")
 public class MenuGenerado implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -153,5 +154,4 @@ public class MenuGenerado implements Serializable {
 	public void setPersona(Persona persona) {
 		this.persona = persona;
 	}
-
 }

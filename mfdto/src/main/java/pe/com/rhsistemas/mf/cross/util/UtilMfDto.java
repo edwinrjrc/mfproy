@@ -6,6 +6,7 @@ package pe.com.rhsistemas.mf.cross.util;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -72,6 +73,13 @@ public class UtilMfDto {
 		}
 		SimpleDateFormat sdf = new SimpleDateFormat((StringUtils.isBlank(patron)?PATRON_SDF_DEFECTO:patron));
 		return sdf.format(fecha);
+	}
+	
+	public static boolean listaNoVacia(List<?> lista) {
+		
+		boolean resultado = (lista != null && !lista.isEmpty());
+		
+		return resultado;
 	}
 
 }
