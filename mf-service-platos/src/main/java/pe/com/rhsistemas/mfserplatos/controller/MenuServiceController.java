@@ -75,10 +75,11 @@ public class MenuServiceController {
 			UtilMfDto.pintaLog(idPersona, "idPersona");
 			
 			MenuGeneradoDto menuGenerado = menuLogicaService.consultarMenuActivo(idPersona);
-			Map<String, Object> mapeo = new HashMap<String, Object>();
+			Map<String, Object> mapeo = null;
 			
 			if (menuGenerado != null) {
 				estadoHttp = HttpStatus.FOUND;
+				mapeo = new HashMap<String, Object>();
 				mapeo.put(Constantes.VALOR_DATA_MAP, menuGenerado);
 			}
 			

@@ -1,11 +1,12 @@
 /**
  * 
  */
-package pe.com.rhsistemas.mfjpaplatos.dao;
+package pe.com.rhsistemas.mfjpaingrediente.dao;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import pe.com.rhsistemas.mfjpaplatos.entity.Ingrediente;
+import pe.com.rhsistemas.mfjpaingrediente.entity.Ingrediente;
+
 
 /**
  * @author Edwin

@@ -9,7 +9,12 @@ zuul:  routes:    serv-jpa-platos:
     serv-jpa-menu:
         path: //mf-jpa-menu/**/**
         serviceId: mf-jpa-menu
-
+    serv-jpa-ingrediente:
+        path: //mf-jpa-ingrediente/**/**
+        serviceId: mf-jpa-ingrediente
+    serv-jpa-receta:
+        path: //mf-jpa-receta/**/**
+        serviceId: mf-jpa-receta
  
 #Eureka Configuration Properties
 eureka: 

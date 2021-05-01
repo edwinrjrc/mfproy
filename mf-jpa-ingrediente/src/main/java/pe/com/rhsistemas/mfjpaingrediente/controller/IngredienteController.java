@@ -1,4 +1,7 @@
-package pe.com.rhsistemas.mfjpaplatos.controller;
+/**
+ * 
+ */
+package pe.com.rhsistemas.mfjpaingrediente.controller;
 
 import java.util.HashMap;
 import java.util.List;
@@ -20,14 +23,14 @@ import org.springframework.web.bind.annotation.RestController;
 import pe.com.rhsistemas.mf.cross.compartido.Constantes;
 import pe.com.rhsistemas.mf.cross.dto.IngredienteDto;
 import pe.com.rhsistemas.mf.cross.util.UtilMfDto;
-import pe.com.rhsistemas.mfjpaplatos.dao.IngredienteRepository;
-import pe.com.rhsistemas.mfjpaplatos.dao.PlatoIngredienteRepository;
-import pe.com.rhsistemas.mfjpaplatos.entity.Ingrediente;
-import pe.com.rhsistemas.mfjpaplatos.entity.PlatoIngrediente;
-import pe.com.rhsistemas.mfjpaplatos.util.Utilmfjpa;
+import pe.com.rhsistemas.mfjpaingrediente.dao.IngredienteRepository;
+import pe.com.rhsistemas.mfjpaingrediente.dao.PlatoIngredienteRepository;
+import pe.com.rhsistemas.mfjpaingrediente.entity.Ingrediente;
+import pe.com.rhsistemas.mfjpaingrediente.entity.PlatoIngrediente;
+import pe.com.rhsistemas.mfjpaingrediente.util.Utilmfjpa;
 
 @RestController
-@RequestMapping( value = "/mf-jpa-platos")
+@RequestMapping( value = "/IngredienteRJPAService")
 public class IngredienteController {
 
 	private static final Logger log = LoggerFactory.getLogger(IngredienteController.class);

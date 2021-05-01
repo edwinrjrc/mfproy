@@ -13,6 +13,7 @@ import pe.com.rhsistemas.mfjpamenu.entity.MenuDetalle;
 import pe.com.rhsistemas.mfjpamenu.entity.MenuGenerado;
 import pe.com.rhsistemas.mfjpamenu.entity.Persona;
 
+
 /**
  * @author Edwin
  *

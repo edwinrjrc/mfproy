@@ -49,9 +49,6 @@ public class RemoteServiceMenu {
 	@Autowired
 	private RestTemplate restTemplate;
 
-	public RemoteServiceMenu() {
-		// TODO Auto-generated constructor stub
-	}
 
 	public List<MenuDetalleDto> ultimoMenu(Integer idPersona) throws MfServiceMenuException {
 		List<MenuDetalleDto> listaMenus = null;
