@@ -20,4 +20,5 @@ public interface PlatoIngredienteRepository extends JpaRepository<PlatoIngredien
 
 	@Query(value = "Select pi from PlatoIngrediente pi where pi.id.idPlato = ?1")
 	public List<PlatoIngrediente> findAllByPlato(Integer idPlato);
+	
 }

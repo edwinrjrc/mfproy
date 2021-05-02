@@ -4,6 +4,7 @@
 package pe.com.rhsistemas.mfserviceingrediente.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -16,6 +17,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import pe.com.rhsistemas.mf.cross.compartido.Constantes;
+import pe.com.rhsistemas.mf.cross.dto.PlatoIngredienteDto;
 import pe.com.rhsistemas.mf.cross.util.UtilMfDto;
 import pe.com.rhsistemas.mfserviceingrediente.exception.MfServiceIngredienteException;
 import pe.com.rhsistemas.mfserviceingrediente.service.IngredienteLogicaService;
@@ -41,9 +44,12 @@ public class IngredienteServiceController {
 			log.info("Recibiendo parametros");
 			UtilMfDto.pintaLog(idPlato, "idPlato");
 			
-			ingredienteLogicaService.ingredientesPlato(idPlato);
-			
-			Map<String, Object> mapeo = new HashMap<>();
+			List<PlatoIngredienteDto> listaIngredientes = ingredienteLogicaService.ingredientesPlato(idPlato);
+			Map<String, Object> mapeo = null;
+			if (UtilMfDto.listaNoVacia(listaIngredientes)) {
+				mapeo = new HashMap<>();
+				mapeo.put(Constantes.VALOR_DATA_MAP, listaIngredientes);
+			}
 			
 			salida = new ResponseEntity<>(mapeo, estadoHttp);
 		} catch (MfServiceIngredienteException e) {
@@ -53,4 +59,5 @@ public class IngredienteServiceController {
 
 		return salida;
 	}
+	
 }

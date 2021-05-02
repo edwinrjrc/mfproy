@@ -7,7 +7,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,7 +28,6 @@ import com.fasterxml.jackson.core.JsonParser.Feature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import pe.com.rhsistemas.mf.cross.compartido.Constantes;
-import pe.com.rhsistemas.mf.cross.dto.MenuGeneradoDto;
 import pe.com.rhsistemas.mf.cross.dto.PlatoIngredienteDto;
 import pe.com.rhsistemas.mfserviceingrediente.exception.MfServiceIngredienteException;
 
@@ -42,7 +40,9 @@ public class RemoteServiceIngrediente {
 
 	private static final Logger log = LoggerFactory.getLogger(RemoteServiceIngrediente.class);
 
-	private static final String URL_SERVICE = "http://mf-jpa-ingrediente/IngredienteRJPAService/ingredientes";
+	private static final String URL_SERVICE_1 = "http://mf-jpa-ingrediente/IngredienteRJPAService/ingredientes";
+	
+	private static final String URL_SERVICE_2 = "http://mf-jpa-ingrediente/PlatoIngredienteRJPAService/ingredientes";
 
 	@Autowired
 	private RestTemplate restTemplate;
@@ -53,15 +53,9 @@ public class RemoteServiceIngrediente {
 		try {
 			HttpMethod metodoServicio = HttpMethod.GET;
 
-			HttpHeaders headers = new HttpHeaders();
-			headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-
-			Map<String, Object> map = new HashMap<>();
-			map.put("idPlato", idPlato);
-
-			HttpEntity<Map<String, Object>> requestEntity = new HttpEntity<Map<String, Object>>(map, headers);
+			HttpEntity<?> requestEntity = new HttpEntity<>(obtenerHeaders());
 			Class<Map> responseType = Map.class;
-			String url = URL_SERVICE + "/" + idPlato;
+			String url = URL_SERVICE_1 + "/" + idPlato;
 			ResponseEntity<Map> respuesta = restTemplate.exchange(obtenerUri(url), metodoServicio, requestEntity, responseType);
 
 			JsonFactory factory = new JsonFactory();
@@ -83,6 +77,22 @@ public class RemoteServiceIngrediente {
 		}
 		return listaSalida;
 	}
+	
+	public void registrarIngredientesPlato(List<PlatoIngredienteDto> listaIngredientes) throws MfServiceIngredienteException {
+		try {
+			HttpMethod metodoServicio = HttpMethod.POST;
+
+			HttpEntity<List<PlatoIngredienteDto>> requestEntity = new HttpEntity<List<PlatoIngredienteDto>>(listaIngredientes, obtenerHeaders());
+			
+			Class<Map> responseType = Map.class;
+			String url = URL_SERVICE_2;
+			ResponseEntity<Map> respuesta = restTemplate.exchange(obtenerUri(url), metodoServicio, requestEntity, responseType);
+
+		} catch (RestClientException e) {
+			log.error(e.getMessage(), e);
+			throw new MfServiceIngredienteException(e);
+		}
+	}
 
 	private URI obtenerUri(String cadenaUrl) throws MfServiceIngredienteException {
 		URI url = null;
@@ -94,5 +104,13 @@ public class RemoteServiceIngrediente {
 			throw new MfServiceIngredienteException(e);
 		}
 		return url;
+	}
+	
+	private HttpHeaders obtenerHeaders() {
+		HttpHeaders headers = new HttpHeaders();
+		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		
+		return headers;
 	}
 }

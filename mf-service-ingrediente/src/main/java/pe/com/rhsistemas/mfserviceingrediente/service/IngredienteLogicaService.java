@@ -15,4 +15,6 @@ import pe.com.rhsistemas.mfserviceingrediente.exception.MfServiceIngredienteExce
 public interface IngredienteLogicaService {
 
 	public List<PlatoIngredienteDto> ingredientesPlato(Integer idPlato) throws MfServiceIngredienteException;
+	
+	public void registrarIngredientesPlato(List<PlatoIngredienteDto> listaIngredientes) throws MfServiceIngredienteException;
 }

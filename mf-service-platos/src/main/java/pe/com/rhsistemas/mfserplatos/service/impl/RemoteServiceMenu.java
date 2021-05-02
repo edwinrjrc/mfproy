@@ -89,8 +89,6 @@ public class RemoteServiceMenu {
 	}
 
 	public List<MenuGeneradoDto> obtenerMenuGeneradoCabecera(Integer idPersona) throws MfServiceMenuException {
-		MenuGeneradoDto menuDto = null;
-
 		HttpMethod metodoServicio = HttpMethod.GET;
 
 		HttpHeaders headers = new HttpHeaders();
@@ -107,12 +105,12 @@ public class RemoteServiceMenu {
 		factory.enable(Feature.ALLOW_SINGLE_QUOTES);
 		ObjectMapper mapper = new ObjectMapper(factory);
 
-		List datosLista = (List) respuesta.getBody().get(Constantes.VALOR_DATA_MAP);
+		List<?> datosLista = (List<?>) respuesta.getBody().get(Constantes.VALOR_DATA_MAP);
 
 		List<MenuGeneradoDto> listaMenu = new ArrayList<>();
 
 		for (Object objeto : datosLista) {
-			LinkedHashMap map = (LinkedHashMap) objeto;
+			LinkedHashMap<?, ?> map = (LinkedHashMap<?, ?>) objeto;
 
 			listaMenu.add(mapper.convertValue(map, MenuGeneradoDto.class));
 		}

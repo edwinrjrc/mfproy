@@ -66,14 +66,13 @@ public class MenuLogicaServiceImpl implements MenuLogicaService{
 		int cantidadSemanas = 1;
 		
 		Date fechaHoy = new Date();
-		Calendar calendario = Calendar.getInstance();
-		calendario.setTime(fechaHoy);
+		cal.setTime(fechaHoy);
 		
-		Date fechaInicio = calendario.getTime();
+		Date fechaInicio = cal.getTime();
 		
-		calendario.add(Calendar.DATE, 7*cantidadSemanas - calendario.get(Calendar.DAY_OF_WEEK) );
+		cal.add(Calendar.DATE, 7*cantidadSemanas - cal.get(Calendar.DAY_OF_WEEK) );
 		
-		Date fechaFin = calendario.getTime();
+		Date fechaFin = cal.getTime();
 		
 		menuGeneradoDto.setFechaGenerado(fechaHoy);
 		menuGeneradoDto.setFechaRegistro(fechaHoy);
