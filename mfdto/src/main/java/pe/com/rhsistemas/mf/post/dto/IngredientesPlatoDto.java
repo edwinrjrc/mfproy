@@ -13,22 +13,8 @@ import pe.com.rhsistemas.mf.cross.dto.PlatoIngredienteDto;
  */
 public class IngredientesPlatoDto {
 
-	private int idPlato;
 	private List<PlatoIngredienteDto> ingredientes;
 	
-	
-	/**
-	 * @return the idPlato
-	 */
-	public int getIdPlato() {
-		return idPlato;
-	}
-	/**
-	 * @param idPlato the idPlato to set
-	 */
-	public void setIdPlato(int idPlato) {
-		this.idPlato = idPlato;
-	}
 	/**
 	 * @return the ingredientes
 	 */

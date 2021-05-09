@@ -15,11 +15,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import pe.com.rhsistemas.mf.cross.compartido.Constantes;
 import pe.com.rhsistemas.mf.cross.dto.PlatoIngredienteDto;
 import pe.com.rhsistemas.mf.cross.util.UtilMfDto;
+import pe.com.rhsistemas.mf.post.dto.IngredientesPlatoDto;
 import pe.com.rhsistemas.mfserviceingrediente.exception.MfServiceIngredienteException;
 import pe.com.rhsistemas.mfserviceingrediente.service.IngredienteLogicaService;
 
@@ -39,8 +42,9 @@ public class IngredienteServiceController {
 	@GetMapping(value = "/ingredientes/{idPlato}")
 	public ResponseEntity<Map<String, Object>> ingredientesPlato(@PathVariable Integer idPlato) {
 		ResponseEntity<Map<String, Object>> salida = null;
+		HttpStatus estadoHttp = null;
 		try {
-			HttpStatus estadoHttp = HttpStatus.NOT_FOUND;
+			estadoHttp = HttpStatus.NOT_FOUND;
 			log.info("Recibiendo parametros");
 			UtilMfDto.pintaLog(idPlato, "idPlato");
 			
@@ -49,14 +53,39 @@ public class IngredienteServiceController {
 			if (UtilMfDto.listaNoVacia(listaIngredientes)) {
 				mapeo = new HashMap<>();
 				mapeo.put(Constantes.VALOR_DATA_MAP, listaIngredientes);
+				estadoHttp = HttpStatus.FOUND;
 			}
 			
 			salida = new ResponseEntity<>(mapeo, estadoHttp);
 		} catch (MfServiceIngredienteException e) {
 			log.error(e.getMessage(), e);
-			salida = new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+			estadoHttp = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
+		
+		salida = new ResponseEntity<>(estadoHttp);
 
+		return salida;
+	}
+	
+	@PostMapping(value = "/ingredientes")
+	public ResponseEntity<Map<String, Object>> ingredientesPlato(@RequestBody IngredientesPlatoDto ingredientesPlatoDto) {
+		ResponseEntity<Map<String, Object>> salida = null;
+		HttpStatus estadoHttp = null;
+		
+		try {
+			log.info("Recibiendo parametros");
+			UtilMfDto.pintaLog(ingredientesPlatoDto, "ingredientesPlatoDto");
+			
+			ingredienteLogicaService.registrarIngredientesPlato(ingredientesPlatoDto.getIngredientes());
+			
+			estadoHttp = HttpStatus.CREATED;
+		} catch (MfServiceIngredienteException e) {
+			log.error(e.getMessage(), e);
+			estadoHttp = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		
+		salida = new ResponseEntity<>(estadoHttp);
+		
 		return salida;
 	}
 	

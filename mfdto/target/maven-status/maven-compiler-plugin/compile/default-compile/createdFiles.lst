@@ -17,4 +17,5 @@ pe\com\rhsistemas\mf\cross\dto\MenuGeneradoDto.class
 pe\com\rhsistemas\mf\post\dto\GenerarMenuDto.class
 pe\com\rhsistemas\mf\cross\dto\DocumentoIdentidadDto.class
 pe\com\rhsistemas\mf\cross\exception\UtilMfDtoException.class
+pe\com\rhsistemas\mf\post\dto\IngredientesPlatoDto.class
 pe\com\rhsistemas\mf\cross\util\UtilMfDto.class

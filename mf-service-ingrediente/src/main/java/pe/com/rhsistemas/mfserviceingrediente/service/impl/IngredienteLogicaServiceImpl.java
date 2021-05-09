@@ -44,8 +44,7 @@ public class IngredienteLogicaServiceImpl implements IngredienteLogicaService {
 	public void registrarIngredientesPlato(List<PlatoIngredienteDto> listaIngredientes)
 			throws MfServiceIngredienteException {
 		
-		
-		
+		remoteServiceIngrediente.registrarIngredientesPlato(listaIngredientes);
 		
 	}
 
