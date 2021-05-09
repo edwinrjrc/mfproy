@@ -1,7 +1,7 @@
 /**
  * 
  */
-package pe.com.rhsistemas.mfserplatos.service;
+package pe.com.rhsistemas.mfsermenu.service;
 
 import java.io.IOException;
 

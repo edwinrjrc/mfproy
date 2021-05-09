@@ -1,7 +1,7 @@
 /**
  * 
  */
-package pe.com.rhsistemas.mfserplatos.exception;
+package pe.com.rhsistemas.mfsermenu.exception;
 
 /**
  * @author Edwin

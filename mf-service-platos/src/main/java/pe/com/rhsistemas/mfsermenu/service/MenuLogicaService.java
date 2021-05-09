@@ -1,10 +1,10 @@
 /**
  * 
  */
-package pe.com.rhsistemas.mfserplatos.service;
+package pe.com.rhsistemas.mfsermenu.service;
 
 import pe.com.rhsistemas.mf.cross.dto.MenuGeneradoDto;
-import pe.com.rhsistemas.mfserplatos.exception.MfServiceMenuException;
+import pe.com.rhsistemas.mfsermenu.exception.MfServiceMenuException;
 
 /**
  * @author Edwin

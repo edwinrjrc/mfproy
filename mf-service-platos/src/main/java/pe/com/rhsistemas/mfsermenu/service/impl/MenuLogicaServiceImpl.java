@@ -1,4 +1,4 @@
-package pe.com.rhsistemas.mfserplatos.service.impl;
+package pe.com.rhsistemas.mfsermenu.service.impl;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -19,8 +19,8 @@ import pe.com.rhsistemas.mf.cross.dto.MenuDetalleDto;
 import pe.com.rhsistemas.mf.cross.dto.MenuGeneradoDto;
 import pe.com.rhsistemas.mf.cross.dto.PlatoDto;
 import pe.com.rhsistemas.mf.cross.util.UtilMfDto;
-import pe.com.rhsistemas.mfserplatos.exception.MfServiceMenuException;
-import pe.com.rhsistemas.mfserplatos.service.MenuLogicaService;
+import pe.com.rhsistemas.mfsermenu.exception.MfServiceMenuException;
+import pe.com.rhsistemas.mfsermenu.service.MenuLogicaService;
 
 
 /**

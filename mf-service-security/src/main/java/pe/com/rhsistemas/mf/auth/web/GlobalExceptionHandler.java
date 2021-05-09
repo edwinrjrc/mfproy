@@ -25,12 +25,12 @@ public class GlobalExceptionHandler {
     private MessageSource messageSource;
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ResponseEntity handleBindingErrors(HttpMessageNotReadableException ex) {
+    public ResponseEntity<?> handleBindingErrors(HttpMessageNotReadableException ex) {
         throw ex;
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity handleValidationErrors(MethodArgumentNotValidException ex) {
+    public ResponseEntity<List<ErrorMessage>> handleValidationErrors(MethodArgumentNotValidException ex) {
         List<ErrorMessage> errors = new ArrayList<>();
 
         for (Object object : ex.getBindingResult().getAllErrors()) {
@@ -47,6 +47,6 @@ public class GlobalExceptionHandler {
             errors.add(e);
         }
         System.out.println(errors.size());
-        return new ResponseEntity(errors, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<List<ErrorMessage>>(errors, HttpStatus.BAD_REQUEST);
     }
 }

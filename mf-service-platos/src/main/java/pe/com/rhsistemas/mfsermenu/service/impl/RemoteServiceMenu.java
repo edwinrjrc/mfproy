@@ -1,7 +1,7 @@
 /**
  * 
  */
-package pe.com.rhsistemas.mfserplatos.service.impl;
+package pe.com.rhsistemas.mfsermenu.service.impl;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -31,7 +31,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import pe.com.rhsistemas.mf.cross.compartido.Constantes;
 import pe.com.rhsistemas.mf.cross.dto.MenuDetalleDto;
 import pe.com.rhsistemas.mf.cross.dto.MenuGeneradoDto;
-import pe.com.rhsistemas.mfserplatos.exception.MfServiceMenuException;
+import pe.com.rhsistemas.mfsermenu.exception.MfServiceMenuException;
 
 /**
  * @author Edwin

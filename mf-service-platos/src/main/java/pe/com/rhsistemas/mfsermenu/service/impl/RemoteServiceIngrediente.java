@@ -1,7 +1,7 @@
 /**
  * 
  */
-package pe.com.rhsistemas.mfserplatos.service.impl;
+package pe.com.rhsistemas.mfsermenu.service.impl;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

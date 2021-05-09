@@ -10,9 +10,9 @@
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>pe.com.rhsistemas</groupId>
-	<artifactId>mfauth</artifactId>
+	<artifactId>mf-service-security</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>mfauth</name>
+	<name>mf-service-security</name>
 	<description>Servicio de Autenticacion del Proyecto MF</description>
 
 	<properties>

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package pe.com.rhsistemas.mfserplatos.controller;
+package pe.com.rhsistemas.mfsermenu.controller;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -23,8 +23,8 @@ import pe.com.rhsistemas.mf.cross.compartido.Constantes;
 import pe.com.rhsistemas.mf.cross.dto.MenuGeneradoDto;
 import pe.com.rhsistemas.mf.cross.util.UtilMfDto;
 import pe.com.rhsistemas.mf.post.dto.GenerarMenuDto;
-import pe.com.rhsistemas.mfserplatos.exception.MfServiceMenuException;
-import pe.com.rhsistemas.mfserplatos.service.MenuLogicaService;
+import pe.com.rhsistemas.mfsermenu.exception.MfServiceMenuException;
+import pe.com.rhsistemas.mfsermenu.service.MenuLogicaService;
 
 /**
  * @author Edwin

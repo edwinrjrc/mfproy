@@ -121,15 +121,10 @@ public class TokenHelper {
 
     public Boolean validateToken(String token, UserDetails userDetails) {
     	final String username = getUsernameFromToken(token);
-        final Date created = getIssuedAtDateFromToken(token);
         return (
                 username != null &&
                         username.equals(userDetails.getUsername())
         );
-    }
-
-    private Boolean isCreatedBeforeLastPasswordReset(Date created, Date lastPasswordReset) {
-        return (lastPasswordReset != null && created.before(lastPasswordReset));
     }
 
     public String getToken( HttpServletRequest request ) {
