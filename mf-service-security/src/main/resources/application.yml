@@ -1,6 +1,6 @@
 spring:
   application:
-    name: mf-jpa-receta
+    name: mf-service-security
   datasource:
     url: jdbc:postgresql://localhost:5432/menufamilia
     username: postgres
@@ -10,14 +10,8 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
- 
-#Tomcat Embedded Server Configuration
-server: 
-  port: 24233
-
-
-#Eureka Configuration Properties  
-eureka: 
-  client:
-    serviceUrl:
-      defaultZone: http://localhost:8761/eureka
+    
+server:
+  port: 24234
+  servlet:
+    context-path: /mf-service-security

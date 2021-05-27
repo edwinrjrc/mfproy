@@ -29,17 +29,7 @@ public class Utilmfjpa {
 			List<MenuDetalle> menuDetalles = new ArrayList<>();
 			MenuDetalle menuDetalle = null;
 			for (MenuDetalleDto detaDto : dto.getListaPlatos()) {
-				menuDetalle = new MenuDetalle();
-				MenuDetallePK menuDetalleId = new MenuDetallePK();
-				menuDetalleId.setFeConsumo(detaDto.getFechaConsumo());
-				menuDetalleId.setIdGenerado(entity.getIdGenerado());
-				menuDetalleId.setIdPlato(detaDto.getIdPlato());
-				
-				menuDetalle.setId(menuDetalleId);
-				menuDetalle.setFeModificacion(new Timestamp(System.currentTimeMillis()));
-				menuDetalle.setFeRegistro(new Timestamp(System.currentTimeMillis()));
-				menuDetalle.setIdUsuaCrea(detaDto.getIdUsuarioRegistro());
-				menuDetalle.setIdUsuaModi(detaDto.getIdUsuarioModificacion());
+				menuDetalle = parseaMenuDetalleDto(detaDto);
 				menuDetalle.setMenuGenerado(entity);
 				menuDetalles.add(menuDetalle);
 			}
@@ -71,7 +61,7 @@ public class Utilmfjpa {
 				menuDetalleDto.setFechaConsumo(detaEntity.getId().getFeConsumo());
 				menuDetalleDto.setFechaModificacion(detaEntity.getFeModificacion());
 				menuDetalleDto.setFechaRegistro(detaEntity.getFeRegistro());
-				menuDetalleDto.setIdPlato(detaEntity.getId().getIdPlato());
+				menuDetalleDto.getPlatoDto().setId(detaEntity.getId().getIdPlato());
 				menuDetalleDto.setIdUsuarioModificacion(detaEntity.getIdUsuaModi());
 				menuDetalleDto.setIdUsuarioRegistro(detaEntity.getIdUsuaCrea());
 
@@ -90,11 +80,26 @@ public class Utilmfjpa {
 		dto.setFechaConsumo(entity.getId().getFeConsumo());
 		dto.setFechaModificacion(entity.getFeModificacion());
 		dto.setFechaRegistro(entity.getFeRegistro());
-		dto.setIdPlato(entity.getId().getIdPlato());
+		dto.getPlatoDto().setId(entity.getId().getIdPlato());
 		dto.setIdUsuarioModificacion(entity.getIdUsuaModi());
 		dto.setIdUsuarioRegistro(entity.getIdUsuaCrea());
 		
 		return dto;
+	}
+	
+	public static MenuDetalle parseaMenuDetalleDto(MenuDetalleDto detaDto) {
+		MenuDetalle menuDetalle = new MenuDetalle();
+		MenuDetallePK menuDetalleId = new MenuDetallePK();
+		menuDetalleId.setFeConsumo(detaDto.getFechaConsumo());
+		menuDetalleId.setIdPlato(detaDto.getPlatoDto().getId());
+		
+		menuDetalle.setId(menuDetalleId);
+		menuDetalle.setFeModificacion(new Timestamp(System.currentTimeMillis()));
+		menuDetalle.setFeRegistro(new Timestamp(System.currentTimeMillis()));
+		menuDetalle.setIdUsuaCrea(detaDto.getIdUsuarioRegistro());
+		menuDetalle.setIdUsuaModi(detaDto.getIdUsuarioModificacion());
+		
+		return menuDetalle;
 	}
 
 }

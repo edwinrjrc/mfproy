@@ -6,7 +6,7 @@ package pe.com.rhsistemas.mf.post.dto;
 /**
  * @author Edwin
  *
- */
+ */ 	
 public class GenerarMenuDto {
 
 	private String idUsuario;

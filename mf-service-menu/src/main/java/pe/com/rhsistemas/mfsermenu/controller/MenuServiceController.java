@@ -10,8 +10,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,7 +31,7 @@ import pe.com.rhsistemas.mfsermenu.service.MenuLogicaService;
  *
  */
 @RestController
-@RequestMapping(value = "/menuService")
+@RequestMapping(value = "/menuservice")
 public class MenuServiceController {
 
 	private static final Logger log = LoggerFactory.getLogger(MenuServiceController.class);
@@ -39,11 +39,12 @@ public class MenuServiceController {
 	@Autowired
 	private MenuLogicaService menuLogicaService;
 
-	@PostMapping(value = "/menuGenerado", consumes = { MediaType.APPLICATION_JSON_VALUE,
-			MediaType.APPLICATION_XML_VALUE }, produces = { MediaType.APPLICATION_JSON_VALUE,
-					MediaType.APPLICATION_XML_VALUE })
-	public ResponseEntity<Map<String, Object>> generarMenu(@RequestBody(required = true) GenerarMenuDto param) {
+	@CrossOrigin(origins = "http://localhost:4200")
+	@PostMapping(value = "/menugenerado")
+	public ResponseEntity<Map<String, Object>> generarMenu(@RequestBody GenerarMenuDto param) {
 		ResponseEntity<Map<String, Object>> salida = null;
+		Map<String, Object> mapeo = null;
+		HttpStatus status = null;
 
 		try {
 			log.info("Recibiendo parametros");
@@ -54,40 +55,63 @@ public class MenuServiceController {
 
 			menuLogicaService.generarMenu(idPersona, idUsuario);
 
-			salida = new ResponseEntity<>(HttpStatus.CREATED);
+			status = HttpStatus.CREATED;
+			mapeo = new HashMap<String, Object>();
+			mapeo.put("error", false);
+			mapeo.put("mensaje", "Generacion Correcta");
+
 		} catch (NumberFormatException e) {
 			log.error(e.getMessage(), e);
-			salida = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			status = HttpStatus.BAD_REQUEST;
+
+			mapeo = new HashMap<String, Object>();
+			mapeo.put("error", false);
+			mapeo.put("mensaje", "Operacion no completada");
+
 		} catch (MfServiceMenuException e) {
 			log.error(e.getMessage(), e);
-			salida = new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+
+			mapeo = new HashMap<String, Object>();
+			mapeo.put("error", false);
+			mapeo.put("mensaje", "Operacion no completada");
 		}
+		salida = new ResponseEntity<Map<String, Object>>(mapeo, status);
 
 		return salida;
 	}
 
+	@CrossOrigin(origins = "http://localhost:4200")
 	@GetMapping(value = "/menuGenerado/{idPersona}")
 	public ResponseEntity<Map<String, Object>> consultarMenu(@PathVariable Integer idPersona) {
 		ResponseEntity<Map<String, Object>> salida = null;
+		Map<String, Object> mapeo = null;
+		HttpStatus status = null;
 		try {
-			HttpStatus estadoHttp = HttpStatus.NOT_FOUND;
-			log.info("Recibiendo parametros");
+			status = HttpStatus.NO_CONTENT;
+			log.info("Recibiendo parametros consultarMenu");
 			UtilMfDto.pintaLog(idPersona, "idPersona");
-			
+
 			MenuGeneradoDto menuGenerado = menuLogicaService.consultarMenuActivo(idPersona);
-			Map<String, Object> mapeo = null;
-			
+
 			if (menuGenerado != null) {
-				estadoHttp = HttpStatus.FOUND;
+				status = HttpStatus.OK;
 				mapeo = new HashMap<String, Object>();
+				mapeo.put("error", false);
+				mapeo.put("mensaje", "Existo");
 				mapeo.put(Constantes.VALOR_DATA_MAP, menuGenerado);
 			}
-			
-			salida = new ResponseEntity<>(mapeo, estadoHttp);
+
 		} catch (MfServiceMenuException e) {
 			log.error(e.getMessage(), e);
-			salida = new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+
+			mapeo = new HashMap<String, Object>();
+			mapeo.put("error", true);
+			mapeo.put("mensaje", "Operacion no completada");
 		}
+
+		salida = new ResponseEntity<Map<String, Object>>(mapeo, status);
 
 		return salida;
 	}

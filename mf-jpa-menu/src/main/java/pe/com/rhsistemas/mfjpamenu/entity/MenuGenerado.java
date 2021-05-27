@@ -58,7 +58,7 @@ public class MenuGenerado implements Serializable {
 	private Integer nuDias;
 
 	//bi-directional many-to-one association to MenuDetalle
-	@OneToMany(mappedBy="menuGenerado", cascade = {CascadeType.PERSIST})
+	@OneToMany(mappedBy="menuGenerado", cascade = {CascadeType.MERGE})
 	private List<MenuDetalle> menuDetalles;
 
 	//bi-directional many-to-one association to Persona

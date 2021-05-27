@@ -26,6 +26,7 @@ import pe.com.rhsistemas.mf.cross.compartido.Constantes;
 import pe.com.rhsistemas.mf.cross.dto.MenuDetalleDto;
 import pe.com.rhsistemas.mf.cross.dto.MenuGeneradoDto;
 import pe.com.rhsistemas.mf.cross.util.UtilMfDto;
+import pe.com.rhsistemas.mfjpamenu.dao.MenuDetalleRepository;
 import pe.com.rhsistemas.mfjpamenu.dao.MenuRepository;
 import pe.com.rhsistemas.mfjpamenu.entity.MenuDetalle;
 import pe.com.rhsistemas.mfjpamenu.entity.MenuGenerado;
@@ -45,6 +46,9 @@ public class MenuController {
 	@Autowired
 	private MenuRepository menuRepository;
 	
+	@Autowired
+	private MenuDetalleRepository menuDetalleRepository;
+	
 	@GetMapping(value = "/ultimoMenu")
 	public ResponseEntity<Map<String, Object>> consultarUltimoMenu(@RequestParam(name = "idPersona", required = true) Integer idPersona, @RequestParam(name = "fechaRango", required = true) Date fechaRango) {
 		ResponseEntity<Map<String, Object>> salida = null;
@@ -59,7 +63,7 @@ public class MenuController {
 			for (MenuDetalle menuDetalle : listaMenus) {
 				menuDetalleDto = new MenuDetalleDto();
 				menuDetalleDto.setFechaConsumo(menuDetalle.getId().getFeConsumo());
-				menuDetalleDto.setIdPlato(menuDetalle.getId().getIdPlato());
+				menuDetalleDto.getPlatoDto().setId(menuDetalle.getId().getIdPlato());
 				menuDetalleDto.setFechaRegistro(menuDetalle.getFeRegistro());
 				menuDetalleDto.setIdUsuarioRegistro(menuDetalle.getIdUsuaCrea());
 				listaMenuDto.add(menuDetalleDto);
@@ -83,7 +87,20 @@ public class MenuController {
 		UtilMfDto.pintaLog(menuGeneradoDto,"menuGeneradoDto");
 		
 		MenuGenerado menuEntity = Utilmfjpa.parseMenuDto(menuGeneradoDto);
-		menuRepository.saveAndFlush(menuEntity);
+		MenuGenerado resp = menuRepository.saveAndFlush(menuEntity);
+		
+		List<MenuDetalle> listaMenuDetalle = new ArrayList<>();
+		MenuDetalle entityDetalle = null;
+		for(MenuDetalleDto dto : menuGeneradoDto.getListaPlatos()) {
+			entityDetalle = Utilmfjpa.parseaMenuDetalleDto(dto);
+			entityDetalle.getId().setIdGenerado(resp.getIdGenerado());
+			entityDetalle.setMenuGenerado(resp);
+			
+			listaMenuDetalle.add(entityDetalle);
+		}
+		
+		menuDetalleRepository.saveAll(listaMenuDetalle);
+		
 		salida = new ResponseEntity<>(HttpStatus.OK);
 		
 		return salida;
@@ -102,8 +119,17 @@ public class MenuController {
 		List<MenuGeneradoDto> listaMenuDto = new ArrayList<MenuGeneradoDto>();
 		
 		List<MenuGenerado> ultimoMenu = menuRepository.findByUltimoMenu(persona);
+		List<MenuDetalleDto> listaDetalle = null;
 		for (MenuGenerado menuGenerado : ultimoMenu) {
-			listaMenuDto.add(Utilmfjpa.parseMenuGenerado(menuGenerado));
+			MenuGeneradoDto menuGeneradoDto = Utilmfjpa.parseMenuGenerado(menuGenerado);
+			
+			List<MenuDetalle> listaMenuDetalle = menuDetalleRepository.findByMenuGenerado(menuGenerado);
+			listaDetalle = new ArrayList<>();
+			for (MenuDetalle menuDetalle : listaMenuDetalle) {
+				listaDetalle.add(Utilmfjpa.parseMenuDetalle(menuDetalle));
+			}
+			
+			listaMenuDto.add(menuGeneradoDto);
 		}
 		
 		Map<String, Object> mapeo = new HashMap<String, Object>();

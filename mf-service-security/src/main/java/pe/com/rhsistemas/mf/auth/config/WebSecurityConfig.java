@@ -86,8 +86,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
     	String queryUsuario = "select tx_login,tx_password,(in_estado='A') as in_estado from sistema.usuarios where tx_login = ?";
-    	String query2 = "select t2.tx_login, t3.nombre from sistema.usuarios_roles t1, sistema.usuarios t2, sistema.roles t3"
-    			      + " where t1.usuarios_id_persona = t2.id_persona and t1.roles_id = t3.id and t2.tx_login = ?";
+    	String query2 = "select t2.tx_login, t3.nombre "
+    			      + "  from sistema.usuarios_roles t1, sistema.usuarios t2, sistema.roles t3"
+    			      + " where t1.id_persona = t2.id_persona"
+    			      + "   and t1.id_rol = t3.id_rol"
+    			      + "   and t2.tx_login = ?";
 		JdbcUserDetailsManagerConfigurer<AuthenticationManagerBuilder> jdbcAuth = auth.jdbcAuthentication().dataSource(dataSource);
 		jdbcAuth.usersByUsernameQuery(queryUsuario).authoritiesByUsernameQuery(query2);
 		

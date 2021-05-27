@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: mf-service-ingrediente
+ 
+#Tomcat Embedded Server Configuration
+server: 
+  port: 24235
+  
+  servlet:
+    context-path: /mf-service-ingrediente
+ 
+#Eureka Configuration Properties  
+eureka: 
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka

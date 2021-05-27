@@ -1,4 +1,4 @@
-package pe.com.rhsistemas.mfserplatos;
+package pe.com.rhsistemas.mfsermenu;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

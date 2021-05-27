@@ -44,7 +44,7 @@ public class RemoteServiceMenu {
 
 	private static final String URL_SERVICE = "http://mf-jpa-menu/MenuRJPAService/menuGenerado";
 
-	private static final String URL_SERVICE_2 = "http://mf-jpa-menu/MenuRJPAService/menuDetalle";
+	private static final String URL_SERVICE_2 = "http://mf-jpa-menu/MenuDetalleRJPAService/menuDetalle";
 
 	@Autowired
 	private RestTemplate restTemplate;
@@ -98,8 +98,7 @@ public class RemoteServiceMenu {
 		Class<Map> responseType = Map.class;
 		String url = URL_SERVICE + "/" + idPersona;
 
-		ResponseEntity<Map> respuesta = restTemplate.exchange(obtenerUri(url), metodoServicio, requestEntity,
-				responseType);
+		ResponseEntity<Map> respuesta = restTemplate.exchange(obtenerUri(url), metodoServicio, requestEntity, responseType);
 
 		JsonFactory factory = new JsonFactory();
 		factory.enable(Feature.ALLOW_SINGLE_QUOTES);
@@ -111,7 +110,6 @@ public class RemoteServiceMenu {
 
 		for (Object objeto : datosLista) {
 			LinkedHashMap<?, ?> map = (LinkedHashMap<?, ?>) objeto;
-
 			listaMenu.add(mapper.convertValue(map, MenuGeneradoDto.class));
 		}
 
@@ -119,8 +117,6 @@ public class RemoteServiceMenu {
 	}
 
 	public List<MenuDetalleDto> obtenerMenuGeneradoDetalle(Integer idMenuGenerado) throws MfServiceMenuException {
-		MenuDetalleDto detalleDto = null;
-
 		HttpMethod metodoServicio = HttpMethod.GET;
 
 		HttpHeaders headers = new HttpHeaders();
@@ -130,8 +126,7 @@ public class RemoteServiceMenu {
 		Class<Map> responseType = Map.class;
 		String url = URL_SERVICE_2 + "/" + idMenuGenerado;
 
-		ResponseEntity<Map> respuesta = restTemplate.exchange(obtenerUri(url), metodoServicio, requestEntity,
-				responseType);
+		ResponseEntity<Map> respuesta = restTemplate.exchange(obtenerUri(url), metodoServicio, requestEntity, responseType);
 
 		JsonFactory factory = new JsonFactory();
 		factory.enable(Feature.ALLOW_SINGLE_QUOTES);
@@ -143,7 +138,6 @@ public class RemoteServiceMenu {
 
 		for (Object objeto : datosLista) {
 			LinkedHashMap map = (LinkedHashMap) objeto;
-
 			listaMenuDetalle.add(mapper.convertValue(map, MenuDetalleDto.class));
 		}
 

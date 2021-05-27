@@ -55,12 +55,12 @@ public class PlatoControllerTest {
 		// TODO Auto-generated constructor stub
 	}
 	
-	@Test
+	//@Test
 	public void consultarPlatos() throws UnsupportedEncodingException, Exception {
 		apiRootPath = "/PlatoRJPAService";
 
 		String resultado = mockMvc.perform(
-				MockMvcRequestBuilders.get(apiRootPath + "/consultarPlatos").contentType(MediaType.APPLICATION_JSON))
+				MockMvcRequestBuilders.get(apiRootPath + "/platos").contentType(MediaType.APPLICATION_JSON))
 				.andExpect(MockMvcResultMatchers.status().is(HttpStatus.OK.value())).andReturn().getResponse().getContentAsString();
 	}
 	
@@ -69,7 +69,7 @@ public class PlatoControllerTest {
 		apiRootPath = "/PlatoRJPAService";
 
 		String resultado = mockMvc.perform(
-				MockMvcRequestBuilders.get(apiRootPath + "/consultarPlatos").contentType(MediaType.APPLICATION_JSON)).andReturn().getResponse().getContentAsString();
+				MockMvcRequestBuilders.get(apiRootPath + "/platos").contentType(MediaType.APPLICATION_JSON)).andReturn().getResponse().getContentAsString();
 		
 		Gson g = new Gson();
 		Map m = g.fromJson(resultado, Map.class);

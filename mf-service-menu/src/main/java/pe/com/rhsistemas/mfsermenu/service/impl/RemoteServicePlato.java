@@ -44,7 +44,7 @@ public class RemoteServicePlato {
 
 	private static final Logger log = LoggerFactory.getLogger(RemoteServicePlato.class);
 
-	private static final String URL_SERVICE_1 = "http://mf-jpa-platos/PlatoRJPAService/consultarPlatos";
+	private static final String URL_SERVICE_1 = "http://mf-jpa-platos/PlatoRJPAService/platos";
 	
 	private static final String URL_SERVICE_2 = "http://mf-jpa-platos/PlatoRJPAService/platosNoConsumidos";
 	
@@ -82,6 +82,16 @@ public class RemoteServicePlato {
 			throw new MfServiceMenuException(e);
 		}
 		return listaPlatos;
+	}
+	
+	public Map<Integer,PlatoDto> consultarPlatosMap() throws MfServiceMenuException {
+		Map<Integer,PlatoDto> mapeoPlatos = new HashMap<Integer,PlatoDto>();
+		List<PlatoDto> listaPlatos = consultarPlatos();
+		for (PlatoDto platoDto : listaPlatos) {
+			mapeoPlatos.put(platoDto.getId(), platoDto);
+		}
+		
+		return mapeoPlatos;
 	}
 	
 	public List<PlatoDto> platosNoConsumidos(Integer idPersona, Date fechaCorte) throws MfServiceMenuException {
