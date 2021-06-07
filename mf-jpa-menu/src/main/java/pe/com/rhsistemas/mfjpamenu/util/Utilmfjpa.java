@@ -18,7 +18,7 @@ public class Utilmfjpa {
 	public static MenuGenerado parseMenuDto(MenuGeneradoDto dto) {
 		MenuGenerado entity = new MenuGenerado();
 		if (dto != null) {
-			entity.setFeGenerado(dto.getFechaGenerado());
+			entity.setFeGenerado(UtilMfDto.parseDateASqlTimestamp(dto.getFechaGenerado()));
 			entity.setFeModificacion(new Timestamp(System.currentTimeMillis()));
 			entity.setFeRegistro(new Timestamp(System.currentTimeMillis()));
 			entity.setIdUsuaCrea(dto.getIdUsuarioRegistro());
@@ -90,7 +90,7 @@ public class Utilmfjpa {
 	public static MenuDetalle parseaMenuDetalleDto(MenuDetalleDto detaDto) {
 		MenuDetalle menuDetalle = new MenuDetalle();
 		MenuDetallePK menuDetalleId = new MenuDetallePK();
-		menuDetalleId.setFeConsumo(detaDto.getFechaConsumo());
+		menuDetalleId.setFeConsumo(UtilMfDto.parseDateASqlTimestamp(detaDto.getFechaConsumo()));
 		menuDetalleId.setIdPlato(detaDto.getPlatoDto().getId());
 		
 		menuDetalle.setId(menuDetalleId);

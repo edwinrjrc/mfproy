@@ -1,6 +1,8 @@
 package pe.com.rhsistemas.mfjpamenu.entity;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
+
 import javax.persistence.*;
 
 /**
@@ -12,9 +14,8 @@ public class MenuDetallePK implements Serializable {
 	//default serial version id, required for serializable classes.
 	private static final long serialVersionUID = 1L;
 
-	@Temporal(TemporalType.DATE)
 	@Column(name="fe_consumo", unique=true, nullable=false)
-	private java.util.Date feConsumo;
+	private Timestamp feConsumo;
 
 	@Column(name="id_plato", unique=true, nullable=false)
 	private Integer idPlato;
@@ -24,10 +25,10 @@ public class MenuDetallePK implements Serializable {
 
 	public MenuDetallePK() {
 	}
-	public java.util.Date getFeConsumo() {
+	public Timestamp getFeConsumo() {
 		return this.feConsumo;
 	}
-	public void setFeConsumo(java.util.Date feConsumo) {
+	public void setFeConsumo(Timestamp feConsumo) {
 		this.feConsumo = feConsumo;
 	}
 	public Integer getIdPlato() {

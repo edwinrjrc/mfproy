@@ -3,6 +3,7 @@
  */
 package pe.com.rhsistemas.mf.cross.util;
 
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -60,6 +61,7 @@ public class UtilMfDto {
 			if (StringUtils.isBlank(cadenaFecha)) {
 				throw new UtilMfDtoException("La fecha a convertir esta en blanco o es nula");
 			}
+			log.info(patron);
 			SimpleDateFormat sdf = new SimpleDateFormat((StringUtils.isBlank(patron)?PATRON_SDF_DEFECTO:patron));
 			return sdf.parse(cadenaFecha);
 		} catch (ParseException e) {
@@ -73,6 +75,12 @@ public class UtilMfDto {
 		}
 		SimpleDateFormat sdf = new SimpleDateFormat((StringUtils.isBlank(patron)?PATRON_SDF_DEFECTO:patron));
 		return sdf.format(fecha);
+	}
+	
+	public static Timestamp parseDateASqlTimestamp(Date fecha) {
+		Timestamp t = new Timestamp(fecha.getTime());
+		
+		return t;
 	}
 	
 	public static boolean listaNoVacia(List<?> lista) {

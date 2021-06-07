@@ -3,7 +3,10 @@
  */
 package pe.com.rhsistemas.mfsermenu.service;
 
-import pe.com.rhsistemas.mf.cross.dto.MenuGeneradoDto;
+import java.util.List;
+import java.util.Map;
+
+import pe.com.rhsistemas.mf.cross.exception.UtilMfDtoException;
 import pe.com.rhsistemas.mfsermenu.exception.MfServiceMenuException;
 
 /**
@@ -12,7 +15,7 @@ import pe.com.rhsistemas.mfsermenu.exception.MfServiceMenuException;
  */
 public interface MenuLogicaService {
 
-	public void generarMenu(Integer idPersona, Integer idUsuario) throws MfServiceMenuException;
+	public void generarMenu(Integer idPersona, Integer idUsuario) throws MfServiceMenuException, UtilMfDtoException;
 	
-	public MenuGeneradoDto consultarMenuActivo(Integer idPersona) throws MfServiceMenuException;
+	public List<Map<String, Object>> consultarMenuActivo(Integer idPersona) throws MfServiceMenuException;
 }

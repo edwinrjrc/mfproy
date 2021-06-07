@@ -128,6 +128,7 @@ public class MenuController {
 			for (MenuDetalle menuDetalle : listaMenuDetalle) {
 				listaDetalle.add(Utilmfjpa.parseMenuDetalle(menuDetalle));
 			}
+			menuGeneradoDto.setListaPlatos(listaDetalle);
 			
 			listaMenuDto.add(menuGeneradoDto);
 		}

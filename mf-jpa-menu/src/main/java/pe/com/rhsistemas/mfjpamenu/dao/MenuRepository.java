@@ -29,4 +29,6 @@ public interface MenuRepository extends JpaRepository<MenuGenerado, Long> {
 	List<MenuDetalle> ultimosMenusRango(Persona persona, Date fechaAnterior);
 	
 	List<MenuGenerado> findByUltimoMenu(Persona persona);
+	
+	List<MenuGenerado> findByFechaGenerado(Date fechaGenerado);
 }

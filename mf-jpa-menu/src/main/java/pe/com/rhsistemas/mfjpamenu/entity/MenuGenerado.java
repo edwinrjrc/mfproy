@@ -29,18 +29,19 @@ import javax.persistence.TemporalType;
 @Table(name="menu_generado", schema = "sistema")
 @NamedQuery(name="MenuGenerado.findAll", query="SELECT m FROM MenuGenerado m")
 @NamedQuery(name="MenuGenerado.findByUltimoMenu", query="SELECT g FROM MenuGenerado g WHERE g.idGenerado = (SELECT MAX(m.idGenerado) FROM MenuGenerado m WHERE m.persona = ?1)")
+@NamedQuery(name="MenuGenerado.findByFechaGenerado", query="SELECT g FROM MenuGenerado g WHERE g.feGenerado = ?1")
 public class MenuGenerado implements Serializable {
+	
 	private static final long serialVersionUID = 1L;
-
+	
 	@Id
 	@SequenceGenerator(name="MENU_GENERADO_IDGENERADO_GENERATOR", sequenceName="SEQ_MENU", schema = "sistema", allocationSize = 1, initialValue = 1)
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="MENU_GENERADO_IDGENERADO_GENERATOR")
 	@Column(name="id_generado", unique=true, nullable=false)
 	private Long idGenerado;
 
-	@Temporal(TemporalType.DATE)
 	@Column(name="fe_generado")
-	private Date feGenerado;
+	private Timestamp feGenerado;
 
 	@Column(name="fe_modificacion", nullable=false)
 	private Timestamp feModificacion;
@@ -77,11 +78,11 @@ public class MenuGenerado implements Serializable {
 		this.idGenerado = idGenerado;
 	}
 
-	public Date getFeGenerado() {
+	public Timestamp getFeGenerado() {
 		return this.feGenerado;
 	}
 
-	public void setFeGenerado(Date feGenerado) {
+	public void setFeGenerado(Timestamp feGenerado) {
 		this.feGenerado = feGenerado;
 	}
 

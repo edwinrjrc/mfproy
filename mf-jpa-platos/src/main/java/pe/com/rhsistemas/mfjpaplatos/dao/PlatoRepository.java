@@ -22,7 +22,7 @@ public interface PlatoRepository extends JpaRepository<Plato, Integer>{
 			"                          from sistema.menu_detalle d" + 
 			"			             where d.id_generado in (select m.id_generado" + 
 			"			                                      from sistema.menu_generado m" + 
-			"			                                     where m.id_persona = ?1 and m.fe_generado >= ?2))", nativeQuery = true)
-	List<Plato> platosNoConsumidos(Integer idPersona, Date fechaCorte);
+			"			                                     where m.id_persona = ?1 and m.fe_generado between ?2 and ?3))", nativeQuery = true)
+	List<Plato> platosNoConsumidos(Integer idPersona, Date fechaCorteDesde, Date fechaCordeHasta);
 	
 }

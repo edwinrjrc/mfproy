@@ -5,6 +5,7 @@ package pe.com.rhsistemas.mfsermenu.service.impl;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -50,8 +51,8 @@ public class RemoteServiceMenu {
 	private RestTemplate restTemplate;
 
 
-	public List<MenuDetalleDto> ultimoMenu(Integer idPersona) throws MfServiceMenuException {
-		List<MenuDetalleDto> listaMenus = null;
+	public List<MenuGeneradoDto> ultimoMenu(Integer idPersona) throws MfServiceMenuException {
+		List<MenuGeneradoDto> listaMenus = null;
 		try {
 			HttpMethod metodoServicio = HttpMethod.GET;
 
@@ -64,10 +65,25 @@ public class RemoteServiceMenu {
 			HttpEntity<Map<String, Object>> requestEntity = new HttpEntity<Map<String, Object>>(map, headers);
 			Class<Map> responseType = Map.class;
 			String url = URL_SERVICE + "/" + idPersona;
-			ResponseEntity<Map> respuesta = restTemplate.exchange(obtenerUri(url), metodoServicio, requestEntity,
-					responseType);
+			ResponseEntity<Map> respuesta = restTemplate.exchange(obtenerUri(url), metodoServicio, requestEntity, responseType);
 
-			listaMenus = (List<MenuDetalleDto>) respuesta.getBody().get(Constantes.VALOR_DATA_MAP);
+			List<?> datosLista = (List<?>) respuesta.getBody().get(Constantes.VALOR_DATA_MAP);
+			
+			SimpleDateFormat df = new SimpleDateFormat(Constantes.FORMAT_DATE_MAPPER);
+			
+			JsonFactory factory = new JsonFactory();
+			factory.enable(Feature.ALLOW_SINGLE_QUOTES);
+			
+			ObjectMapper mapper = new ObjectMapper(factory);
+			
+			mapper.setDateFormat(df);
+			
+			listaMenus = new ArrayList<>();
+			
+			for (Object objeto : datosLista) {
+				LinkedHashMap<?, ?> map2 = (LinkedHashMap<?, ?>) objeto;
+				listaMenus.add(mapper.convertValue(map2, MenuGeneradoDto.class));
+			}
 
 		} catch (RestClientException e) {
 			log.error(e.getMessage(), e);
@@ -78,9 +94,7 @@ public class RemoteServiceMenu {
 
 	public void grabarMenuGenerado(MenuGeneradoDto menuGeneradoDto) throws MfServiceMenuException {
 		try {
-			Class<Map> responseType = Map.class;
-
-			restTemplate.postForEntity(obtenerUri(URL_SERVICE), menuGeneradoDto, responseType);
+			restTemplate.postForEntity(obtenerUri(URL_SERVICE), menuGeneradoDto, Map.class);
 
 		} catch (RestClientException e) {
 			log.error(e.getMessage(), e);
@@ -100,9 +114,12 @@ public class RemoteServiceMenu {
 
 		ResponseEntity<Map> respuesta = restTemplate.exchange(obtenerUri(url), metodoServicio, requestEntity, responseType);
 
+		SimpleDateFormat df = new SimpleDateFormat(Constantes.FORMAT_DATE_MAPPER);
+		
 		JsonFactory factory = new JsonFactory();
 		factory.enable(Feature.ALLOW_SINGLE_QUOTES);
 		ObjectMapper mapper = new ObjectMapper(factory);
+		mapper.setDateFormat(df);
 
 		List<?> datosLista = (List<?>) respuesta.getBody().get(Constantes.VALOR_DATA_MAP);
 
@@ -127,12 +144,15 @@ public class RemoteServiceMenu {
 		String url = URL_SERVICE_2 + "/" + idMenuGenerado;
 
 		ResponseEntity<Map> respuesta = restTemplate.exchange(obtenerUri(url), metodoServicio, requestEntity, responseType);
+		
+		SimpleDateFormat df = new SimpleDateFormat(Constantes.FORMAT_DATE_MAPPER);
 
 		JsonFactory factory = new JsonFactory();
 		factory.enable(Feature.ALLOW_SINGLE_QUOTES);
 		ObjectMapper mapper = new ObjectMapper(factory);
+		mapper.setDateFormat(df);
 
-		List datosLista = (List) respuesta.getBody().get(Constantes.VALOR_DATA_MAP);
+		List<?> datosLista = (List) respuesta.getBody().get(Constantes.VALOR_DATA_MAP);
 
 		List<MenuDetalleDto> listaMenuDetalle = new ArrayList<>();
 

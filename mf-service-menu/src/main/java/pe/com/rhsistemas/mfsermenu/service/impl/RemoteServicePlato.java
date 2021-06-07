@@ -94,24 +94,27 @@ public class RemoteServicePlato {
 		return mapeoPlatos;
 	}
 	
-	public List<PlatoDto> platosNoConsumidos(Integer idPersona, Date fechaCorte) throws MfServiceMenuException {
+	public List<PlatoDto> platosNoConsumidos(Integer idPersona, Date fechaCorteDesde, Date fechaCorteHasta) throws MfServiceMenuException {
 		List<PlatoDto> listaPlatos = null;
 		try {
 			log.info("Recibiendo parametros");
 			UtilMfDto.pintaLog(idPersona, "idPersona");
-			UtilMfDto.pintaLog(fechaCorte, "fechaCorte");
+			UtilMfDto.pintaLog(fechaCorteDesde, "fechaCorteDesde");
+			UtilMfDto.pintaLog(fechaCorteHasta, "fechaCorteHasta");
 			HttpMethod metodoServicio = HttpMethod.GET;
 			
 			Map<String, String> params = new HashMap<String, String>();
 		    params.put("idPersona", idPersona.toString());
-		    params.put("fechaRango", UtilMfDto.parseDateAString(fechaCorte, ""));
+		    params.put("fechaCorteDesde", UtilMfDto.parseDateAString(fechaCorteDesde, ""));
+		    params.put("fechaCorteHasta", UtilMfDto.parseDateAString(fechaCorteHasta, ""));
 		    
 			HttpHeaders headers = new HttpHeaders();
 			headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
 			HttpEntity requestEntity = new HttpEntity<Map>(headers);
 			Class<Map> responseType = Map.class;
 			
-			String url = URL_SERVICE_2 + "?idPersona="+idPersona.toString()+"&fechaRango="+UtilMfDto.parseDateAString(fechaCorte, "");
+			String url = URL_SERVICE_2 + "?idPersona="+idPersona.toString()+"&fechaCorteDesde="+UtilMfDto.parseDateAString(fechaCorteDesde, "");
+			url = url + "&fechaCorteHasta="+UtilMfDto.parseDateAString(fechaCorteHasta, "");
 			
 			ResponseEntity<Map> respuesta = restTemplate.exchange(obtenerUri(url), metodoServicio, requestEntity, responseType);
 			

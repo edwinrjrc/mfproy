@@ -4,6 +4,7 @@
 package pe.com.rhsistemas.mfsermenu.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -20,7 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import pe.com.rhsistemas.mf.cross.compartido.Constantes;
-import pe.com.rhsistemas.mf.cross.dto.MenuGeneradoDto;
+import pe.com.rhsistemas.mf.cross.exception.UtilMfDtoException;
 import pe.com.rhsistemas.mf.cross.util.UtilMfDto;
 import pe.com.rhsistemas.mf.post.dto.GenerarMenuDto;
 import pe.com.rhsistemas.mfsermenu.exception.MfServiceMenuException;
@@ -75,6 +76,13 @@ public class MenuServiceController {
 			mapeo = new HashMap<String, Object>();
 			mapeo.put("error", false);
 			mapeo.put("mensaje", "Operacion no completada");
+		} catch (UtilMfDtoException e) {
+			log.error(e.getMessage(), e);
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+
+			mapeo = new HashMap<String, Object>();
+			mapeo.put("error", false);
+			mapeo.put("mensaje", "Operacion no completada");
 		}
 		salida = new ResponseEntity<Map<String, Object>>(mapeo, status);
 
@@ -92,14 +100,14 @@ public class MenuServiceController {
 			log.info("Recibiendo parametros consultarMenu");
 			UtilMfDto.pintaLog(idPersona, "idPersona");
 
-			MenuGeneradoDto menuGenerado = menuLogicaService.consultarMenuActivo(idPersona);
+			List<Map<String, Object>> menuSemanas = menuLogicaService.consultarMenuActivo(idPersona);
 
-			if (menuGenerado != null) {
+			if (UtilMfDto.listaNoVacia(menuSemanas)) {
 				status = HttpStatus.OK;
 				mapeo = new HashMap<String, Object>();
 				mapeo.put("error", false);
 				mapeo.put("mensaje", "Existo");
-				mapeo.put(Constantes.VALOR_DATA_MAP, menuGenerado);
+				mapeo.put(Constantes.VALOR_DATA_MAP, menuSemanas);
 			}
 
 		} catch (MfServiceMenuException e) {
