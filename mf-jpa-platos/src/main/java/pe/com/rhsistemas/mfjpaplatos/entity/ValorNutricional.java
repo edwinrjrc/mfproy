@@ -1,15 +1,8 @@
 package pe.com.rhsistemas.mfjpaplatos.entity;
 
 import java.io.Serializable;
+import javax.persistence.*;
 import java.sql.Timestamp;
-
-import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
 
 
 /**
@@ -17,7 +10,7 @@ import javax.persistence.Table;
  * 
  */
 @Entity
-@Table(name="valor_nutricional", schema = "sistema")
+@Table(name="valor_nutricional")
 @NamedQuery(name="ValorNutricional.findAll", query="SELECT v FROM ValorNutricional v")
 public class ValorNutricional implements Serializable {
 	private static final long serialVersionUID = 1L;

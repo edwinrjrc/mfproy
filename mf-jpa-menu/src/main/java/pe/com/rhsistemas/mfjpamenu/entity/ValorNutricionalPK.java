@@ -1,9 +1,7 @@
 package pe.com.rhsistemas.mfjpamenu.entity;
 
 import java.io.Serializable;
-
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
+import javax.persistence.*;
 
 /**
  * The primary key class for the valor_nutricional database table.

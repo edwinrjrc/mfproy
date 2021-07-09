@@ -1,6 +1,5 @@
 package pe.com.rhsistemas.mfjpaingrediente.entity;
 
-
 import java.io.Serializable;
 
 import javax.persistence.Column;

@@ -93,8 +93,7 @@ public class MenuController {
 		MenuDetalle entityDetalle = null;
 		for(MenuDetalleDto dto : menuGeneradoDto.getListaPlatos()) {
 			entityDetalle = Utilmfjpa.parseaMenuDetalleDto(dto);
-			entityDetalle.getId().setIdGenerado(resp.getIdGenerado());
-			entityDetalle.setMenuGenerado(resp);
+			entityDetalle.setIdGenerado(resp.getIdGenerado());
 			
 			listaMenuDetalle.add(entityDetalle);
 		}

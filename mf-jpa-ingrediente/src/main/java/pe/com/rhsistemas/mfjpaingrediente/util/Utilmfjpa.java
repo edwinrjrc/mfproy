@@ -7,7 +7,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.util.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import pe.com.rhsistemas.mf.cross.dto.BaseValor;
 import pe.com.rhsistemas.mf.cross.dto.IngredienteDto;
@@ -16,8 +16,8 @@ import pe.com.rhsistemas.mf.cross.dto.PersonaDto;
 import pe.com.rhsistemas.mf.cross.dto.PlatoDto;
 import pe.com.rhsistemas.mf.cross.dto.PlatoIngredienteDto;
 import pe.com.rhsistemas.mf.cross.dto.ValorNutricionalDto;
+import pe.com.rhsistemas.mf.cross.util.UtilMfDto;
 import pe.com.rhsistemas.mfjpaingrediente.entity.Ingrediente;
-import pe.com.rhsistemas.mfjpaingrediente.entity.Persona;
 import pe.com.rhsistemas.mfjpaingrediente.entity.Plato;
 import pe.com.rhsistemas.mfjpaingrediente.entity.PlatoIngrediente;
 import pe.com.rhsistemas.mfjpaingrediente.entity.PlatoIngredientePK;
@@ -25,6 +25,7 @@ import pe.com.rhsistemas.mfjpaingrediente.entity.Receta;
 import pe.com.rhsistemas.mfjpaingrediente.entity.RecetaPK;
 import pe.com.rhsistemas.mfjpaingrediente.entity.TipoCocina;
 import pe.com.rhsistemas.mfjpaingrediente.entity.TipoIngrediente;
+import pe.com.rhsistemas.mfjpaingrediente.entity.UnidadMedida;
 import pe.com.rhsistemas.mfjpaingrediente.entity.ValorNutricional;
 import pe.com.rhsistemas.mfjpaingrediente.entity.ValorNutricionalPK;
 
@@ -40,20 +41,15 @@ public class Utilmfjpa {
 			entity.setFeModificacion(new Timestamp(System.currentTimeMillis()));
 			entity.setFeRegistro(new Timestamp(System.currentTimeMillis()));
 			entity.setIdEstaPlat(dto.getIdEstado());
-			Persona persona = new Persona();
-			persona.setIdPersona(dto.getPersona().getId());
-			entity.setPersona(persona);
+			entity.setIdPersona(dto.getPersona().getId());
 			entity.setIdPlato(dto.getId());
-			entity.setIdTipoPlato(dto.getIdTipoPlato());
 			entity.setIdUsuaCrea(dto.getIdUsuarioRegistro());
 			entity.setIdUsuaModi(dto.getIdUsuarioModificacion());
 			entity.setInAcompaniamiento(dto.isAcompaniamiento()?"S":"N");
 			entity.setNoPlato(dto.getNombrePlato());
 			TipoCocina tipoCocina = new TipoCocina();
-			tipoCocina.setIdTipoCoci(Integer.parseInt(dto.getTipoCocina().getCodigo()));
+			tipoCocina.setIdTipoCoci(UtilMfDto.parseStringAInteger(dto.getTipoCocina().getCodigo()));
 			entity.setTipoCocina(tipoCocina);
-			entity.setPlatoIngredientes(parseListaPlatoIngrediente(dto.getIngredientes()));
-			entity.setRecetas(null);
 		}
 		
 		return entity;
@@ -65,19 +61,16 @@ public class Utilmfjpa {
 			dto.setAcompaniamiento("S".equalsIgnoreCase(entity.getInAcompaniamiento()));
 			dto.setFechaModificacion(entity.getFeModificacion());
 			dto.setFechaRegistro(entity.getFeRegistro());
-			dto.setId(parseaNullInt(entity.getIdPlato()));
-			dto.setIdEstado(parseaNullInt(entity.getIdEstaPlat()));
-			dto.setIdTipoPlato(parseaNullInt(entity.getIdTipoPlato()));
-			dto.setIdUsuarioModificacion(parseaNullInt(entity.getIdUsuaModi()));
-			dto.setIdUsuarioRegistro(parseaNullInt(entity.getIdUsuaCrea()));
+			dto.setId(UtilMfDto.parseaNullInt(entity.getIdPlato()));
+			dto.setIdEstado(UtilMfDto.parseaNullInt(entity.getIdEstaPlat()));
+			dto.setIdUsuarioModificacion(UtilMfDto.parseaNullInt(entity.getIdUsuaModi()));
+			dto.setIdUsuarioRegistro(UtilMfDto.parseaNullInt(entity.getIdUsuaCrea()));
 			dto.setNombrePlato(entity.getNoPlato());
 			PersonaDto persona = new PersonaDto();
-			persona.setId(parseaNullLong(entity.getPersona().getIdPersona()));
+			persona.setId(UtilMfDto.parseaNullLong(entity.getIdPersona()));
 			dto.setPersona(persona);
-			TipoCocina tipoCocina = entity.getTipoCocina();
 			BaseValor tipoCocinaV = new BaseValor();
-			tipoCocinaV.setCodigo(tipoCocina.getIdTipoCoci().toString());
-			tipoCocinaV.setNombre(tipoCocina.getDeTipoCoci());
+			tipoCocinaV.setCodigo(entity.getTipoCocina().getIdTipoCoci().toString());
 			dto.setTipoCocina(tipoCocinaV);
 		}
 		
@@ -147,16 +140,12 @@ public class Utilmfjpa {
 			entityPk.setIdIngrediente(dto.getIngrediente().getId());
 			entityPk.setIdPlato(dto.getIdPlato());
 			entity.setId(entityPk);
-			entity.setIdUnidMedi(Integer.valueOf(dto.getUnidadMedida().getCodigo()));
+			UnidadMedida unidadMedida = new UnidadMedida();
+			unidadMedida.setIdUnidMedi(UtilMfDto.parseStringAInteger(dto.getUnidadMedida().getCodigo()));
+			entity.setUnidadMedida(unidadMedida);
 			entity.setIdUsuaCrea(dto.getIdUsuarioRegistro());
 			entity.setIdUsuaModi(dto.getIdUsuarioModificacion());
-			Ingrediente ingrediente = new Ingrediente();
-			ingrediente.setIdIngrediente(dto.getIngrediente().getId());
-			entity.setIngrediente(ingrediente);
 			entity.setNuCantidad(Double.valueOf(dto.getCantidad()).floatValue());
-			Plato plato = new Plato();
-			plato.setIdPlato(dto.getIdPlato());
-			entity.setPlato(plato);
 			entity.setTiIngrediente(dto.getTipoIngrediente().getCodigo());
 		}
 		
@@ -193,7 +182,6 @@ public class Utilmfjpa {
 		entity.setNuMinuComp(dto.getTiempoMinutos());
 		Plato plato = new Plato();
 		plato.setIdPlato(dto.getIdPlato());
-		entity.setPlato(plato);
 		
 		return entity;
 	}
@@ -214,19 +202,4 @@ public class Utilmfjpa {
 		return entity;
 	}
 	
-	
-	public static int parseaNullInt(Integer valor) {
-		int dato = 0;
-		if (valor != null) {
-			dato = valor.intValue();
-		}
-		return dato;
-	}
-	public static long parseaNullLong(Long valor) {
-		long dato = 0;
-		if (valor != null) {
-			dato = valor.longValue();
-		}
-		return dato;
-	}
 }

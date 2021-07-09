@@ -61,6 +61,8 @@ public class PlatoControllerTest {
 		String resultado = mockMvc.perform(
 				MockMvcRequestBuilders.get(apiRootPath + "/platos").contentType(MediaType.APPLICATION_JSON))
 				.andExpect(MockMvcResultMatchers.status().is(HttpStatus.OK.value())).andReturn().getResponse().getContentAsString();
+		
+		logger.info(resultado);
 	}
 	
 	//@Test
@@ -71,9 +73,9 @@ public class PlatoControllerTest {
 				MockMvcRequestBuilders.get(apiRootPath + "/platos").contentType(MediaType.APPLICATION_JSON)).andReturn().getResponse().getContentAsString();
 		
 		Gson g = new Gson();
-		Map m = g.fromJson(resultado, Map.class);
+		Map<?, ?> m = g.fromJson(resultado, Map.class);
 		
-		List lista = (List) m.get(Constantes.VALOR_DATA_MAP);
+		List<?> lista = (List<?>) m.get(Constantes.VALOR_DATA_MAP);
 		
 		Assertions.assertThat(lista.size() > 0);
 	}

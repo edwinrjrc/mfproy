@@ -17,7 +17,7 @@ import javax.persistence.Table;
  * 
  */
 @Entity
-@Table(name="ubigeo", schema = "sistema")
+@Table(name="ubigeo")
 @NamedQuery(name="Ubigeo.findAll", query="SELECT u FROM Ubigeo u")
 public class Ubigeo implements Serializable {
 	private static final long serialVersionUID = 1L;

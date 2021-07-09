@@ -60,16 +60,19 @@ public class MenuLogicaServiceImpl implements MenuLogicaService {
 		Calendar cal = Calendar.getInstance();
 		cal.add(Calendar.MONTH, -3);
 		fechaCorte = cal.getTime();
-		
+
 		List<MenuGeneradoDto> menus = this.remoteServiceMenu.ultimoMenu(idPersona);
-		
-		log.info("lista menus ::"+menus.get(0).getFechaGenerado());
-		
+		MenuGeneradoDto ultimoMenuGenerado = null;
+		if (menus != null && !menus.isEmpty()) {
+			ultimoMenuGenerado = menus.get(0);
+		}
+
 		Date fechaHasta = new Date();
 		cal.setTime(fechaHasta);
 		cal.add(Calendar.DATE, -1);
 
-		List<PlatoDto> listaPlatosNoConsumidos = remoteServicePlato.platosNoConsumidos(idPersona, fechaCorte, cal.getTime());
+		List<PlatoDto> listaPlatosNoConsumidos = remoteServicePlato.platosNoConsumidos(idPersona, fechaCorte,
+				cal.getTime());
 
 		int cantidadSemanas = 1;
 
@@ -77,25 +80,25 @@ public class MenuLogicaServiceImpl implements MenuLogicaService {
 		cal.setTime(fechaHoy);
 
 		Date fechaInicio = null;
-		
+
 		if (cal.get(Calendar.DAY_OF_WEEK) > Calendar.SUNDAY && cal.get(Calendar.DAY_OF_WEEK) < Calendar.SATURDAY) {
-			fechaCorte = UtilMfDto.parseStringADate(UtilMfDto.parseDateAString(fechaHoy, "dd/MM/yyyy")+" 11:00:00 am", "dd/MM/yyyy HH:mm:ss aaa");
+			fechaCorte = UtilMfDto.parseStringADate(UtilMfDto.parseDateAString(fechaHoy, "dd/MM/yyyy") + " 11:00:00 am",
+					"dd/MM/yyyy HH:mm:ss aaa");
+			fechaInicio = cal.getTime();
 			if (fechaHoy.after(fechaCorte)) {
 				cal.add(Calendar.DATE, 1);
 				fechaInicio = cal.getTime();
 			}
-		}
-		else {
+		} else {
 			cal.setTime(fechaHoy);
 			if (cal.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
 				cal.add(Calendar.DATE, 1);
-			}
-			else if (cal.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY) {
+			} else if (cal.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY) {
 				cal.add(Calendar.DATE, 2);
 			}
 			fechaInicio = cal.getTime();
 		}
-		
+
 		fechaInicio = cal.getTime();
 
 		cal.add(Calendar.DATE, 7 * cantidadSemanas - cal.get(Calendar.DAY_OF_WEEK));
@@ -106,6 +109,17 @@ public class MenuLogicaServiceImpl implements MenuLogicaService {
 		menuGeneradoDto.setFechaRegistro(fechaHoy);
 		menuGeneradoDto.setFechaModificacion(fechaHoy);
 		menuGeneradoDto.setNumeroDias(7 * cantidadSemanas);
+		menuGeneradoDto.setFechaDesde(fechaInicio);
+		menuGeneradoDto.setFechaHasta(fechaFin);
+
+		if (ultimoMenuGenerado != null) {
+			if ((ultimoMenuGenerado.getFechaDesde().after(fechaInicio)
+					&& ultimoMenuGenerado.getFechaDesde().before(fechaFin))
+					|| (ultimoMenuGenerado.getFechaHasta().after(fechaInicio)
+							&& ultimoMenuGenerado.getFechaHasta().before(fechaFin))) {
+				menuGeneradoDto.setIdGenerado(ultimoMenuGenerado.getIdGenerado());
+			}
+		}
 
 		log.info("platosTotal::" + listaPlatosNoConsumidos.size());
 
@@ -121,23 +135,46 @@ public class MenuLogicaServiceImpl implements MenuLogicaService {
 
 		Date fechaHoy = new Date();
 
+		List<Integer> listaEscogidos = new ArrayList<>();
+		listaEscogidos.add(1);
+
 		Map<Integer, Integer> mapeoTipoPlato = new HashMap<Integer, Integer>();
 		mapeoTipoPlato.put(1, 0);
 		mapeoTipoPlato.put(2, 1);
-		mapeoTipoPlato.put(3, 2);
-		mapeoTipoPlato.put(4, 5);
-		mapeoTipoPlato.put(5, 6);
-		mapeoTipoPlato.put(6, 7);
-		mapeoTipoPlato.put(7, 5);
+
+		int a = aleatorioTipos(listaEscogidos);
+		listaEscogidos.add(a);
+
+		mapeoTipoPlato.put(3, a);
+
+		a = aleatorioTipos(listaEscogidos);
+		listaEscogidos.add(a);
+
+		mapeoTipoPlato.put(4, a);
+
+		a = aleatorioTipos(listaEscogidos);
+		listaEscogidos.add(a);
+
+		mapeoTipoPlato.put(5, a);
+
+		a = aleatorioTipos(listaEscogidos);
+		listaEscogidos.add(a);
+
+		mapeoTipoPlato.put(6, a);
+
+		a = aleatorioTipos(listaEscogidos);
+		listaEscogidos.add(a);
+
+		mapeoTipoPlato.put(7, a);
 
 		Calendar calendario = Calendar.getInstance();
 		Date fechaConsumo = fechaInicio;
 		MenuDetalleDto menuDetalleDto = null;
 		List<MenuDetalleDto> listaMenuDetalle = new ArrayList<>();
-		log.info("fecha inicio ::"+UtilMfDto.parseDateAString(fechaInicio, null));
-		log.info("fecha fin ::"+UtilMfDto.parseDateAString(fechaFin, null));
+		log.info("fecha inicio ::" + UtilMfDto.parseDateAString(fechaInicio, null));
+		log.info("fecha fin ::" + UtilMfDto.parseDateAString(fechaFin, null));
 		while (fechaConsumo.before(fechaFin) || fechaConsumo.equals(fechaFin)) {
-			log.info("fechaConsumo ::"+UtilMfDto.parseDateAString(fechaConsumo, null));
+			log.info("fechaConsumo ::" + UtilMfDto.parseDateAString(fechaConsumo, null));
 			calendario.setTime(fechaConsumo);
 
 			int diaSemana = calendario.get(Calendar.DAY_OF_WEEK);
@@ -146,7 +183,7 @@ public class MenuLogicaServiceImpl implements MenuLogicaService {
 				int idPlatoElegido = 0;
 				List<PlatoDto> platosTipoDia = new ArrayList<>();
 				for (PlatoDto platoDto : platosTotal) {
-					if (platoDto.getIdTipoPlato() == mapeoTipoPlato.get(diaSemana).intValue()) {
+					if (platoDto.getIdTipoPlato() != null && platoDto.getIdTipoPlato() == mapeoTipoPlato.get(diaSemana).intValue()) {
 						PlatoDto dto = new PlatoDto();
 						dto.setId(platoDto.getId());
 						platosTipoDia.add(dto);
@@ -176,14 +213,14 @@ public class MenuLogicaServiceImpl implements MenuLogicaService {
 		return listaMenuDetalle;
 	}
 
-	public List<Map<String,Object>> consultarMenuActivo(Integer idPersona) throws MfServiceMenuException {
+	public List<Map<String, Object>> consultarMenuActivo(Integer idPersona) throws MfServiceMenuException {
 		MenuGeneradoDto menuDto = null;
 
 		List<MenuGeneradoDto> salidaCabecera = remoteServiceMenu.obtenerMenuGeneradoCabecera(idPersona);
-		
+
 		Map<Integer, PlatoDto> mapPlatos = this.remoteServicePlato.consultarPlatosMap();
-		
-		Map<Integer,String> diaSemana = new HashMap<Integer,String>();
+
+		Map<Integer, String> diaSemana = new HashMap<Integer, String>();
 		diaSemana.put(Calendar.SUNDAY, "Domingo");
 		diaSemana.put(Calendar.MONDAY, "Lunes");
 		diaSemana.put(Calendar.TUESDAY, "Martes");
@@ -191,10 +228,10 @@ public class MenuLogicaServiceImpl implements MenuLogicaService {
 		diaSemana.put(Calendar.THURSDAY, "Jueves");
 		diaSemana.put(Calendar.FRIDAY, "Viernes");
 		diaSemana.put(Calendar.SATURDAY, "Sabado");
-		
+
 		Calendar c = Calendar.getInstance();
-		Map<String,Object> semanaMap = null;
-		List<Map<String,Object>> listaSemana = new ArrayList<>();
+		Map<String, Object> semanaMap = null;
+		List<Map<String, Object>> listaSemana = new ArrayList<>();
 		if (UtilMfDto.listaNoVacia(salidaCabecera)) {
 			if (salidaCabecera.size() > 0) {
 				menuDto = salidaCabecera.get(0);
@@ -202,18 +239,18 @@ public class MenuLogicaServiceImpl implements MenuLogicaService {
 				if (UtilMfDto.listaNoVacia(menuDto.getListaPlatos())) {
 					List<MenuDetalleDto> listaDetalle = remoteServiceMenu
 							.obtenerMenuGeneradoDetalle(Long.valueOf(menuDto.getIdGenerado()).intValue());
-					
+
 					for (MenuDetalleDto menuDetalleDto : listaDetalle) {
 						menuDetalleDto.setPlatoDto(mapPlatos.get(menuDetalleDto.getPlatoDto().getId()));
 						c.setTime(menuDetalleDto.getFechaConsumo());
 						menuDetalleDto.setNumSemana(c.get(Calendar.WEEK_OF_YEAR));
 						menuDetalleDto.setNombreDia(diaSemana.get(c.get(Calendar.DAY_OF_WEEK)));
 					}
-					
+
 					menuDto.setListaPlatos(listaDetalle);
 				}
-				
-				semanaMap = new HashMap<String,Object>();
+
+				semanaMap = new HashMap<String, Object>();
 				semanaMap.put("menuSemana", menuDto);
 				listaSemana.add(semanaMap);
 			} else {
@@ -222,5 +259,27 @@ public class MenuLogicaServiceImpl implements MenuLogicaService {
 		}
 
 		return listaSemana;
+	}
+
+	private Integer aleatorioTipos(List<Integer> listaEscogidos) {
+		List<Integer> tipoPlatos = new ArrayList<Integer>();
+		tipoPlatos.add(1);
+		tipoPlatos.add(2);
+		tipoPlatos.add(3);
+		tipoPlatos.add(4);
+		tipoPlatos.add(5);
+		tipoPlatos.add(6);
+		tipoPlatos.add(7);
+
+		for (Integer iplato2 : listaEscogidos) {
+			for (Integer iplato : tipoPlatos) {
+				if (iplato == iplato2) {
+					tipoPlatos.remove(iplato);
+					break;
+				}
+			}
+		}
+
+		return tipoPlatos.get(UtilMfDto.numeroEnteroAleatorio(1, tipoPlatos.size()) - 1);
 	}
 }

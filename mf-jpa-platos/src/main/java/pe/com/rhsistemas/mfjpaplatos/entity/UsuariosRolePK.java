@@ -1,9 +1,7 @@
 package pe.com.rhsistemas.mfjpaplatos.entity;
 
 import java.io.Serializable;
-
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
+import javax.persistence.*;
 
 /**
  * The primary key class for the usuarios_roles database table.
@@ -14,19 +12,19 @@ public class UsuariosRolePK implements Serializable {
 	//default serial version id, required for serializable classes.
 	private static final long serialVersionUID = 1L;
 
-	@Column(name="roles_id", insertable=false, updatable=false, unique=true, nullable=false)
-	private Integer rolesId;
+	@Column(name="roles_id_rol", insertable=false, updatable=false, unique=true, nullable=false)
+	private Integer rolesIdRol;
 
 	@Column(name="usuarios_id_persona", insertable=false, updatable=false, unique=true, nullable=false)
 	private Long usuariosIdPersona;
 
 	public UsuariosRolePK() {
 	}
-	public Integer getRolesId() {
-		return this.rolesId;
+	public Integer getRolesIdRol() {
+		return this.rolesIdRol;
 	}
-	public void setRolesId(Integer rolesId) {
-		this.rolesId = rolesId;
+	public void setRolesIdRol(Integer rolesIdRol) {
+		this.rolesIdRol = rolesIdRol;
 	}
 	public Long getUsuariosIdPersona() {
 		return this.usuariosIdPersona;
@@ -44,14 +42,14 @@ public class UsuariosRolePK implements Serializable {
 		}
 		UsuariosRolePK castOther = (UsuariosRolePK)other;
 		return 
-			this.rolesId.equals(castOther.rolesId)
+			this.rolesIdRol.equals(castOther.rolesIdRol)
 			&& this.usuariosIdPersona.equals(castOther.usuariosIdPersona);
 	}
 
 	public int hashCode() {
 		final int prime = 31;
 		int hash = 17;
-		hash = hash * prime + this.rolesId.hashCode();
+		hash = hash * prime + this.rolesIdRol.hashCode();
 		hash = hash * prime + this.usuariosIdPersona.hashCode();
 		
 		return hash;

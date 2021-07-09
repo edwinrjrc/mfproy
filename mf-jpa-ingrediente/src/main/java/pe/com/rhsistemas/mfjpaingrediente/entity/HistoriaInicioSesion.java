@@ -1,6 +1,5 @@
 package pe.com.rhsistemas.mfjpaingrediente.entity;
 
-
 import java.io.Serializable;
 import java.sql.Timestamp;
 
@@ -18,7 +17,7 @@ import javax.persistence.Table;
  * 
  */
 @Entity
-@Table(name="historia_inicio_sesion", schema = "sistema")
+@Table(name="historia_inicio_sesion")
 @NamedQuery(name="HistoriaInicioSesion.findAll", query="SELECT h FROM HistoriaInicioSesion h")
 public class HistoriaInicioSesion implements Serializable {
 	private static final long serialVersionUID = 1L;

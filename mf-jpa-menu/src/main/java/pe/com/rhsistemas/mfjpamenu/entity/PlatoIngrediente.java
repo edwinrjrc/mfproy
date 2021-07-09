@@ -1,14 +1,8 @@
 package pe.com.rhsistemas.mfjpamenu.entity;
 
 import java.io.Serializable;
-
-import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.sql.Timestamp;
 
 
 /**
@@ -16,7 +10,7 @@ import javax.persistence.Table;
  * 
  */
 @Entity
-@Table(name="plato_ingrediente", schema = "sistema")
+@Table(name="plato_ingrediente")
 @NamedQuery(name="PlatoIngrediente.findAll", query="SELECT p FROM PlatoIngrediente p")
 public class PlatoIngrediente implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -24,8 +18,17 @@ public class PlatoIngrediente implements Serializable {
 	@EmbeddedId
 	private PlatoIngredientePK id;
 
-	@Column(name="id_unid_medi")
-	private Integer idUnidMedi;
+	@Column(name="fe_modificacion", nullable=false)
+	private Timestamp feModificacion;
+
+	@Column(name="fe_registro", nullable=false)
+	private Timestamp feRegistro;
+
+	@Column(name="id_usua_crea", nullable=false)
+	private Integer idUsuaCrea;
+
+	@Column(name="id_usua_modi", nullable=false)
+	private Integer idUsuaModi;
 
 	@Column(name="nu_cantidad")
 	private float nuCantidad;
@@ -33,18 +36,13 @@ public class PlatoIngrediente implements Serializable {
 	@Column(name="nu_orden")
 	private Integer nuOrden;
 
-	@Column(name="ti_ingrediente", length=254)
+	@Column(name="ti_ingrediente", length=1)
 	private String tiIngrediente;
 
-	//bi-directional many-to-one association to Ingrediente
+	//bi-directional many-to-one association to UnidadMedida
 	@ManyToOne
-	@JoinColumn(name="id_ingrediente", nullable=false, insertable=false, updatable=false)
-	private Ingrediente ingrediente;
-
-	//bi-directional many-to-one association to Plato
-	@ManyToOne
-	@JoinColumn(name="id_plato", nullable=false, insertable=false, updatable=false)
-	private Plato plato;
+	@JoinColumn(name="id_unid_medi", nullable=false)
+	private UnidadMedida unidadMedida;
 
 	public PlatoIngrediente() {
 	}
@@ -57,12 +55,36 @@ public class PlatoIngrediente implements Serializable {
 		this.id = id;
 	}
 
-	public Integer getIdUnidMedi() {
-		return this.idUnidMedi;
+	public Timestamp getFeModificacion() {
+		return this.feModificacion;
 	}
 
-	public void setIdUnidMedi(Integer idUnidMedi) {
-		this.idUnidMedi = idUnidMedi;
+	public void setFeModificacion(Timestamp feModificacion) {
+		this.feModificacion = feModificacion;
+	}
+
+	public Timestamp getFeRegistro() {
+		return this.feRegistro;
+	}
+
+	public void setFeRegistro(Timestamp feRegistro) {
+		this.feRegistro = feRegistro;
+	}
+
+	public Integer getIdUsuaCrea() {
+		return this.idUsuaCrea;
+	}
+
+	public void setIdUsuaCrea(Integer idUsuaCrea) {
+		this.idUsuaCrea = idUsuaCrea;
+	}
+
+	public Integer getIdUsuaModi() {
+		return this.idUsuaModi;
+	}
+
+	public void setIdUsuaModi(Integer idUsuaModi) {
+		this.idUsuaModi = idUsuaModi;
 	}
 
 	public float getNuCantidad() {
@@ -89,20 +111,12 @@ public class PlatoIngrediente implements Serializable {
 		this.tiIngrediente = tiIngrediente;
 	}
 
-	public Ingrediente getIngrediente() {
-		return this.ingrediente;
+	public UnidadMedida getUnidadMedida() {
+		return this.unidadMedida;
 	}
 
-	public void setIngrediente(Ingrediente ingrediente) {
-		this.ingrediente = ingrediente;
-	}
-
-	public Plato getPlato() {
-		return this.plato;
-	}
-
-	public void setPlato(Plato plato) {
-		this.plato = plato;
+	public void setUnidadMedida(UnidadMedida unidadMedida) {
+		this.unidadMedida = unidadMedida;
 	}
 
 }

@@ -1,15 +1,8 @@
 package pe.com.rhsistemas.mfjpamenu.entity;
 
 import java.io.Serializable;
+import javax.persistence.*;
 import java.sql.Timestamp;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
 
 
 /**
@@ -17,7 +10,7 @@ import javax.persistence.Table;
  * 
  */
 @Entity
-@Table(name="persona_natural", schema = "sistema")
+@Table(name="persona_natural")
 @NamedQuery(name="PersonaNatural.findAll", query="SELECT p FROM PersonaNatural p")
 public class PersonaNatural implements Serializable {
 	private static final long serialVersionUID = 1L;

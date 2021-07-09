@@ -1,15 +1,8 @@
 package pe.com.rhsistemas.mfjpamenu.entity;
 
 import java.io.Serializable;
+import javax.persistence.*;
 import java.sql.Timestamp;
-
-import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
 
 
 /**
@@ -17,7 +10,7 @@ import javax.persistence.Table;
  * 
  */
 @Entity
-@Table(name="plato_favorito", schema = "sistema")
+@Table(name="plato_favorito")
 @NamedQuery(name="PlatoFavorito.findAll", query="SELECT p FROM PlatoFavorito p")
 public class PlatoFavorito implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -36,16 +29,6 @@ public class PlatoFavorito implements Serializable {
 
 	@Column(name="id_usua_modi", nullable=false)
 	private Integer idUsuaModi;
-
-	//bi-directional many-to-one association to Persona
-	@ManyToOne
-	@JoinColumn(name="id_persona", nullable=false, insertable=false, updatable=false)
-	private Persona persona;
-
-	//bi-directional many-to-one association to Plato
-	@ManyToOne
-	@JoinColumn(name="id_plato", nullable=false, insertable=false, updatable=false)
-	private Plato plato;
 
 	public PlatoFavorito() {
 	}
@@ -88,22 +71,6 @@ public class PlatoFavorito implements Serializable {
 
 	public void setIdUsuaModi(Integer idUsuaModi) {
 		this.idUsuaModi = idUsuaModi;
-	}
-
-	public Persona getPersona() {
-		return this.persona;
-	}
-
-	public void setPersona(Persona persona) {
-		this.persona = persona;
-	}
-
-	public Plato getPlato() {
-		return this.plato;
-	}
-
-	public void setPlato(Plato plato) {
-		this.plato = plato;
 	}
 
 }

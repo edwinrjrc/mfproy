@@ -10,30 +10,27 @@ import pe.com.rhsistemas.mf.cross.util.UtilMfDto;
 import pe.com.rhsistemas.mfjpamenu.entity.MenuDetalle;
 import pe.com.rhsistemas.mfjpamenu.entity.MenuDetallePK;
 import pe.com.rhsistemas.mfjpamenu.entity.MenuGenerado;
-import pe.com.rhsistemas.mfjpamenu.entity.Persona;
 
 public class Utilmfjpa {
-
 	
 	public static MenuGenerado parseMenuDto(MenuGeneradoDto dto) {
 		MenuGenerado entity = new MenuGenerado();
 		if (dto != null) {
 			entity.setFeGenerado(UtilMfDto.parseDateASqlTimestamp(dto.getFechaGenerado()));
+			entity.setFeDesde(UtilMfDto.parseDateASqlTimestamp(dto.getFechaDesde()));
+			entity.setFeHasta(UtilMfDto.parseDateASqlTimestamp(dto.getFechaHasta()));
 			entity.setFeModificacion(new Timestamp(System.currentTimeMillis()));
 			entity.setFeRegistro(new Timestamp(System.currentTimeMillis()));
 			entity.setIdUsuaCrea(dto.getIdUsuarioRegistro());
 			entity.setIdUsuaModi(dto.getIdUsuarioModificacion());
-			Persona persona = new Persona();
-			persona.setIdPersona(Long.valueOf(dto.getIdPersona()));
-			entity.setPersona(persona);
+			entity.setIdPersona(UtilMfDto.parseIntALong(dto.getIdPersona()));
 			List<MenuDetalle> menuDetalles = new ArrayList<>();
 			MenuDetalle menuDetalle = null;
 			for (MenuDetalleDto detaDto : dto.getListaPlatos()) {
 				menuDetalle = parseaMenuDetalleDto(detaDto);
-				menuDetalle.setMenuGenerado(entity);
+				menuDetalle.setIdGenerado(dto.getIdGenerado());
 				menuDetalles.add(menuDetalle);
 			}
-			entity.setMenuDetalles(menuDetalles);
 			entity.setNuDias(dto.getNumeroDias());
 		}
 		
@@ -48,27 +45,10 @@ public class Utilmfjpa {
 		dto.setFechaModificacion(entity.getFeModificacion());
 		dto.setFechaRegistro(entity.getFeRegistro());
 		dto.setIdGenerado(entity.getIdGenerado());
-		dto.setIdPersona(entity.getPersona().getIdPersona().intValue());
+		dto.setIdPersona(entity.getIdPersona().intValue());
 		dto.setIdUsuarioModificacion(entity.getIdUsuaModi());
 		dto.setIdUsuarioRegistro(entity.getIdUsuaModi());
 		dto.setNumeroDias(entity.getNuDias());
-		if (UtilMfDto.listaNoVacia(entity.getMenuDetalles())) {
-			List<MenuDetalleDto> menuDetalles = new ArrayList<>();
-			MenuDetalleDto menuDetalleDto = null;
-			for (MenuDetalle detaEntity : entity.getMenuDetalles()) {
-				menuDetalleDto = new MenuDetalleDto();
-				
-				menuDetalleDto.setFechaConsumo(detaEntity.getId().getFeConsumo());
-				menuDetalleDto.setFechaModificacion(detaEntity.getFeModificacion());
-				menuDetalleDto.setFechaRegistro(detaEntity.getFeRegistro());
-				menuDetalleDto.getPlatoDto().setId(detaEntity.getId().getIdPlato());
-				menuDetalleDto.setIdUsuarioModificacion(detaEntity.getIdUsuaModi());
-				menuDetalleDto.setIdUsuarioRegistro(detaEntity.getIdUsuaCrea());
-
-				menuDetalles.add(menuDetalleDto);
-			}
-			dto.setListaPlatos(menuDetalles);
-		}
 		entity.setNuDias(dto.getNumeroDias());
 		
 		return dto;
@@ -96,6 +76,7 @@ public class Utilmfjpa {
 		menuDetalle.setId(menuDetalleId);
 		menuDetalle.setFeModificacion(new Timestamp(System.currentTimeMillis()));
 		menuDetalle.setFeRegistro(new Timestamp(System.currentTimeMillis()));
+		
 		menuDetalle.setIdUsuaCrea(detaDto.getIdUsuarioRegistro());
 		menuDetalle.setIdUsuaModi(detaDto.getIdUsuarioModificacion());
 		

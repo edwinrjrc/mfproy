@@ -17,7 +17,7 @@ import javax.persistence.Table;
  * 
  */
 @Entity
-@Table(name="usuarios_roles", schema = "sistema")
+@Table(name="usuarios_roles")
 @NamedQuery(name="UsuariosRole.findAll", query="SELECT u FROM UsuariosRole u")
 public class UsuariosRole implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -39,7 +39,7 @@ public class UsuariosRole implements Serializable {
 
 	//bi-directional many-to-one association to Role
 	@ManyToOne
-	@JoinColumn(name="roles_id", nullable=false, insertable=false, updatable=false)
+	@JoinColumn(name="roles_id_rol", nullable=false, insertable=false, updatable=false)
 	private Role role;
 
 	//bi-directional many-to-one association to Usuario

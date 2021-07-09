@@ -1,12 +1,7 @@
 package pe.com.rhsistemas.mfjpaplatos.entity;
 
-
 import java.io.Serializable;
-
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 
 /**
  * The primary key class for the historia_inicio_sesion database table.

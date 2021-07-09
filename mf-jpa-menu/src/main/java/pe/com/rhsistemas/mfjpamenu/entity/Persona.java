@@ -4,6 +4,7 @@ import java.io.Serializable;
 import javax.persistence.*;
 import java.util.Date;
 import java.sql.Timestamp;
+import java.util.List;
 
 
 /**
@@ -11,13 +12,13 @@ import java.sql.Timestamp;
  * 
  */
 @Entity
-@Table(name="persona", schema = "Sistema")
+@Table(name="persona")
 @NamedQuery(name="Persona.findAll", query="SELECT p FROM Persona p")
 public class Persona implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="PERSONA_IDPERSONA_GENERATOR", sequenceName="SISTEMA.SEQ_PERSONA", schema = "Sistema", allocationSize = 1, initialValue = 1)
+	@SequenceGenerator(name="PERSONA_IDPERSONA_GENERATOR", sequenceName="SEQ_PERSONA")
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="PERSONA_IDPERSONA_GENERATOR")
 	@Column(name="id_persona", unique=true, nullable=false)
 	private Long idPersona;
@@ -43,6 +44,26 @@ public class Persona implements Serializable {
 
 	@Column(name="nu_documento", length=30)
 	private String nuDocumento;
+
+	//bi-directional one-to-one association to ConfiguracionFamilia
+	@OneToOne(mappedBy="persona")
+	private ConfiguracionFamilia configuracionFamilia;
+
+	//bi-directional many-to-one association to HistoriaInicioSesion
+	@OneToMany(mappedBy="persona")
+	private List<HistoriaInicioSesion> historiaInicioSesions;
+
+	//bi-directional one-to-one association to PersonaJuridica
+	@OneToOne(mappedBy="persona")
+	private PersonaJuridica personaJuridica;
+
+	//bi-directional one-to-one association to PersonaNatural
+	@OneToOne(mappedBy="persona")
+	private PersonaNatural personaNatural;
+
+	//bi-directional one-to-one association to Usuario
+	@OneToOne(mappedBy="persona")
+	private Usuario usuario;
 
 	public Persona() {
 	}
@@ -109,6 +130,60 @@ public class Persona implements Serializable {
 
 	public void setNuDocumento(String nuDocumento) {
 		this.nuDocumento = nuDocumento;
+	}
+
+	public ConfiguracionFamilia getConfiguracionFamilia() {
+		return this.configuracionFamilia;
+	}
+
+	public void setConfiguracionFamilia(ConfiguracionFamilia configuracionFamilia) {
+		this.configuracionFamilia = configuracionFamilia;
+	}
+
+	public List<HistoriaInicioSesion> getHistoriaInicioSesions() {
+		return this.historiaInicioSesions;
+	}
+
+	public void setHistoriaInicioSesions(List<HistoriaInicioSesion> historiaInicioSesions) {
+		this.historiaInicioSesions = historiaInicioSesions;
+	}
+
+	public HistoriaInicioSesion addHistoriaInicioSesion(HistoriaInicioSesion historiaInicioSesion) {
+		getHistoriaInicioSesions().add(historiaInicioSesion);
+		historiaInicioSesion.setPersona(this);
+
+		return historiaInicioSesion;
+	}
+
+	public HistoriaInicioSesion removeHistoriaInicioSesion(HistoriaInicioSesion historiaInicioSesion) {
+		getHistoriaInicioSesions().remove(historiaInicioSesion);
+		historiaInicioSesion.setPersona(null);
+
+		return historiaInicioSesion;
+	}
+
+	public PersonaJuridica getPersonaJuridica() {
+		return this.personaJuridica;
+	}
+
+	public void setPersonaJuridica(PersonaJuridica personaJuridica) {
+		this.personaJuridica = personaJuridica;
+	}
+
+	public PersonaNatural getPersonaNatural() {
+		return this.personaNatural;
+	}
+
+	public void setPersonaNatural(PersonaNatural personaNatural) {
+		this.personaNatural = personaNatural;
+	}
+
+	public Usuario getUsuario() {
+		return this.usuario;
+	}
+
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
 	}
 
 }

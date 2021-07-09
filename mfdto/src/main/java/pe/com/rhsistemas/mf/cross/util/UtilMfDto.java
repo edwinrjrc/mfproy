@@ -89,5 +89,33 @@ public class UtilMfDto {
 		
 		return resultado;
 	}
+	
+	public static int parseaNullInt(Integer valor) {
+		int dato = 0;
+		if (valor != null) {
+			dato = valor.intValue();
+		}
+		return dato;
+	}
+	public static long parseaNullLong(Long valor) {
+		long dato = 0;
+		if (valor != null) {
+			dato = valor.longValue();
+		}
+		return dato;
+	}
+	
+	public static Integer parseStringAInteger(String cadena) {
+		Integer valor = null;
+		valor = Integer.valueOf(cadena);
+		return valor;
+	}
+	
+	public static Long parseIntALong(int valor) {
+		Long salida = null;
+		
+		salida = Long.valueOf(valor);
+		return salida;
+	}
 
 }

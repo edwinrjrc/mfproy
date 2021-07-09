@@ -19,6 +19,8 @@ public class MenuGeneradoDto extends BaseDto {
 	private int numeroDias;
 	private int idPersona;
 	private List<MenuDetalleDto> listaPlatos;
+	private Date fechaDesde;
+	private Date fechaHasta;
 
 	public MenuGeneradoDto() {
 		// TODO Auto-generated constructor stub
@@ -92,6 +94,34 @@ public class MenuGeneradoDto extends BaseDto {
 	 */
 	public void setFechaGenerado(Date fechaGenerado) {
 		this.fechaGenerado = fechaGenerado;
+	}
+
+	/**
+	 * @return the fechaDesde
+	 */
+	public Date getFechaDesde() {
+		return fechaDesde;
+	}
+
+	/**
+	 * @param fechaDesde the fechaDesde to set
+	 */
+	public void setFechaDesde(Date fechaDesde) {
+		this.fechaDesde = fechaDesde;
+	}
+
+	/**
+	 * @return the fechaHasta
+	 */
+	public Date getFechaHasta() {
+		return fechaHasta;
+	}
+
+	/**
+	 * @param fechaHasta the fechaHasta to set
+	 */
+	public void setFechaHasta(Date fechaHasta) {
+		this.fechaHasta = fechaHasta;
 	}
 
 }

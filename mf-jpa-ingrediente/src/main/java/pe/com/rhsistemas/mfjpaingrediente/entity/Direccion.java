@@ -1,6 +1,5 @@
 package pe.com.rhsistemas.mfjpaingrediente.entity;
 
-
 import java.io.Serializable;
 import java.sql.Timestamp;
 
@@ -21,13 +20,13 @@ import javax.persistence.Table;
  * 
  */
 @Entity
-@Table(name="direccion", schema = "sistema")
+@Table(name="direccion")
 @NamedQuery(name="Direccion.findAll", query="SELECT d FROM Direccion d")
 public class Direccion implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="DIRECCION_IDDIRECCION_GENERATOR", sequenceName="SEQ_DIRECCION", schema = "sistema")
+	@SequenceGenerator(name="DIRECCION_IDDIRECCION_GENERATOR", sequenceName="SEQ_DIRECCION")
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="DIRECCION_IDDIRECCION_GENERATOR")
 	@Column(name="id_direccion", unique=true, nullable=false)
 	private Long idDireccion;
@@ -43,6 +42,9 @@ public class Direccion implements Serializable {
 
 	@Column(name="fe_registro", nullable=false)
 	private Timestamp feRegistro;
+
+	@Column(name="id_persona")
+	private Long idPersona;
 
 	@Column(name="id_tipo_via")
 	private Integer idTipoVia;
@@ -67,11 +69,6 @@ public class Direccion implements Serializable {
 
 	@Column(name="nu_manzana", length=10)
 	private String nuManzana;
-
-	//bi-directional many-to-one association to Persona
-	@ManyToOne
-	@JoinColumn(name="id_persona", nullable=false)
-	private Persona persona;
 
 	//bi-directional many-to-one association to Ubigeo
 	@ManyToOne
@@ -119,6 +116,14 @@ public class Direccion implements Serializable {
 
 	public void setFeRegistro(Timestamp feRegistro) {
 		this.feRegistro = feRegistro;
+	}
+
+	public Long getIdPersona() {
+		return this.idPersona;
+	}
+
+	public void setIdPersona(Long idPersona) {
+		this.idPersona = idPersona;
 	}
 
 	public Integer getIdTipoVia() {
@@ -183,14 +188,6 @@ public class Direccion implements Serializable {
 
 	public void setNuManzana(String nuManzana) {
 		this.nuManzana = nuManzana;
-	}
-
-	public Persona getPersona() {
-		return this.persona;
-	}
-
-	public void setPersona(Persona persona) {
-		this.persona = persona;
 	}
 
 	public Ubigeo getUbigeo() {

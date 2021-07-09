@@ -1,20 +1,9 @@
 package pe.com.rhsistemas.mfjpaplatos.entity;
 
 import java.io.Serializable;
+import javax.persistence.*;
 import java.sql.Timestamp;
-import java.util.Date;
 import java.util.List;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 
 /**
@@ -22,7 +11,7 @@ import javax.persistence.TemporalType;
  * 
  */
 @Entity
-@Table(name="usuarios", schema = "sistema")
+@Table(name="usuarios")
 @NamedQuery(name="Usuario.findAll", query="SELECT u FROM Usuario u")
 public class Usuario implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -31,9 +20,8 @@ public class Usuario implements Serializable {
 	@Column(name="id_persona", unique=true, nullable=false)
 	private Long idPersona;
 
-	@Temporal(TemporalType.DATE)
 	@Column(name="fe_caduca")
-	private Date feCaduca;
+	private Timestamp feCaduca;
 
 	@Column(name="fe_modificacion", nullable=false)
 	private Timestamp feModificacion;
@@ -82,11 +70,11 @@ public class Usuario implements Serializable {
 		this.idPersona = idPersona;
 	}
 
-	public Date getFeCaduca() {
+	public Timestamp getFeCaduca() {
 		return this.feCaduca;
 	}
 
-	public void setFeCaduca(Date feCaduca) {
+	public void setFeCaduca(Timestamp feCaduca) {
 		this.feCaduca = feCaduca;
 	}
 

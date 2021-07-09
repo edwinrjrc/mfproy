@@ -10,7 +10,7 @@ import java.sql.Timestamp;
  * 
  */
 @Entity
-@Table(name="menu_detalle", schema = "Sistema")
+@Table(name="menu_detalle")
 @NamedQuery(name="MenuDetalle.findAll", query="SELECT m FROM MenuDetalle m")
 public class MenuDetalle implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -24,16 +24,14 @@ public class MenuDetalle implements Serializable {
 	@Column(name="fe_registro", nullable=false)
 	private Timestamp feRegistro;
 
+	@Column(name="id_generado", nullable=false)
+	private Long idGenerado;
+
 	@Column(name="id_usua_crea", nullable=false)
 	private Integer idUsuaCrea;
 
 	@Column(name="id_usua_modi", nullable=false)
 	private Integer idUsuaModi;
-
-	//bi-directional many-to-one association to MenuGenerado
-	@ManyToOne
-	@JoinColumn(name="id_generado", nullable=false, insertable=false, updatable=false)
-	private MenuGenerado menuGenerado;
 
 	public MenuDetalle() {
 	}
@@ -62,6 +60,14 @@ public class MenuDetalle implements Serializable {
 		this.feRegistro = feRegistro;
 	}
 
+	public Long getIdGenerado() {
+		return this.idGenerado;
+	}
+
+	public void setIdGenerado(Long idGenerado) {
+		this.idGenerado = idGenerado;
+	}
+
 	public Integer getIdUsuaCrea() {
 		return this.idUsuaCrea;
 	}
@@ -76,14 +82,6 @@ public class MenuDetalle implements Serializable {
 
 	public void setIdUsuaModi(Integer idUsuaModi) {
 		this.idUsuaModi = idUsuaModi;
-	}
-
-	public MenuGenerado getMenuGenerado() {
-		return this.menuGenerado;
-	}
-
-	public void setMenuGenerado(MenuGenerado menuGenerado) {
-		this.menuGenerado = menuGenerado;
 	}
 
 }

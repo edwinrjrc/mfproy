@@ -11,7 +11,7 @@ import java.util.List;
  * 
  */
 @Entity
-@Table(name="tipo_plato", schema = "Sistema")
+@Table(name="tipo_plato")
 @NamedQuery(name="TipoPlato.findAll", query="SELECT t FROM TipoPlato t")
 public class TipoPlato implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -35,9 +35,9 @@ public class TipoPlato implements Serializable {
 	@Column(name="id_usua_modi", nullable=false)
 	private Integer idUsuaModi;
 
-	//bi-directional many-to-one association to Plato
+	//bi-directional many-to-one association to PlatoTipoPlato
 	@OneToMany(mappedBy="tipoPlato")
-	private List<Plato> platos;
+	private List<PlatoTipoPlato> platoTipoPlatos;
 
 	public TipoPlato() {
 	}
@@ -90,26 +90,26 @@ public class TipoPlato implements Serializable {
 		this.idUsuaModi = idUsuaModi;
 	}
 
-	public List<Plato> getPlatos() {
-		return this.platos;
+	public List<PlatoTipoPlato> getPlatoTipoPlatos() {
+		return this.platoTipoPlatos;
 	}
 
-	public void setPlatos(List<Plato> platos) {
-		this.platos = platos;
+	public void setPlatoTipoPlatos(List<PlatoTipoPlato> platoTipoPlatos) {
+		this.platoTipoPlatos = platoTipoPlatos;
 	}
 
-	public Plato addPlato(Plato plato) {
-		getPlatos().add(plato);
-		plato.setTipoPlato(this);
+	public PlatoTipoPlato addPlatoTipoPlato(PlatoTipoPlato platoTipoPlato) {
+		getPlatoTipoPlatos().add(platoTipoPlato);
+		platoTipoPlato.setTipoPlato(this);
 
-		return plato;
+		return platoTipoPlato;
 	}
 
-	public Plato removePlato(Plato plato) {
-		getPlatos().remove(plato);
-		plato.setTipoPlato(null);
+	public PlatoTipoPlato removePlatoTipoPlato(PlatoTipoPlato platoTipoPlato) {
+		getPlatoTipoPlatos().remove(platoTipoPlato);
+		platoTipoPlato.setTipoPlato(null);
 
-		return plato;
+		return platoTipoPlato;
 	}
 
 }

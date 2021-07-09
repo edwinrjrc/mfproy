@@ -22,13 +22,13 @@ import javax.persistence.Table;
  * 
  */
 @Entity
-@Table(name="ingrediente", schema = "sistema")
+@Table(name="ingrediente")
 @NamedQuery(name="Ingrediente.findAll", query="SELECT i FROM Ingrediente i")
 public class Ingrediente implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="INGREDIENTE_IDINGREDIENTE_GENERATOR", sequenceName="SEQ_INGREDIENTE", schema = "sistema")
+	@SequenceGenerator(name="INGREDIENTE_IDINGREDIENTE_GENERATOR", sequenceName="SEQ_INGREDIENTE")
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="INGREDIENTE_IDINGREDIENTE_GENERATOR")
 	@Column(name="id_ingrediente", unique=true, nullable=false)
 	private Integer idIngrediente;
@@ -61,10 +61,6 @@ public class Ingrediente implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="id_tipo_ingr", nullable=false)
 	private TipoIngrediente tipoIngrediente;
-
-	//bi-directional many-to-one association to PlatoIngrediente
-	@OneToMany(mappedBy="ingrediente")
-	private List<PlatoIngrediente> platoIngredientes;
 
 	//bi-directional many-to-one association to Receta
 	@OneToMany(mappedBy="ingrediente")
@@ -155,28 +151,6 @@ public class Ingrediente implements Serializable {
 
 	public void setTipoIngrediente(TipoIngrediente tipoIngrediente) {
 		this.tipoIngrediente = tipoIngrediente;
-	}
-
-	public List<PlatoIngrediente> getPlatoIngredientes() {
-		return this.platoIngredientes;
-	}
-
-	public void setPlatoIngredientes(List<PlatoIngrediente> platoIngredientes) {
-		this.platoIngredientes = platoIngredientes;
-	}
-
-	public PlatoIngrediente addPlatoIngrediente(PlatoIngrediente platoIngrediente) {
-		getPlatoIngredientes().add(platoIngrediente);
-		platoIngrediente.setIngrediente(this);
-
-		return platoIngrediente;
-	}
-
-	public PlatoIngrediente removePlatoIngrediente(PlatoIngrediente platoIngrediente) {
-		getPlatoIngredientes().remove(platoIngrediente);
-		platoIngrediente.setIngrediente(null);
-
-		return platoIngrediente;
 	}
 
 	public List<Receta> getRecetas() {

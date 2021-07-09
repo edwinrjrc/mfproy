@@ -47,6 +47,7 @@ public class RemoteServiceIngrediente {
 	@Autowired
 	private RestTemplate restTemplate;
 
+	@SuppressWarnings("rawtypes")
 	public List<PlatoIngredienteDto> ingredientesPlato(Integer idPlato) throws MfServiceIngredienteException {
 		List<PlatoIngredienteDto> listaSalida = null;
 		
@@ -78,6 +79,7 @@ public class RemoteServiceIngrediente {
 		return listaSalida;
 	}
 	
+	@SuppressWarnings("rawtypes")
 	public void registrarIngredientesPlato(List<PlatoIngredienteDto> listaIngredientes) throws MfServiceIngredienteException {
 		try {
 			HttpMethod metodoServicio = HttpMethod.POST;
@@ -87,6 +89,8 @@ public class RemoteServiceIngrediente {
 			Class<Map> responseType = Map.class;
 			String url = URL_SERVICE_2;
 			ResponseEntity<Map> respuesta = restTemplate.exchange(obtenerUri(url), metodoServicio, requestEntity, responseType);
+			
+			log.info(respuesta.toString());
 
 		} catch (RestClientException e) {
 			log.error(e.getMessage(), e);
