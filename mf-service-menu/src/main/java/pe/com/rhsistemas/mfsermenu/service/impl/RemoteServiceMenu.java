@@ -51,6 +51,7 @@ public class RemoteServiceMenu {
 	private RestTemplate restTemplate;
 
 
+	@SuppressWarnings("rawtypes")
 	public List<MenuGeneradoDto> ultimoMenu(Integer idPersona) throws MfServiceMenuException {
 		List<MenuGeneradoDto> listaMenus = null;
 		try {
@@ -102,6 +103,7 @@ public class RemoteServiceMenu {
 		}
 	}
 
+	@SuppressWarnings("rawtypes")
 	public List<MenuGeneradoDto> obtenerMenuGeneradoCabecera(Integer idPersona) throws MfServiceMenuException {
 		HttpMethod metodoServicio = HttpMethod.GET;
 
@@ -133,6 +135,7 @@ public class RemoteServiceMenu {
 		return listaMenu;
 	}
 
+	@SuppressWarnings("rawtypes")
 	public List<MenuDetalleDto> obtenerMenuGeneradoDetalle(Integer idMenuGenerado) throws MfServiceMenuException {
 		HttpMethod metodoServicio = HttpMethod.GET;
 

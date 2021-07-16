@@ -200,6 +200,27 @@ public class Utilmfjpa {
 		return entity;
 	}
 	
+	public static PlatoIngredienteDto parsePlatoIngrediente(PlatoIngrediente entity) {
+		PlatoIngredienteDto dto = new PlatoIngredienteDto();
+		dto.setIdPlato(entity.getId().getIdPlato());
+		IngredienteDto ingrediente = new IngredienteDto();
+		ingrediente.setId(entity.getId().getIdIngrediente());
+		dto.setIngrediente(ingrediente);
+		dto.setCantidad(entity.getNuCantidad());
+		BaseValor unidadMedida = new BaseValor();
+		unidadMedida.setCodigo(entity.getUnidadMedida().getIdUnidMedi().toString());
+		unidadMedida.setNombre(entity.getUnidadMedida().getDeUnidMedi());
+		dto.setUnidadMedida(unidadMedida);
+		BaseValor tipoIngrediente = new BaseValor();
+		tipoIngrediente.setCodigo(entity.getTiIngrediente());
+		dto.setTipoIngrediente(tipoIngrediente);
+		dto.setIdUsuarioModificacion(entity.getIdUsuaModi());
+		dto.setIdUsuarioRegistro(entity.getIdUsuaCrea());
+		dto.setFechaModificacion(entity.getFeModificacion());
+		dto.setFechaRegistro(entity.getFeRegistro());
+		return dto;
+	}
+	
 	
 	public static int parseaNullInt(Integer valor) {
 		int dato = 0;

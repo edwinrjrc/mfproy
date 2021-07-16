@@ -60,7 +60,10 @@ public class MenuLogicaServiceImpl implements MenuLogicaService {
 		Calendar cal = Calendar.getInstance();
 		cal.add(Calendar.MONTH, -3);
 		fechaCorte = cal.getTime();
-
+		
+		/*
+		 * Consulta de ultimo menu generado
+		 */
 		List<MenuGeneradoDto> menus = this.remoteServiceMenu.ultimoMenu(idPersona);
 		MenuGeneradoDto ultimoMenuGenerado = null;
 		if (menus != null && !menus.isEmpty()) {
@@ -112,6 +115,9 @@ public class MenuLogicaServiceImpl implements MenuLogicaService {
 		menuGeneradoDto.setFechaDesde(fechaInicio);
 		menuGeneradoDto.setFechaHasta(fechaFin);
 
+		/*
+		 * Valida si ultimo menu generado esta activo
+		 */
 		if (ultimoMenuGenerado != null) {
 			if ((ultimoMenuGenerado.getFechaDesde().after(fechaInicio)
 					&& ultimoMenuGenerado.getFechaDesde().before(fechaFin))
@@ -124,47 +130,47 @@ public class MenuLogicaServiceImpl implements MenuLogicaService {
 		log.info("platosTotal::" + listaPlatosNoConsumidos.size());
 
 		menuGeneradoDto
-				.setListaPlatos(generarDetalleMenuDto(fechaInicio, fechaFin, idUsuario, listaPlatosNoConsumidos));
+				.setListaPlatos(generarDetalleMenuDto(fechaInicio, fechaFin, idUsuario, null, listaPlatosNoConsumidos));
 
 		this.remoteServiceMenu.grabarMenuGenerado(menuGeneradoDto);
 	}
 
-	private List<MenuDetalleDto> generarDetalleMenuDto(Date fechaInicio, Date fechaFin, int idUsuario,
+	private List<MenuDetalleDto> generarDetalleMenuDto(Date fechaInicio, Date fechaFin, int idUsuario, Integer[] tiposConsumidos,
 			List<PlatoDto> platosTotal) throws MfServiceMenuException, UtilMfDtoException {
 		log.info("platos llegan::" + platosTotal.size());
-
+		
 		Date fechaHoy = new Date();
-
+		
 		List<Integer> listaEscogidos = new ArrayList<>();
 		listaEscogidos.add(1);
-
+		
 		Map<Integer, Integer> mapeoTipoPlato = new HashMap<Integer, Integer>();
 		mapeoTipoPlato.put(1, 0);
 		mapeoTipoPlato.put(2, 1);
-
+		
 		int a = aleatorioTipos(listaEscogidos);
 		listaEscogidos.add(a);
-
+		
 		mapeoTipoPlato.put(3, a);
-
+		
 		a = aleatorioTipos(listaEscogidos);
 		listaEscogidos.add(a);
-
+		
 		mapeoTipoPlato.put(4, a);
-
+		
 		a = aleatorioTipos(listaEscogidos);
 		listaEscogidos.add(a);
-
+		
 		mapeoTipoPlato.put(5, a);
-
+		
 		a = aleatorioTipos(listaEscogidos);
 		listaEscogidos.add(a);
-
+		
 		mapeoTipoPlato.put(6, a);
-
+		
 		a = aleatorioTipos(listaEscogidos);
 		listaEscogidos.add(a);
-
+		
 		mapeoTipoPlato.put(7, a);
 
 		Calendar calendario = Calendar.getInstance();

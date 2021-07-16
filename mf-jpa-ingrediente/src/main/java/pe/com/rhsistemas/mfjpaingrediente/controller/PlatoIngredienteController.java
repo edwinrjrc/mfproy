@@ -60,9 +60,16 @@ public class PlatoIngredienteController {
 			platoIngredienteRepository.saveAll(entities);
 			estadoHttp = HttpStatus.CREATED;
 			
+			mapeo = new HashMap<String, Object>();
+			mapeo.put("error", false);
+			mapeo.put("mensaje", "Operacion Completada");
+			
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
 			estadoHttp = HttpStatus.INTERNAL_SERVER_ERROR;
+			mapeo = new HashMap<String, Object>();
+			mapeo.put("error", true);
+			mapeo.put("mensaje", "Operacion no completada");
 		}
 		
 		salida = new ResponseEntity<Map<String, Object>>(mapeo, estadoHttp);
@@ -81,18 +88,28 @@ public class PlatoIngredienteController {
 			UtilMfDto.pintaLog(idPlato, "idPlato");
 			
 			List<PlatoIngrediente> listaIngredientes = platoIngredienteRepository.findAllByPlato(idPlato);
-			estadoHttp = HttpStatus.NOT_FOUND;
+			estadoHttp = HttpStatus.NO_CONTENT;
+			mapeo = new HashMap<String, Object>();
+			List<PlatoIngredienteDto> listaIngredientesDto = new ArrayList<>();
 			if (UtilMfDto.listaNoVacia(listaIngredientes)) {
-				estadoHttp = HttpStatus.FOUND;
-				mapeo = new HashMap<String, Object>();
-				mapeo.put(Constantes.VALOR_DATA_MAP, listaIngredientes);
+				estadoHttp = HttpStatus.OK;
+				for (PlatoIngrediente entity : listaIngredientes) {
+					listaIngredientesDto.add(Utilmfjpa.parsePlatoIngrediente(entity));
+				}
 			}
+			
+			mapeo = new HashMap<String, Object>();
+			mapeo.put("error", false);
+			mapeo.put("mensaje", "Operacion Completada");
+			mapeo.put(Constantes.VALOR_DATA_MAP, listaIngredientesDto);
 			
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
 			estadoHttp = HttpStatus.INTERNAL_SERVER_ERROR;
+			mapeo = new HashMap<String, Object>();
+			mapeo.put("error", true);
+			mapeo.put("mensaje", "Operacion no completada");
 		}
-		
 		salida = new ResponseEntity<Map<String, Object>>(mapeo, estadoHttp);
 		
 		return salida;

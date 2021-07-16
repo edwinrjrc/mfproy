@@ -94,6 +94,7 @@ public class RemoteServicePlato {
 		return mapeoPlatos;
 	}
 	
+	@SuppressWarnings("rawtypes")
 	public List<PlatoDto> platosNoConsumidos(Integer idPersona, Date fechaCorteDesde, Date fechaCorteHasta) throws MfServiceMenuException {
 		List<PlatoDto> listaPlatos = null;
 		try {
@@ -110,7 +111,7 @@ public class RemoteServicePlato {
 		    
 			HttpHeaders headers = new HttpHeaders();
 			headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-			HttpEntity requestEntity = new HttpEntity<Map>(headers);
+			HttpEntity<Map> requestEntity = new HttpEntity<Map>(headers);
 			Class<Map> responseType = Map.class;
 			
 			String url = URL_SERVICE_2 + "?idPersona="+idPersona.toString()+"&fechaCorteDesde="+UtilMfDto.parseDateAString(fechaCorteDesde, "");

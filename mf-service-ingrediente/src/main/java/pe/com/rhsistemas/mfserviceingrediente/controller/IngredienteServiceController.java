@@ -42,27 +42,36 @@ public class IngredienteServiceController {
 	@GetMapping(value = "/ingredientes/{idPlato}")
 	public ResponseEntity<Map<String, Object>> ingredientesPlato(@PathVariable Integer idPlato) {
 		ResponseEntity<Map<String, Object>> salida = null;
-		HttpStatus estadoHttp = null;
+		Map<String, Object> mapeo = null;
+		HttpStatus status = null;
 		try {
-			estadoHttp = HttpStatus.NOT_FOUND;
+			status = HttpStatus.NOT_FOUND;
 			log.info("Recibiendo parametros");
 			UtilMfDto.pintaLog(idPlato, "idPlato");
 			
 			List<PlatoIngredienteDto> listaIngredientes = ingredienteLogicaService.ingredientesPlato(idPlato);
-			Map<String, Object> mapeo = null;
 			if (UtilMfDto.listaNoVacia(listaIngredientes)) {
-				mapeo = new HashMap<>();
-				mapeo.put(Constantes.VALOR_DATA_MAP, listaIngredientes);
-				estadoHttp = HttpStatus.FOUND;
+				status = HttpStatus.OK;
 			}
-			
-			salida = new ResponseEntity<>(mapeo, estadoHttp);
+			mapeo = new HashMap<String, Object>();
+			mapeo.put("error", false);
+			mapeo.put("mensaje", "Existo");
+			mapeo.put(Constantes.VALOR_DATA_MAP, listaIngredientes);
 		} catch (MfServiceIngredienteException e) {
 			log.error(e.getMessage(), e);
-			estadoHttp = HttpStatus.INTERNAL_SERVER_ERROR;
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+			mapeo = new HashMap<String, Object>();
+			mapeo.put("error", true);
+			mapeo.put("mensaje", "Operacion no completada");
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+			mapeo = new HashMap<String, Object>();
+			mapeo.put("error", true);
+			mapeo.put("mensaje", "Operacion no completada");
 		}
 		
-		salida = new ResponseEntity<>(estadoHttp);
+		salida = new ResponseEntity<Map<String, Object>>(mapeo, status);
 
 		return salida;
 	}
@@ -70,7 +79,8 @@ public class IngredienteServiceController {
 	@PostMapping(value = "/ingredientes")
 	public ResponseEntity<Map<String, Object>> ingredientesPlato(@RequestBody IngredientesPlatoDto ingredientesPlatoDto) {
 		ResponseEntity<Map<String, Object>> salida = null;
-		HttpStatus estadoHttp = null;
+		Map<String, Object> mapeo = null;
+		HttpStatus status = null;
 		
 		try {
 			log.info("Recibiendo parametros");
@@ -78,14 +88,25 @@ public class IngredienteServiceController {
 			
 			ingredienteLogicaService.registrarIngredientesPlato(ingredientesPlatoDto.getIngredientes());
 			
-			estadoHttp = HttpStatus.CREATED;
+			status = HttpStatus.CREATED;
+			mapeo = new HashMap<String, Object>();
+			mapeo.put("error", false);
+			mapeo.put("mensaje", "Existo");
 		} catch (MfServiceIngredienteException e) {
 			log.error(e.getMessage(), e);
-			estadoHttp = HttpStatus.INTERNAL_SERVER_ERROR;
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+			mapeo = new HashMap<String, Object>();
+			mapeo.put("error", true);
+			mapeo.put("mensaje", "Operacion no completada");
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+			mapeo = new HashMap<String, Object>();
+			mapeo.put("error", true);
+			mapeo.put("mensaje", "Operacion no completada");
 		}
-		
-		salida = new ResponseEntity<>(estadoHttp);
-		
+		salida = new ResponseEntity<Map<String, Object>>(mapeo, status);
+
 		return salida;
 	}
 	

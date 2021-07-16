@@ -104,13 +104,20 @@ public class MenuServiceController {
 
 			if (UtilMfDto.listaNoVacia(menuSemanas)) {
 				status = HttpStatus.OK;
-				mapeo = new HashMap<String, Object>();
-				mapeo.put("error", false);
-				mapeo.put("mensaje", "Existo");
-				mapeo.put(Constantes.VALOR_DATA_MAP, menuSemanas);
 			}
+			mapeo = new HashMap<String, Object>();
+			mapeo.put("error", false);
+			mapeo.put("mensaje", "Existo");
+			mapeo.put(Constantes.VALOR_DATA_MAP, menuSemanas);
 
 		} catch (MfServiceMenuException e) {
+			log.error(e.getMessage(), e);
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+
+			mapeo = new HashMap<String, Object>();
+			mapeo.put("error", true);
+			mapeo.put("mensaje", "Operacion no completada");
+		} catch (Exception e) {
 			log.error(e.getMessage(), e);
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 

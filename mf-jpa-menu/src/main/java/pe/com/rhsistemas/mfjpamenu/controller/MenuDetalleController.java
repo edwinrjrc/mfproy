@@ -41,30 +41,43 @@ public class MenuDetalleController {
 
 	@GetMapping(value = "/menuDetalle/{idMenuGenerado}")
 	public ResponseEntity<Map<String, Object>> consultarDetalleMenu(@PathVariable Long idMenuGenerado) {
+		ResponseEntity<Map<String, Object>> salida = null;
+		Map<String, Object> mapeo = null;
+		HttpStatus status = null;
+		
 		log.info("Recibiendo parametros");
 		UtilMfDto.pintaLog(idMenuGenerado, "idMenuGenerado");
 		
-		ResponseEntity<Map<String, Object>> salida = null;
-		HttpStatus estadoHttp = HttpStatus.NOT_FOUND;
-		
-		MenuGenerado menuGenerado = new MenuGenerado();
-		menuGenerado.setIdGenerado(idMenuGenerado);
-		
-		Map<String, Object> mapeo = null;
-		List<MenuDetalleDto> listaMenuDetalle = new ArrayList<>();
-		
-		List<MenuDetalle> listaDetalle = menuDetalleRepository.findByMenuGenerado(menuGenerado);
-		for (MenuDetalle menuDetalle : listaDetalle) {
-			listaMenuDetalle.add(Utilmfjpa.parseMenuDetalle(menuDetalle));
-		}
-		
-		if (UtilMfDto.listaNoVacia(listaMenuDetalle)) {
-			estadoHttp = HttpStatus.FOUND;
+		try {
+			status = HttpStatus.NO_CONTENT;
+			
+			MenuGenerado menuGenerado = new MenuGenerado();
+			menuGenerado.setIdGenerado(idMenuGenerado);
+			
+			List<MenuDetalleDto> listaMenuDetalle = new ArrayList<>();
+			
+			List<MenuDetalle> listaDetalle = menuDetalleRepository.findByMenuGenerado(menuGenerado);
+			for (MenuDetalle menuDetalle : listaDetalle) {
+				listaMenuDetalle.add(Utilmfjpa.parseMenuDetalle(menuDetalle));
+			}
+			
 			mapeo = new HashMap<String, Object>();
+			mapeo.put("error", false);
+			mapeo.put("mensaje", "Operacion Completada");
 			mapeo.put(Constantes.VALOR_DATA_MAP, listaMenuDetalle);
+			if (UtilMfDto.listaNoVacia(listaMenuDetalle)) {
+				status = HttpStatus.FOUND;
+				mapeo.put(Constantes.VALOR_DATA_MAP, listaMenuDetalle);
+			}
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+			mapeo = new HashMap<String, Object>();
+			mapeo.put("error", true);
+			mapeo.put("mensaje", "Operacion no completada");
 		}
 		
-		salida = new ResponseEntity<>(mapeo,estadoHttp);
+		salida = new ResponseEntity<>(mapeo,status);
 
 		return salida;
 	}

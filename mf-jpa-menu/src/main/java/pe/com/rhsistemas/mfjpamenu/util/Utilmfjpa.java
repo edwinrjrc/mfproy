@@ -4,12 +4,16 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+import pe.com.rhsistemas.mf.cross.dto.BaseValor;
+import pe.com.rhsistemas.mf.cross.dto.IngredienteDto;
 import pe.com.rhsistemas.mf.cross.dto.MenuDetalleDto;
 import pe.com.rhsistemas.mf.cross.dto.MenuGeneradoDto;
+import pe.com.rhsistemas.mf.cross.dto.PlatoIngredienteDto;
 import pe.com.rhsistemas.mf.cross.util.UtilMfDto;
 import pe.com.rhsistemas.mfjpamenu.entity.MenuDetalle;
 import pe.com.rhsistemas.mfjpamenu.entity.MenuDetallePK;
 import pe.com.rhsistemas.mfjpamenu.entity.MenuGenerado;
+import pe.com.rhsistemas.mfjpamenu.entity.PlatoIngrediente;
 
 public class Utilmfjpa {
 	
@@ -81,6 +85,27 @@ public class Utilmfjpa {
 		menuDetalle.setIdUsuaModi(detaDto.getIdUsuarioModificacion());
 		
 		return menuDetalle;
+	}
+	
+	public static PlatoIngredienteDto parsePlatoIngrediente(PlatoIngrediente entity) {
+		PlatoIngredienteDto dto = new PlatoIngredienteDto();
+		dto.setIdPlato(entity.getId().getIdPlato());
+		IngredienteDto ingrediente = new IngredienteDto();
+		ingrediente.setId(entity.getId().getIdIngrediente());
+		dto.setIngrediente(ingrediente);
+		dto.setCantidad(entity.getNuCantidad());
+		BaseValor unidadMedida = new BaseValor();
+		unidadMedida.setCodigo(entity.getUnidadMedida().getIdUnidMedi().toString());
+		unidadMedida.setNombre(entity.getUnidadMedida().getDeUnidMedi());
+		dto.setUnidadMedida(unidadMedida);
+		BaseValor tipoIngrediente = new BaseValor();
+		tipoIngrediente.setCodigo(entity.getTiIngrediente());
+		dto.setTipoIngrediente(tipoIngrediente);
+		dto.setIdUsuarioModificacion(entity.getIdUsuaModi());
+		dto.setIdUsuarioRegistro(entity.getIdUsuaCrea());
+		dto.setFechaModificacion(entity.getFeModificacion());
+		dto.setFechaRegistro(entity.getFeRegistro());
+		return dto;
 	}
 
 }

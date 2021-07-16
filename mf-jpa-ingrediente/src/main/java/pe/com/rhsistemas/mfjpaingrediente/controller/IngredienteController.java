@@ -30,93 +30,130 @@ import pe.com.rhsistemas.mfjpaingrediente.entity.PlatoIngrediente;
 import pe.com.rhsistemas.mfjpaingrediente.util.Utilmfjpa;
 
 @RestController
-@RequestMapping( value = "/IngredienteRJPAService")
+@RequestMapping(value = "/IngredienteRJPAService")
 public class IngredienteController {
 
 	private static final Logger log = LoggerFactory.getLogger(IngredienteController.class);
-	
+
 	@Autowired
 	private IngredienteRepository ingredienteRepository;
-	
+
 	@Autowired
 	private PlatoIngredienteRepository platoIngredienteRepository;
-	
-    @PostMapping(value = "/ingrediente")
+
+	@PostMapping(value = "/ingrediente")
 	public ResponseEntity<Map<String, Object>> registraIngrediente(@RequestBody IngredienteDto dto) {
-    	ResponseEntity<Map<String, Object>> salida = null;
+		ResponseEntity<Map<String, Object>> salida = null;
+		Map<String, Object> mapeo = null;
+		HttpStatus status = null;
 		try {
 			log.debug("Parametros recibidos");
-			UtilMfDto.pintaLog(dto,"ingredienteDto");
-			
+			UtilMfDto.pintaLog(dto, "ingredienteDto");
+
 			ingredienteRepository.save(Utilmfjpa.parseIngredienteDto(dto));
-			
-			salida = new ResponseEntity<>(HttpStatus.CREATED);
-			
+
+			status = HttpStatus.CREATED;
+			mapeo = new HashMap<String, Object>();
+			mapeo.put("error", false);
+			mapeo.put("mensaje", "Operacion Completada");
+
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
-			salida = new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+			mapeo = new HashMap<String, Object>();
+			mapeo.put("error", true);
+			mapeo.put("mensaje", "Operacion no completada");
 		}
+		salida = new ResponseEntity<Map<String, Object>>(mapeo, status);
+
 		return salida;
 	}
-    
-    @DeleteMapping(value = "/ingrediente/{idIngrediente}")
+
+	@DeleteMapping(value = "/ingrediente/{idIngrediente}")
 	public ResponseEntity<Map<String, Object>> eliminarIngrediente(@PathVariable Integer idIngrediente) {
-    	ResponseEntity<Map<String, Object>> salida = null;
+		ResponseEntity<Map<String, Object>> salida = null;
+		Map<String, Object> mapeo = null;
+		HttpStatus status = null;
 		try {
 			log.debug("Parametros recibidos");
-			UtilMfDto.pintaLog(idIngrediente,"idIngrediente");
-			
+			UtilMfDto.pintaLog(idIngrediente, "idIngrediente");
+
 			Ingrediente entity = new Ingrediente();
 			entity.setIdIngrediente(idIngrediente);
 			ingredienteRepository.delete(entity);
-			
-			salida = new ResponseEntity<>(HttpStatus.OK);
-			
+
+			status = HttpStatus.OK;
+			mapeo = new HashMap<String, Object>();
+			mapeo.put("error", false);
+			mapeo.put("mensaje", "Operacion Completada");
+
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
-			salida = new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+			mapeo = new HashMap<String, Object>();
+			mapeo.put("error", true);
+			mapeo.put("mensaje", "Operacion no completada");
 		}
+		salida = new ResponseEntity<Map<String, Object>>(mapeo, status);
+
 		return salida;
 	}
-	
-    @PostMapping(value = "/ingredientes")
+
+	@PostMapping(value = "/ingredientes")
 	public ResponseEntity<Map<String, Object>> registraIngredientes(@RequestBody List<IngredienteDto> lista) {
-    	ResponseEntity<Map<String, Object>> salida = null;
+		ResponseEntity<Map<String, Object>> salida = null;
+		Map<String, Object> mapeo = null;
+		HttpStatus status = null;
 		try {
 			log.debug("Parametros recibidos");
-			UtilMfDto.pintaLog(lista,"listaIngredientes");
+			UtilMfDto.pintaLog(lista, "listaIngredientes");
 			ingredienteRepository.saveAll(Utilmfjpa.parseListaIngredienteDto(lista));
-			
-			salida = new ResponseEntity<>(HttpStatus.CREATED);
-			
+
+			status = HttpStatus.OK;
+			mapeo = new HashMap<String, Object>();
+			mapeo.put("error", false);
+			mapeo.put("mensaje", "Operacion Completada");
+
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
-			salida = new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+			mapeo = new HashMap<String, Object>();
+			mapeo.put("error", true);
+			mapeo.put("mensaje", "Operacion no completada");
 		}
+		salida = new ResponseEntity<Map<String, Object>>(mapeo, status);
+
 		return salida;
 	}
-    
-    @GetMapping(value = "/ingredientes/{idPlato}")
-    public ResponseEntity<Map<String, Object>> ingredientesPlato(@PathVariable Integer idPlato){
-    	ResponseEntity<Map<String, Object>> salida = null;
-    	HttpStatus statusHttp = null;
-    	
-    	log.debug("Parametros recibidos");
-		UtilMfDto.pintaLog(idPlato,"idPlato");
-		
-    	List<PlatoIngrediente> listaPlatoIngredientes = platoIngredienteRepository.findAllByPlato(idPlato);
-    	
-    	statusHttp = HttpStatus.NOT_FOUND;
-    	
-    	Map<String, Object> mapeo = null;
-    	
-    	if (UtilMfDto.listaNoVacia(listaPlatoIngredientes)) {
-    		mapeo = new HashMap<String, Object>();
-    		mapeo.put(Constantes.VALOR_DATA_MAP, listaPlatoIngredientes);
-    		statusHttp = HttpStatus.FOUND;
-    	}
-    	salida = new ResponseEntity<>(mapeo,statusHttp);
-    	
-    	return salida;
-    }
+
+	@GetMapping(value = "/ingredientes/{idPlato}")
+	public ResponseEntity<Map<String, Object>> ingredientesPlato(@PathVariable Integer idPlato) {
+		ResponseEntity<Map<String, Object>> salida = null;
+		Map<String, Object> mapeo = null;
+		HttpStatus status = null;
+
+		try {
+			log.debug("Parametros recibidos");
+			UtilMfDto.pintaLog(idPlato, "idPlato");
+
+			List<PlatoIngrediente> listaPlatoIngredientes = platoIngredienteRepository.findAllByPlato(idPlato);
+
+			status = HttpStatus.NO_CONTENT;
+
+			if (UtilMfDto.listaNoVacia(listaPlatoIngredientes)) {
+				mapeo = new HashMap<String, Object>();
+				mapeo.put(Constantes.VALOR_DATA_MAP, listaPlatoIngredientes);
+				status = HttpStatus.OK;
+			}
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+			mapeo = new HashMap<String, Object>();
+			mapeo.put("error", true);
+			mapeo.put("mensaje", "Operacion no completada");
+		}
+		salida = new ResponseEntity<Map<String, Object>>(mapeo, status);
+
+		return salida;
+	}
 }

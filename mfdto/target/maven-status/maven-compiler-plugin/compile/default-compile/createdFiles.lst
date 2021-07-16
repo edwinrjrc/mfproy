@@ -5,6 +5,7 @@ pe\com\rhsistemas\mf\cross\dto\ValorNutricionalDto.class
 pe\com\rhsistemas\mf\cross\dto\IngredienteDto.class
 pe\com\rhsistemas\mf\cross\dto\UsuarioDto.class
 pe\com\rhsistemas\mf\cross\dto\PersonaNaturalDto.class
+pe\com\rhsistemas\mf\post\dto\ListaPlatoDto.class
 pe\com\rhsistemas\mf\cross\dto\RolDto.class
 pe\com\rhsistemas\mf\cross\compartido\Constantes.class
 pe\com\rhsistemas\mf\cross\dto\BaseDto.class
