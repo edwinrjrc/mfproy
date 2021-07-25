@@ -15,6 +15,7 @@ pe\com\rhsistemas\mf\cross\dto\PersonaDto.class
 pe\com\rhsistemas\mf\cross\dto\UsuarioRolesDto.class
 pe\com\rhsistemas\mf\cross\dto\PersonaJuridicaDto.class
 pe\com\rhsistemas\mf\cross\dto\MenuGeneradoDto.class
+pe\com\rhsistemas\mf\cross\dto\PlatoTipoPlatoDto.class
 pe\com\rhsistemas\mf\post\dto\GenerarMenuDto.class
 pe\com\rhsistemas\mf\cross\dto\DocumentoIdentidadDto.class
 pe\com\rhsistemas\mf\cross\exception\UtilMfDtoException.class
