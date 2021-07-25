@@ -31,6 +31,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import pe.com.rhsistemas.mf.cross.compartido.Constantes;
 import pe.com.rhsistemas.mf.cross.dto.PlatoDto;
+import pe.com.rhsistemas.mf.cross.dto.PlatoTipoPlatoDto;
 import pe.com.rhsistemas.mf.cross.exception.UtilMfDtoException;
 import pe.com.rhsistemas.mf.cross.util.UtilMfDto;
 import pe.com.rhsistemas.mfsermenu.exception.MfServiceMenuException;
@@ -47,6 +48,8 @@ public class RemoteServicePlato {
 	private static final String URL_SERVICE_1 = "http://mf-jpa-platos/PlatoRJPAService/platos";
 	
 	private static final String URL_SERVICE_2 = "http://mf-jpa-platos/PlatoRJPAService/platosNoConsumidos";
+	
+	private static final String URL_SERVICE_3 = "http://mf-jpa-platos/PlatoTipoPlatoRJPAService/tipoPlatoPlato";
 	
 	@Autowired
 	private RestTemplate restTemplate;
@@ -139,6 +142,50 @@ public class RemoteServicePlato {
 			throw new MfServiceMenuException(e);
 		}
 		return listaPlatos;
+	}
+	
+	public List<PlatoTipoPlatoDto> consultarTipoPlatoxPlato(List<Integer> listaPlatos) throws MfServiceMenuException{
+		List<PlatoTipoPlatoDto> listaTipoPlato = null;
+		
+		try {
+			log.info("Recibiendo parametros en"+this.getClass().getName()+" -> "+this.getClass().getEnclosingMethod().getName());
+			UtilMfDto.pintaLog(listaPlatos, "listaPlatos");
+			
+			HttpMethod metodoServicio = HttpMethod.GET;
+			
+			HttpHeaders headers = new HttpHeaders();
+			headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+			HttpEntity<Map<String, Object>> requestEntity = new HttpEntity<Map<String,Object>>(headers);
+			Class<Map> responseType = Map.class;
+			
+			String url = URL_SERVICE_3;
+			
+			ResponseEntity<Map> respuesta = restTemplate.exchange(obtenerUri(url), metodoServicio, requestEntity, responseType);
+			
+			JsonFactory factory = new JsonFactory();
+		    factory.enable(Feature.ALLOW_SINGLE_QUOTES);
+		    ObjectMapper mapper = new ObjectMapper(factory);
+			
+		    List<Map> datosLista = (List<Map>) respuesta.getBody().get(Constantes.VALOR_DATA_MAP);
+		    listaPlatos = new ArrayList<>();
+		    for (Object objeto : datosLista) {
+		    	LinkedHashMap<String,Object> map = (LinkedHashMap<String,Object>) objeto;
+		    	
+		    	listaTipoPlato.add(mapper.convertValue(map, PlatoTipoPlatoDto.class));
+			}
+			
+		} catch (RestClientException e) {
+			log.error(e.getMessage(),e);
+			throw new MfServiceMenuException(e);
+		} catch (SecurityException e) {
+			log.error(e.getMessage(),e);
+			throw new MfServiceMenuException(e);
+		} catch (MfServiceMenuException e) {
+			log.error(e.getMessage(),e);
+			throw new MfServiceMenuException(e);
+		}
+		
+		return listaTipoPlato;
 	}
 
 	private URI obtenerUri(String cadenaUrl) throws MfServiceMenuException {

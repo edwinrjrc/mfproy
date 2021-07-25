@@ -15,12 +15,14 @@ import pe.com.rhsistemas.mf.cross.dto.PasoPreparacionDto;
 import pe.com.rhsistemas.mf.cross.dto.PersonaDto;
 import pe.com.rhsistemas.mf.cross.dto.PlatoDto;
 import pe.com.rhsistemas.mf.cross.dto.PlatoIngredienteDto;
+import pe.com.rhsistemas.mf.cross.dto.PlatoTipoPlatoDto;
 import pe.com.rhsistemas.mf.cross.dto.ValorNutricionalDto;
 import pe.com.rhsistemas.mf.cross.util.UtilMfDto;
 import pe.com.rhsistemas.mfjpaplatos.entity.Ingrediente;
 import pe.com.rhsistemas.mfjpaplatos.entity.Plato;
 import pe.com.rhsistemas.mfjpaplatos.entity.PlatoIngrediente;
 import pe.com.rhsistemas.mfjpaplatos.entity.PlatoIngredientePK;
+import pe.com.rhsistemas.mfjpaplatos.entity.PlatoTipoPlato;
 import pe.com.rhsistemas.mfjpaplatos.entity.Receta;
 import pe.com.rhsistemas.mfjpaplatos.entity.RecetaPK;
 import pe.com.rhsistemas.mfjpaplatos.entity.TipoCocina;
@@ -62,12 +64,12 @@ public class Utilmfjpa {
 			dto.setFechaModificacion(entity.getFeModificacion());
 			dto.setFechaRegistro(entity.getFeRegistro());
 			dto.setId(entity.getIdPlato());
-			dto.setIdEstado(parseaNullInt(entity.getIdEstaPlat()));
-			dto.setIdUsuarioModificacion(parseaNullInt(entity.getIdUsuaModi()));
-			dto.setIdUsuarioRegistro(parseaNullInt(entity.getIdUsuaCrea()));
+			dto.setIdEstado(UtilMfDto.parseaNullInt(entity.getIdEstaPlat()));
+			dto.setIdUsuarioModificacion(UtilMfDto.parseaNullInt(entity.getIdUsuaModi()));
+			dto.setIdUsuarioRegistro(UtilMfDto.parseaNullInt(entity.getIdUsuaCrea()));
 			dto.setNombrePlato(entity.getNoPlato());
 			PersonaDto persona = new PersonaDto();
-			persona.setId(parseaNullLong(entity.getIdPersona()));
+			persona.setId(UtilMfDto.parseaNullLong(entity.getIdPersona()));
 			dto.setPersona(persona);
 			BaseValor tipoCocinaV = new BaseValor();
 			tipoCocinaV.setCodigo(entity.getTipoCocina().getIdTipoCoci().toString());
@@ -222,18 +224,15 @@ public class Utilmfjpa {
 	}
 	
 	
-	public static int parseaNullInt(Integer valor) {
-		int dato = 0;
-		if (valor != null) {
-			dato = valor.intValue();
-		}
-		return dato;
-	}
-	public static long parseaNullLong(Long valor) {
-		long dato = 0;
-		if (valor != null) {
-			dato = valor.longValue();
-		}
-		return dato;
+	public static PlatoTipoPlatoDto parsePlatoTipoPlato(PlatoTipoPlato entity) {
+		PlatoTipoPlatoDto dto = new PlatoTipoPlatoDto();
+		dto.setIdPlato(entity.getId().getIdPlato());
+		dto.setIdTipoPlato(entity.getId().getIdTipoPlat());
+		dto.setFechaModificacion(entity.getFeModificacion());
+		dto.setFechaRegistro(entity.getFeRegistro());
+		dto.setIdUsuarioModificacion(entity.getIdUsuaModi());
+		dto.setIdUsuarioRegistro(entity.getIdUsuaCrea());
+		
+		return dto;
 	}
 }

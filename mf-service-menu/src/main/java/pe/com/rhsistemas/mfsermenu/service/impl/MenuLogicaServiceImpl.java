@@ -18,6 +18,7 @@ import org.springframework.web.client.RestTemplate;
 import pe.com.rhsistemas.mf.cross.dto.MenuDetalleDto;
 import pe.com.rhsistemas.mf.cross.dto.MenuGeneradoDto;
 import pe.com.rhsistemas.mf.cross.dto.PlatoDto;
+import pe.com.rhsistemas.mf.cross.dto.PlatoTipoPlatoDto;
 import pe.com.rhsistemas.mf.cross.exception.UtilMfDtoException;
 import pe.com.rhsistemas.mf.cross.util.UtilMfDto;
 import pe.com.rhsistemas.mfsermenu.exception.MfServiceMenuException;
@@ -287,5 +288,10 @@ public class MenuLogicaServiceImpl implements MenuLogicaService {
 		}
 
 		return tipoPlatos.get(UtilMfDto.numeroEnteroAleatorio(1, tipoPlatos.size()) - 1);
+	}
+	
+	private List<PlatoTipoPlatoDto> consultaPlatoTipoPlato (List<Integer> listaPlatos){
+		return null;
+		
 	}
 }

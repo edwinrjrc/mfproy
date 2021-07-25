@@ -11,6 +11,7 @@ import org.springframework.data.repository.query.Param;
 
 import pe.com.rhsistemas.mfjpaplatos.entity.PlatoIngrediente;
 import pe.com.rhsistemas.mfjpaplatos.entity.PlatoIngredientePK;
+import pe.com.rhsistemas.mfjpaplatos.entity.PlatoTipoPlato;
 
 /**
  * @author Edwin
@@ -18,6 +19,6 @@ import pe.com.rhsistemas.mfjpaplatos.entity.PlatoIngredientePK;
  */
 public interface PlatoTipoPlatoRepository extends JpaRepository<PlatoIngrediente, PlatoIngredientePK> {
 
-	@Query(value = "Select ptp from PlatoIngrediente ptp where ptp.id.idPlato in (:listaPlatos)")
-	List<PlatoIngrediente> findByPlatoTipoPlatoIn(@Param(value = "listaPlatos") List<Integer> listaPlatos);
+	@Query(value = "Select ptp from PlatoTipoPlato ptp where ptp.id.idPlato in (:listaPlatos)")
+	List<PlatoTipoPlato> findByPlatoTipoPlatoIn(@Param(value = "listaPlatos") List<Integer> listaPlatos);
 }

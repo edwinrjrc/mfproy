@@ -20,12 +20,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import pe.com.rhsistemas.mf.cross.compartido.Constantes;
-import pe.com.rhsistemas.mf.cross.dto.BaseValor;
-import pe.com.rhsistemas.mf.cross.dto.IngredienteDto;
-import pe.com.rhsistemas.mf.cross.dto.PlatoIngredienteDto;
+import pe.com.rhsistemas.mf.cross.dto.PlatoTipoPlatoDto;
+import pe.com.rhsistemas.mf.cross.util.UtilMfDto;
 import pe.com.rhsistemas.mf.post.dto.ListaPlatoDto;
 import pe.com.rhsistemas.mfjpaplatos.dao.PlatoTipoPlatoRepository;
-import pe.com.rhsistemas.mfjpaplatos.entity.PlatoIngrediente;
+import pe.com.rhsistemas.mfjpaplatos.entity.PlatoTipoPlato;
+import pe.com.rhsistemas.mfjpaplatos.util.Utilmfjpa;
 
 /**
  * @author Edwin
@@ -41,35 +41,25 @@ public class PlatoTipoPlatoController {
 	private PlatoTipoPlatoRepository platoTipoPlatoRepository;
 	
 	@GetMapping(value = "/tipoPlatoPlato", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Map<String, Object>> registrarPlato(@RequestParam(name = "listaPlatoDto", required = true) ListaPlatoDto listaPlatoDto) {
+	public ResponseEntity<Map<String, Object>> consultarTiposPlato(@RequestParam(name = "listaPlatoDto", required = true) ListaPlatoDto listaPlatoDto) {
 		ResponseEntity<Map<String, Object>> salida = null;
 		Map<String, Object> mapeo = null;
 		HttpStatus status = null;
 		
 		try {
-			List<PlatoIngrediente> lista = platoTipoPlatoRepository.findByPlatoTipoPlatoIn(listaPlatoDto.getListaPlatos());
-			List<PlatoIngredienteDto> listaPlato = new ArrayList<>();
-			for (PlatoIngrediente platoIngrediente : lista) {
-				PlatoIngredienteDto dto = new PlatoIngredienteDto();
-				dto.setIdPlato(platoIngrediente.getId().getIdPlato());
-				IngredienteDto ingrediente = new IngredienteDto();
-				ingrediente.setId(platoIngrediente.getId().getIdIngrediente());
-				dto.setIngrediente(ingrediente);
-				dto.setCantidad(platoIngrediente.getNuCantidad());
-				BaseValor unidadMedida = new BaseValor();
-				unidadMedida.setCodigo(platoIngrediente.getUnidadMedida().getIdUnidMedi().toString());
-				unidadMedida.setNombre(platoIngrediente.getUnidadMedida().getDeUnidMedi());
-				dto.setUnidadMedida(unidadMedida);
-				BaseValor tipoIngrediente = new BaseValor();
-				tipoIngrediente.setCodigo(platoIngrediente.getTiIngrediente());
-				dto.setTipoIngrediente(tipoIngrediente);
-				listaPlato.add(dto);
+			status = HttpStatus.NO_CONTENT;
+			List<PlatoTipoPlato> lista = platoTipoPlatoRepository.findByPlatoTipoPlatoIn(listaPlatoDto.getListaPlatos());
+			List<PlatoTipoPlatoDto> listaTipoPlato = new ArrayList<>();
+			if (UtilMfDto.listaNoVacia(lista)) {
+				for (PlatoTipoPlato entity : lista) {
+					listaTipoPlato.add(Utilmfjpa.parsePlatoTipoPlato(entity));
+				}
 			}
 			
 			mapeo = new HashMap<String, Object>();
 			mapeo.put("error", false);
 			mapeo.put("mensaje", "Consulta completada");
-			mapeo.put(Constantes.VALOR_DATA_MAP, listaPlato);
+			mapeo.put(Constantes.VALOR_DATA_MAP, listaTipoPlato);
 			
 			status = HttpStatus.OK;
 		} catch (Exception e) {
