@@ -1,0 +1,21 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>pe.com.rhsistemas</groupId>
+  <artifactId>mf-proy</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>pom</packaging>
+  <name>mf-proy</name>
+  <description>Proyecto padre de MF que contiene los otros modulos</description>
+  <modules>
+  	<module>mfdto</module>
+  	<module>mf-jpa-ingrediente</module>
+  	<module>mf-jpa-menu</module>
+  	<module>mf-jpa-platos</module>
+  	<module>mf-jpa-receta</module>
+  	<module>mf-service-ingrediente</module>
+  	<module>mf-service-menu</module>
+  	<module>mf-service-security</module>
+  	<module>mf-gateway</module>
+  	<module>mf-eureka-server</module>
+  </modules>
+</project>

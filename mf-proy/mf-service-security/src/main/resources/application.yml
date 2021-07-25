@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: mf-service-security
+  datasource:
+    url: jdbc:postgresql://localhost:5432/menufamilia
+    username: postgres
+    password: admin
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    
+server:
+  port: 24234
+  servlet:
+    context-path: /mf-service-security
