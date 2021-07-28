@@ -22,13 +22,13 @@ import javax.persistence.Table;
  * 
  */
 @Entity
-@Table(name="ingrediente")
+@Table(schema = "sistema", name="ingrediente")
 @NamedQuery(name="Ingrediente.findAll", query="SELECT i FROM Ingrediente i")
 public class Ingrediente implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="INGREDIENTE_IDINGREDIENTE_GENERATOR", sequenceName="SEQ_INGREDIENTE")
+	@SequenceGenerator(schema = "sistema", name="INGREDIENTE_IDINGREDIENTE_GENERATOR", sequenceName="SEQ_INGREDIENTE")
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="INGREDIENTE_IDINGREDIENTE_GENERATOR")
 	@Column(name="id_ingrediente", unique=true, nullable=false)
 	private Integer idIngrediente;

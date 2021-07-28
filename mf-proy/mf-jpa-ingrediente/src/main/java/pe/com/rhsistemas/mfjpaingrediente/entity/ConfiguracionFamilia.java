@@ -16,7 +16,7 @@ import javax.persistence.Table;
  * 
  */
 @Entity
-@Table(name="configuracion_familia")
+@Table(schema = "sistema", name="configuracion_familia")
 @NamedQuery(name="ConfiguracionFamilia.findAll", query="SELECT c FROM ConfiguracionFamilia c")
 public class ConfiguracionFamilia implements Serializable {
 	private static final long serialVersionUID = 1L;

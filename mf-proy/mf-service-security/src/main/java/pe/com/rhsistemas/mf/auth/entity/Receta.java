@@ -17,7 +17,7 @@ import javax.persistence.Table;
  * 
  */
 @Entity
-@Table(name="receta", schema = "sistema")
+@Table(schema = "sistema", name="receta")
 @NamedQuery(name="Receta.findAll", query="SELECT r FROM Receta r")
 public class Receta implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -50,11 +50,6 @@ public class Receta implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="id_ingrediente", nullable=false, insertable=false, updatable=false)
 	private Ingrediente ingrediente;
-
-	//bi-directional many-to-one association to Plato
-	@ManyToOne
-	@JoinColumn(name="id_plato", nullable=false, insertable=false, updatable=false)
-	private Plato plato;
 
 	public Receta() {
 	}
@@ -129,14 +124,6 @@ public class Receta implements Serializable {
 
 	public void setIngrediente(Ingrediente ingrediente) {
 		this.ingrediente = ingrediente;
-	}
-
-	public Plato getPlato() {
-		return this.plato;
-	}
-
-	public void setPlato(Plato plato) {
-		this.plato = plato;
 	}
 
 }

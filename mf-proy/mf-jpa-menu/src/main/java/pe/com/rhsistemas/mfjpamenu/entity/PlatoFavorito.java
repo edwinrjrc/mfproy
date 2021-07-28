@@ -1,8 +1,13 @@
 package pe.com.rhsistemas.mfjpamenu.entity;
 
 import java.io.Serializable;
-import javax.persistence.*;
 import java.sql.Timestamp;
+
+import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 
 
 /**
@@ -10,7 +15,7 @@ import java.sql.Timestamp;
  * 
  */
 @Entity
-@Table(name="plato_favorito")
+@Table(schema = "sistema", name="plato_favorito")
 @NamedQuery(name="PlatoFavorito.findAll", query="SELECT p FROM PlatoFavorito p")
 public class PlatoFavorito implements Serializable {
 	private static final long serialVersionUID = 1L;

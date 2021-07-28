@@ -62,7 +62,7 @@ public class MenuController {
 		try {
 			Persona persona = new Persona();
 			persona.setIdPersona(Long.valueOf(idPersona));
-			List<MenuDetalle> listaMenus = menuRepository.ultimosMenusRango(persona, null);
+			List<MenuDetalle> listaMenus = menuRepository.ultimosMenusRango(persona.getIdPersona(), null);
 			List<MenuDetalleDto> listaMenuDto = new ArrayList<>();
 			MenuDetalleDto menuDetalleDto = null;
 			for (MenuDetalle menuDetalle : listaMenus) {
@@ -146,12 +146,12 @@ public class MenuController {
 
 			List<MenuGeneradoDto> listaMenuDto = new ArrayList<MenuGeneradoDto>();
 
-			List<MenuGenerado> ultimoMenu = menuRepository.findByUltimoMenu(persona);
+			List<MenuGenerado> ultimoMenu = menuRepository.findByUltimoMenu(persona.getIdPersona());
 			List<MenuDetalleDto> listaDetalle = null;
 			for (MenuGenerado menuGenerado : ultimoMenu) {
 				MenuGeneradoDto menuGeneradoDto = Utilmfjpa.parseMenuGenerado(menuGenerado);
 
-				List<MenuDetalle> listaMenuDetalle = menuDetalleRepository.findByMenuGenerado(menuGenerado);
+				List<MenuDetalle> listaMenuDetalle = menuDetalleRepository.findByMenuGenerado(menuGenerado.getIdGenerado().intValue());
 				listaDetalle = new ArrayList<>();
 				for (MenuDetalle menuDetalle : listaMenuDetalle) {
 					listaDetalle.add(Utilmfjpa.parseMenuDetalle(menuDetalle));

@@ -17,7 +17,7 @@ import javax.persistence.Table;
  * 
  */
 @Entity
-@Table(name="tipo_plato")
+@Table(name="tipo_plato", schema = "sistema")
 @NamedQuery(name="TipoPlato.findAll", query="SELECT t FROM TipoPlato t")
 public class TipoPlato implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -40,6 +40,12 @@ public class TipoPlato implements Serializable {
 
 	@Column(name="id_usua_modi", nullable=false)
 	private Integer idUsuaModi;
+
+	@Column(name="in_entrada", length=1)
+	private String inEntrada;
+
+	@Column(name="in_fondo", length=1)
+	private String inFondo;
 
 	//bi-directional many-to-one association to PlatoTipoPlato
 	@OneToMany(mappedBy="tipoPlato")
@@ -94,6 +100,22 @@ public class TipoPlato implements Serializable {
 
 	public void setIdUsuaModi(Integer idUsuaModi) {
 		this.idUsuaModi = idUsuaModi;
+	}
+
+	public String getInEntrada() {
+		return this.inEntrada;
+	}
+
+	public void setInEntrada(String inEntrada) {
+		this.inEntrada = inEntrada;
+	}
+
+	public String getInFondo() {
+		return this.inFondo;
+	}
+
+	public void setInFondo(String inFondo) {
+		this.inFondo = inFondo;
 	}
 
 	public List<PlatoTipoPlato> getPlatoTipoPlatos() {

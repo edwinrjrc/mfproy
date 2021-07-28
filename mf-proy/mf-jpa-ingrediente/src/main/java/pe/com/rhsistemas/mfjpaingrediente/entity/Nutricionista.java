@@ -17,7 +17,7 @@ import javax.persistence.Table;
  * 
  */
 @Entity
-@Table(name="nutricionista")
+@Table(schema = "sistema", name="nutricionista")
 @NamedQuery(name="Nutricionista.findAll", query="SELECT n FROM Nutricionista n")
 public class Nutricionista implements Serializable {
 	private static final long serialVersionUID = 1L;

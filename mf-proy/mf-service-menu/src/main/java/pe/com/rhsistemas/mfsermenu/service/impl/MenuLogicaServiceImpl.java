@@ -77,6 +77,10 @@ public class MenuLogicaServiceImpl implements MenuLogicaService {
 
 		List<PlatoDto> listaPlatosNoConsumidos = remoteServicePlato.platosNoConsumidos(idPersona, fechaCorte,
 				cal.getTime());
+		
+		List<PlatoTipoPlatoDto> listaTiposPlato = remoteServicePlato.consultarTipoPlatoxPlato(idPersona,fechaCorte,cal.getTime());
+		
+		log.info("lista tipoPlato");
 
 		int cantidadSemanas = 1;
 
@@ -131,13 +135,13 @@ public class MenuLogicaServiceImpl implements MenuLogicaService {
 		log.info("platosTotal::" + listaPlatosNoConsumidos.size());
 
 		menuGeneradoDto
-				.setListaPlatos(generarDetalleMenuDto(fechaInicio, fechaFin, idUsuario, null, listaPlatosNoConsumidos));
+				.setListaPlatos(generarDetalleMenuDto(fechaInicio, fechaFin, idUsuario, null, listaPlatosNoConsumidos, listaTiposPlato));
 
 		this.remoteServiceMenu.grabarMenuGenerado(menuGeneradoDto);
 	}
 
 	private List<MenuDetalleDto> generarDetalleMenuDto(Date fechaInicio, Date fechaFin, int idUsuario, Integer[] tiposConsumidos,
-			List<PlatoDto> platosTotal) throws MfServiceMenuException, UtilMfDtoException {
+			List<PlatoDto> platosTotal, List<PlatoTipoPlatoDto> listaTiposPlatos) throws MfServiceMenuException, UtilMfDtoException {
 		log.info("platos llegan::" + platosTotal.size());
 		
 		Date fechaHoy = new Date();
@@ -290,8 +294,4 @@ public class MenuLogicaServiceImpl implements MenuLogicaService {
 		return tipoPlatos.get(UtilMfDto.numeroEnteroAleatorio(1, tipoPlatos.size()) - 1);
 	}
 	
-	private List<PlatoTipoPlatoDto> consultaPlatoTipoPlato (List<Integer> listaPlatos){
-		return null;
-		
-	}
 }

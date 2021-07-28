@@ -20,13 +20,13 @@ import javax.persistence.Table;
  * 
  */
 @Entity
-@Table(name="plato")
+@Table(schema = "sistema", name="plato")
 @NamedQuery(name="Plato.findAll", query="SELECT p FROM Plato p")
 public class Plato implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="PLATO_IDPLATO_GENERATOR", sequenceName="SEQ_PLATO")
+	@SequenceGenerator(schema = "sistema", name="PLATO_IDPLATO_GENERATOR", sequenceName="SEQ_PLATO")
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="PLATO_IDPLATO_GENERATOR")
 	@Column(name="id_plato", unique=true, nullable=false)
 	private Integer idPlato;

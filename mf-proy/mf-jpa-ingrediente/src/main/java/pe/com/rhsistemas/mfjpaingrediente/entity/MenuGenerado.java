@@ -18,13 +18,13 @@ import javax.persistence.Table;
  * 
  */
 @Entity
-@Table(name="menu_generado")
+@Table(schema = "sistema", name="menu_generado")
 @NamedQuery(name="MenuGenerado.findAll", query="SELECT m FROM MenuGenerado m")
 public class MenuGenerado implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="MENU_GENERADO_IDGENERADO_GENERATOR", sequenceName="SEQ_MENU")
+	@SequenceGenerator(schema = "sistema", name="MENU_GENERADO_IDGENERADO_GENERATOR", sequenceName="SEQ_MENU")
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="MENU_GENERADO_IDGENERADO_GENERATOR")
 	@Column(name="id_generado", unique=true, nullable=false)
 	private Long idGenerado;

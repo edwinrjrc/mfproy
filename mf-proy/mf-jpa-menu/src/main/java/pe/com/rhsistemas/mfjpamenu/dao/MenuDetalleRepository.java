@@ -6,10 +6,10 @@ package pe.com.rhsistemas.mfjpamenu.dao;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import pe.com.rhsistemas.mfjpamenu.entity.MenuDetalle;
 import pe.com.rhsistemas.mfjpamenu.entity.MenuDetallePK;
-import pe.com.rhsistemas.mfjpamenu.entity.MenuGenerado;
 
 /**
  * @author Edwin
@@ -17,5 +17,6 @@ import pe.com.rhsistemas.mfjpamenu.entity.MenuGenerado;
  */
 public interface MenuDetalleRepository extends JpaRepository<MenuDetalle, MenuDetallePK>{
 
-	List<MenuDetalle> findByMenuGenerado(MenuGenerado menuGenerado);
+	@Query(value = "select d from MenuDetalle d where d.idGenerado = ?1")
+	List<MenuDetalle> findByMenuGenerado(Integer idGenerado);
 }

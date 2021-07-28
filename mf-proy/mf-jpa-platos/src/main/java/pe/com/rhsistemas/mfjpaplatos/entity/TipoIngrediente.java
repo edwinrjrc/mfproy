@@ -1,9 +1,15 @@
 package pe.com.rhsistemas.mfjpaplatos.entity;
 
 import java.io.Serializable;
-import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 
 /**
@@ -11,7 +17,7 @@ import java.util.List;
  * 
  */
 @Entity
-@Table(name="tipo_ingrediente")
+@Table(schema = "sistema", name="tipo_ingrediente")
 @NamedQuery(name="TipoIngrediente.findAll", query="SELECT t FROM TipoIngrediente t")
 public class TipoIngrediente implements Serializable {
 	private static final long serialVersionUID = 1L;

@@ -2,11 +2,13 @@ package pe.com.rhsistemas.mf.auth.entity;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 
@@ -15,7 +17,7 @@ import javax.persistence.Table;
  * 
  */
 @Entity
-@Table(name="unidad_medida", schema = "sistema")
+@Table(schema = "sistema", name="unidad_medida")
 @NamedQuery(name="UnidadMedida.findAll", query="SELECT u FROM UnidadMedida u")
 public class UnidadMedida implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -38,6 +40,10 @@ public class UnidadMedida implements Serializable {
 
 	@Column(name="id_usua_modi", nullable=false)
 	private Integer idUsuaModi;
+
+	//bi-directional many-to-one association to PlatoIngrediente
+	@OneToMany(mappedBy="unidadMedida")
+	private List<PlatoIngrediente> platoIngredientes;
 
 	public UnidadMedida() {
 	}
@@ -88,6 +94,28 @@ public class UnidadMedida implements Serializable {
 
 	public void setIdUsuaModi(Integer idUsuaModi) {
 		this.idUsuaModi = idUsuaModi;
+	}
+
+	public List<PlatoIngrediente> getPlatoIngredientes() {
+		return this.platoIngredientes;
+	}
+
+	public void setPlatoIngredientes(List<PlatoIngrediente> platoIngredientes) {
+		this.platoIngredientes = platoIngredientes;
+	}
+
+	public PlatoIngrediente addPlatoIngrediente(PlatoIngrediente platoIngrediente) {
+		getPlatoIngredientes().add(platoIngrediente);
+		platoIngrediente.setUnidadMedida(this);
+
+		return platoIngrediente;
+	}
+
+	public PlatoIngrediente removePlatoIngrediente(PlatoIngrediente platoIngrediente) {
+		getPlatoIngredientes().remove(platoIngrediente);
+		platoIngrediente.setUnidadMedida(null);
+
+		return platoIngrediente;
 	}
 
 }

@@ -1,8 +1,15 @@
 package pe.com.rhsistemas.mfjpamenu.entity;
 
 import java.io.Serializable;
-import javax.persistence.*;
 import java.sql.Timestamp;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 
 /**
@@ -10,7 +17,7 @@ import java.sql.Timestamp;
  * 
  */
 @Entity
-@Table(name="persona_juridica")
+@Table(schema = "sistema", name="persona_juridica")
 @NamedQuery(name="PersonaJuridica.findAll", query="SELECT p FROM PersonaJuridica p")
 public class PersonaJuridica implements Serializable {
 	private static final long serialVersionUID = 1L;

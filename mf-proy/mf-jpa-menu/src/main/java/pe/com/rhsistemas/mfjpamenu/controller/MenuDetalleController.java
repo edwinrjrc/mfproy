@@ -56,7 +56,7 @@ public class MenuDetalleController {
 			
 			List<MenuDetalleDto> listaMenuDetalle = new ArrayList<>();
 			
-			List<MenuDetalle> listaDetalle = menuDetalleRepository.findByMenuGenerado(menuGenerado);
+			List<MenuDetalle> listaDetalle = menuDetalleRepository.findByMenuGenerado(menuGenerado.getIdGenerado().intValue());
 			for (MenuDetalle menuDetalle : listaDetalle) {
 				listaMenuDetalle.add(Utilmfjpa.parseMenuDetalle(menuDetalle));
 			}

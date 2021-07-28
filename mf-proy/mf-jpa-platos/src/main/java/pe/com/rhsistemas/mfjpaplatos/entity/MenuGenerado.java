@@ -1,8 +1,16 @@
 package pe.com.rhsistemas.mfjpaplatos.entity;
 
 import java.io.Serializable;
-import javax.persistence.*;
 import java.sql.Timestamp;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.NamedQuery;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 
 /**
@@ -10,13 +18,13 @@ import java.sql.Timestamp;
  * 
  */
 @Entity
-@Table(name="menu_generado")
+@Table(schema = "sistema", name="menu_generado")
 @NamedQuery(name="MenuGenerado.findAll", query="SELECT m FROM MenuGenerado m")
 public class MenuGenerado implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="MENU_GENERADO_IDGENERADO_GENERATOR", sequenceName="SEQ_MENU")
+	@SequenceGenerator(schema = "sistema", name="MENU_GENERADO_IDGENERADO_GENERATOR", sequenceName="SEQ_MENU")
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="MENU_GENERADO_IDGENERADO_GENERATOR")
 	@Column(name="id_generado", unique=true, nullable=false)
 	private Long idGenerado;

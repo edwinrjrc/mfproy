@@ -1,6 +1,5 @@
 package pe.com.rhsistemas.mf.auth.entity;
 
-
 import java.io.Serializable;
 
 import javax.persistence.Column;
@@ -17,7 +16,7 @@ import javax.persistence.Table;
  * 
  */
 @Entity
-@Table(name="configuracion_familia", schema = "sistema")
+@Table(schema = "sistema", name="configuracion_familia")
 @NamedQuery(name="ConfiguracionFamilia.findAll", query="SELECT c FROM ConfiguracionFamilia c")
 public class ConfiguracionFamilia implements Serializable {
 	private static final long serialVersionUID = 1L;

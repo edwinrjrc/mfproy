@@ -15,7 +15,7 @@ import javax.persistence.Table;
  * 
  */
 @Entity
-@Table(name="productos_mercado")
+@Table(schema = "sistema", name="productos_mercado")
 @NamedQuery(name="ProductosMercado.findAll", query="SELECT p FROM ProductosMercado p")
 public class ProductosMercado implements Serializable {
 	private static final long serialVersionUID = 1L;

@@ -24,13 +24,13 @@ import javax.persistence.TemporalType;
  * 
  */
 @Entity
-@Table(name="persona")
+@Table(schema = "sistema", name="persona")
 @NamedQuery(name="Persona.findAll", query="SELECT p FROM Persona p")
 public class Persona implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="PERSONA_IDPERSONA_GENERATOR", sequenceName="SEQ_PERSONA")
+	@SequenceGenerator(schema = "sistema", name="PERSONA_IDPERSONA_GENERATOR", sequenceName="SEQ_PERSONA")
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="PERSONA_IDPERSONA_GENERATOR")
 	@Column(name="id_persona", unique=true, nullable=false)
 	private Long idPersona;

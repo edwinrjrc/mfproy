@@ -1,7 +1,14 @@
 package pe.com.rhsistemas.mfjpamenu.entity;
 
 import java.io.Serializable;
-import javax.persistence.*;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 
 /**
@@ -9,7 +16,7 @@ import javax.persistence.*;
  * 
  */
 @Entity
-@Table(name="configuracion_familia")
+@Table(schema = "sistema", name="configuracion_familia")
 @NamedQuery(name="ConfiguracionFamilia.findAll", query="SELECT c FROM ConfiguracionFamilia c")
 public class ConfiguracionFamilia implements Serializable {
 	private static final long serialVersionUID = 1L;

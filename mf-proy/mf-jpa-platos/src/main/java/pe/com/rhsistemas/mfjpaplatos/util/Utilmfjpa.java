@@ -16,6 +16,7 @@ import pe.com.rhsistemas.mf.cross.dto.PersonaDto;
 import pe.com.rhsistemas.mf.cross.dto.PlatoDto;
 import pe.com.rhsistemas.mf.cross.dto.PlatoIngredienteDto;
 import pe.com.rhsistemas.mf.cross.dto.PlatoTipoPlatoDto;
+import pe.com.rhsistemas.mf.cross.dto.TipoPlatoDto;
 import pe.com.rhsistemas.mf.cross.dto.ValorNutricionalDto;
 import pe.com.rhsistemas.mf.cross.util.UtilMfDto;
 import pe.com.rhsistemas.mfjpaplatos.entity.Ingrediente;
@@ -27,6 +28,7 @@ import pe.com.rhsistemas.mfjpaplatos.entity.Receta;
 import pe.com.rhsistemas.mfjpaplatos.entity.RecetaPK;
 import pe.com.rhsistemas.mfjpaplatos.entity.TipoCocina;
 import pe.com.rhsistemas.mfjpaplatos.entity.TipoIngrediente;
+import pe.com.rhsistemas.mfjpaplatos.entity.TipoPlato;
 import pe.com.rhsistemas.mfjpaplatos.entity.UnidadMedida;
 import pe.com.rhsistemas.mfjpaplatos.entity.ValorNutricional;
 import pe.com.rhsistemas.mfjpaplatos.entity.ValorNutricionalPK;
@@ -233,6 +235,19 @@ public class Utilmfjpa {
 		dto.setIdUsuarioModificacion(entity.getIdUsuaModi());
 		dto.setIdUsuarioRegistro(entity.getIdUsuaCrea());
 		
+		return dto;
+	}
+	
+	public static TipoPlatoDto parseTipoPlato(TipoPlato entity) {
+		TipoPlatoDto dto = new TipoPlatoDto();
+		dto.setIdTipo(entity.getIdTipoPlat().byteValue());
+		dto.setDescTipoPlato(entity.getDeTipoPlat());
+		dto.setIndicadorEntrada(entity.getInEntrada());
+		dto.setIndicadorFondo(entity.getInFondo());
+		dto.setIdUsuarioModificacion(entity.getIdUsuaModi());
+		dto.setIdUsuarioRegistro(entity.getIdUsuaCrea());
+		dto.setFechaModificacion(entity.getFeModificacion());
+		dto.setFechaRegistro(entity.getFeRegistro());
 		return dto;
 	}
 }

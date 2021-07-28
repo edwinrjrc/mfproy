@@ -14,10 +14,10 @@ public class PlatoFavoritoPK implements Serializable {
 	//default serial version id, required for serializable classes.
 	private static final long serialVersionUID = 1L;
 
-	@Column(name="id_persona", insertable=false, updatable=false, unique=true, nullable=false)
+	@Column(name="id_persona", unique=true, nullable=false)
 	private Long idPersona;
 
-	@Column(name="id_plato", insertable=false, updatable=false, unique=true, nullable=false)
+	@Column(name="id_plato", unique=true, nullable=false)
 	private Integer idPlato;
 
 	public PlatoFavoritoPK() {

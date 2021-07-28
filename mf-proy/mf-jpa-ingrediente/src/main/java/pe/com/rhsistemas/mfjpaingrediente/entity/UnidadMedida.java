@@ -17,7 +17,7 @@ import javax.persistence.Table;
  * 
  */
 @Entity
-@Table(name="unidad_medida")
+@Table(schema = "sistema", name="unidad_medida")
 @NamedQuery(name="UnidadMedida.findAll", query="SELECT u FROM UnidadMedida u")
 public class UnidadMedida implements Serializable {
 	private static final long serialVersionUID = 1L;

@@ -130,6 +130,7 @@ public class PlatoController {
 			logger.info("recibiendo parametros");
 			UtilMfDto.pintaLog(idPersona, "idPersona");
 			UtilMfDto.pintaLog(fechaCorteDesde, "fechaCorteDesde");
+			UtilMfDto.pintaLog(fechaCorteHasta, "fechaCorteHasta");
 
 			List<Plato> platos = platoRepository.platosNoConsumidos(idPersona,
 					UtilMfDto.convertirUtilDateASqlDate(fechaCorteDesde), UtilMfDto.convertirUtilDateASqlDate(fechaCorteHasta));

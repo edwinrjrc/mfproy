@@ -4,6 +4,7 @@
 package pe.com.rhsistemas.mfjpaplatos.controller;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,8 +23,9 @@ import org.springframework.web.bind.annotation.RestController;
 import pe.com.rhsistemas.mf.cross.compartido.Constantes;
 import pe.com.rhsistemas.mf.cross.dto.PlatoTipoPlatoDto;
 import pe.com.rhsistemas.mf.cross.util.UtilMfDto;
-import pe.com.rhsistemas.mf.post.dto.ListaPlatoDto;
+import pe.com.rhsistemas.mfjpaplatos.dao.PlatoRepository;
 import pe.com.rhsistemas.mfjpaplatos.dao.PlatoTipoPlatoRepository;
+import pe.com.rhsistemas.mfjpaplatos.entity.Plato;
 import pe.com.rhsistemas.mfjpaplatos.entity.PlatoTipoPlato;
 import pe.com.rhsistemas.mfjpaplatos.util.Utilmfjpa;
 
@@ -39,17 +41,36 @@ public class PlatoTipoPlatoController {
 
 	@Autowired
 	private PlatoTipoPlatoRepository platoTipoPlatoRepository;
+	@Autowired
+	private PlatoRepository platoRepository;
 	
 	@GetMapping(value = "/tipoPlatoPlato", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Map<String, Object>> consultarTiposPlato(@RequestParam(name = "listaPlatoDto", required = true) ListaPlatoDto listaPlatoDto) {
+	public ResponseEntity<Map<String, Object>> consultarTiposPlato(
+			@RequestParam(name = "idPersona", required = true) Integer idPersona,
+			@RequestParam(name = "fechaCorteDesde", required = true) Date fechaCorteDesde,
+			@RequestParam(name = "fechaCorteHasta", required = true) Date fechaCorteHasta) {
 		ResponseEntity<Map<String, Object>> salida = null;
 		Map<String, Object> mapeo = null;
 		HttpStatus status = null;
 		
 		try {
-			status = HttpStatus.NO_CONTENT;
-			List<PlatoTipoPlato> lista = platoTipoPlatoRepository.findByPlatoTipoPlatoIn(listaPlatoDto.getListaPlatos());
+			log.info("recibiendo parametros");
+			UtilMfDto.pintaLog(idPersona, "idPersona");
+			UtilMfDto.pintaLog(fechaCorteDesde, "fechaCorteDesde");
+			UtilMfDto.pintaLog(fechaCorteHasta, "fechaCorteHasta");
+			
 			List<PlatoTipoPlatoDto> listaTipoPlato = new ArrayList<>();
+			
+			List<Plato> platos = platoRepository.platosNoConsumidos(idPersona,
+					UtilMfDto.convertirUtilDateASqlDate(fechaCorteDesde), UtilMfDto.convertirUtilDateASqlDate(fechaCorteHasta));
+			List<Integer> platosInt = new ArrayList<>();
+			for (Plato plato : platos) {
+				platosInt.add(plato.getIdPlato());
+			}
+			
+			status = HttpStatus.NO_CONTENT;
+			List<PlatoTipoPlato> lista = platoTipoPlatoRepository.findByPlatoTipoPlatoIn(platosInt);
+			
 			if (UtilMfDto.listaNoVacia(lista)) {
 				for (PlatoTipoPlato entity : lista) {
 					listaTipoPlato.add(Utilmfjpa.parsePlatoTipoPlato(entity));

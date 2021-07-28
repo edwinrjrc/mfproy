@@ -17,14 +17,14 @@ import javax.persistence.Table;
  * 
  */
 @Entity
-@Table(name="roles", schema = "sistema")
+@Table(schema = "sistema", name="roles")
 @NamedQuery(name="Role.findAll", query="SELECT r FROM Role r")
 public class Role implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(unique=true, nullable=false)
-	private Integer id;
+	@Column(name="id_rol", unique=true, nullable=false)
+	private Integer idRol;
 
 	@Column(name="fe_modificacion", nullable=false)
 	private Timestamp feModificacion;
@@ -48,12 +48,12 @@ public class Role implements Serializable {
 	public Role() {
 	}
 
-	public Integer getId() {
-		return this.id;
+	public Integer getIdRol() {
+		return this.idRol;
 	}
 
-	public void setId(Integer id) {
-		this.id = id;
+	public void setIdRol(Integer idRol) {
+		this.idRol = idRol;
 	}
 
 	public Timestamp getFeModificacion() {

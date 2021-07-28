@@ -24,13 +24,13 @@ import javax.persistence.TemporalType;
  * 
  */
 @Entity
-@Table(name="persona", schema = "sistema")
+@Table(schema = "sistema", name="persona")
 @NamedQuery(name="Persona.findAll", query="SELECT p FROM Persona p")
 public class Persona implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="PERSONA_IDPERSONA_GENERATOR", sequenceName="SEQ_PERSONA")
+	@SequenceGenerator(schema = "sistema", name="PERSONA_IDPERSONA_GENERATOR", sequenceName="SEQ_PERSONA")
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="PERSONA_IDPERSONA_GENERATOR")
 	@Column(name="id_persona", unique=true, nullable=false)
 	private Long idPersona;
@@ -61,17 +61,9 @@ public class Persona implements Serializable {
 	@OneToOne(mappedBy="persona")
 	private ConfiguracionFamilia configuracionFamilia;
 
-	//bi-directional many-to-one association to Direccion
-	@OneToMany(mappedBy="persona")
-	private List<Direccion> direccions;
-
 	//bi-directional many-to-one association to HistoriaInicioSesion
 	@OneToMany(mappedBy="persona")
 	private List<HistoriaInicioSesion> historiaInicioSesions;
-
-	//bi-directional many-to-one association to MenuGenerado
-	@OneToMany(mappedBy="persona")
-	private List<MenuGenerado> menuGenerados;
 
 	//bi-directional one-to-one association to PersonaJuridica
 	@OneToOne(mappedBy="persona")
@@ -80,14 +72,6 @@ public class Persona implements Serializable {
 	//bi-directional one-to-one association to PersonaNatural
 	@OneToOne(mappedBy="persona")
 	private PersonaNatural personaNatural;
-
-	//bi-directional many-to-one association to Plato
-	@OneToMany(mappedBy="persona")
-	private List<Plato> platos;
-
-	//bi-directional many-to-one association to PlatoFavorito
-	@OneToMany(mappedBy="persona")
-	private List<PlatoFavorito> platoFavoritos;
 
 	//bi-directional one-to-one association to Usuario
 	@OneToOne(mappedBy="persona")
@@ -168,28 +152,6 @@ public class Persona implements Serializable {
 		this.configuracionFamilia = configuracionFamilia;
 	}
 
-	public List<Direccion> getDireccions() {
-		return this.direccions;
-	}
-
-	public void setDireccions(List<Direccion> direccions) {
-		this.direccions = direccions;
-	}
-
-	public Direccion addDireccion(Direccion direccion) {
-		getDireccions().add(direccion);
-		direccion.setPersona(this);
-
-		return direccion;
-	}
-
-	public Direccion removeDireccion(Direccion direccion) {
-		getDireccions().remove(direccion);
-		direccion.setPersona(null);
-
-		return direccion;
-	}
-
 	public List<HistoriaInicioSesion> getHistoriaInicioSesions() {
 		return this.historiaInicioSesions;
 	}
@@ -212,28 +174,6 @@ public class Persona implements Serializable {
 		return historiaInicioSesion;
 	}
 
-	public List<MenuGenerado> getMenuGenerados() {
-		return this.menuGenerados;
-	}
-
-	public void setMenuGenerados(List<MenuGenerado> menuGenerados) {
-		this.menuGenerados = menuGenerados;
-	}
-
-	public MenuGenerado addMenuGenerado(MenuGenerado menuGenerado) {
-		getMenuGenerados().add(menuGenerado);
-		menuGenerado.setPersona(this);
-
-		return menuGenerado;
-	}
-
-	public MenuGenerado removeMenuGenerado(MenuGenerado menuGenerado) {
-		getMenuGenerados().remove(menuGenerado);
-		menuGenerado.setPersona(null);
-
-		return menuGenerado;
-	}
-
 	public PersonaJuridica getPersonaJuridica() {
 		return this.personaJuridica;
 	}
@@ -248,50 +188,6 @@ public class Persona implements Serializable {
 
 	public void setPersonaNatural(PersonaNatural personaNatural) {
 		this.personaNatural = personaNatural;
-	}
-
-	public List<Plato> getPlatos() {
-		return this.platos;
-	}
-
-	public void setPlatos(List<Plato> platos) {
-		this.platos = platos;
-	}
-
-	public Plato addPlato(Plato plato) {
-		getPlatos().add(plato);
-		plato.setPersona(this);
-
-		return plato;
-	}
-
-	public Plato removePlato(Plato plato) {
-		getPlatos().remove(plato);
-		plato.setPersona(null);
-
-		return plato;
-	}
-
-	public List<PlatoFavorito> getPlatoFavoritos() {
-		return this.platoFavoritos;
-	}
-
-	public void setPlatoFavoritos(List<PlatoFavorito> platoFavoritos) {
-		this.platoFavoritos = platoFavoritos;
-	}
-
-	public PlatoFavorito addPlatoFavorito(PlatoFavorito platoFavorito) {
-		getPlatoFavoritos().add(platoFavorito);
-		platoFavorito.setPersona(this);
-
-		return platoFavorito;
-	}
-
-	public PlatoFavorito removePlatoFavorito(PlatoFavorito platoFavorito) {
-		getPlatoFavoritos().remove(platoFavorito);
-		platoFavorito.setPersona(null);
-
-		return platoFavorito;
 	}
 
 	public Usuario getUsuario() {

@@ -1,8 +1,13 @@
 package pe.com.rhsistemas.mfjpamenu.entity;
 
 import java.io.Serializable;
-import javax.persistence.*;
 import java.sql.Timestamp;
+
+import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 
 
 /**
@@ -10,7 +15,7 @@ import java.sql.Timestamp;
  * 
  */
 @Entity
-@Table(name="menu_detalle")
+@Table(schema = "sistema", name="menu_detalle")
 @NamedQuery(name="MenuDetalle.findAll", query="SELECT m FROM MenuDetalle m")
 public class MenuDetalle implements Serializable {
 	private static final long serialVersionUID = 1L;

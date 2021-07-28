@@ -1,6 +1,5 @@
 package pe.com.rhsistemas.mf.auth.entity;
 
-
 import java.io.Serializable;
 
 import javax.persistence.Column;

@@ -1,8 +1,18 @@
 package pe.com.rhsistemas.mfjpamenu.entity;
 
 import java.io.Serializable;
-import javax.persistence.*;
 import java.sql.Timestamp;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 
 /**
@@ -10,13 +20,13 @@ import java.sql.Timestamp;
  * 
  */
 @Entity
-@Table(name="direccion")
+@Table(schema = "sistema", name="direccion")
 @NamedQuery(name="Direccion.findAll", query="SELECT d FROM Direccion d")
 public class Direccion implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="DIRECCION_IDDIRECCION_GENERATOR", sequenceName="SEQ_DIRECCION")
+	@SequenceGenerator(schema = "sistema", name="DIRECCION_IDDIRECCION_GENERATOR", sequenceName="SEQ_DIRECCION")
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="DIRECCION_IDDIRECCION_GENERATOR")
 	@Column(name="id_direccion", unique=true, nullable=false)
 	private Long idDireccion;

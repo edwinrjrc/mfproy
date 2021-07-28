@@ -1,8 +1,18 @@
 package pe.com.rhsistemas.mfjpamenu.entity;
 
 import java.io.Serializable;
-import javax.persistence.*;
 import java.sql.Timestamp;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 
 /**
@@ -10,13 +20,13 @@ import java.sql.Timestamp;
  * 
  */
 @Entity
-@Table(name="plato")
+@Table(schema = "sistema", name="plato")
 @NamedQuery(name="Plato.findAll", query="SELECT p FROM Plato p")
 public class Plato implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="PLATO_IDPLATO_GENERATOR", sequenceName="SEQ_PLATO")
+	@SequenceGenerator(schema = "sistema", name="PLATO_IDPLATO_GENERATOR", sequenceName="SEQ_PLATO")
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="PLATO_IDPLATO_GENERATOR")
 	@Column(name="id_plato", unique=true, nullable=false)
 	private Integer idPlato;
