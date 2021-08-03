@@ -1,11 +1,7 @@
 package pe.com.rhsistemas.mfjpaplatos.entity;
 
 import java.io.Serializable;
-
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 
 /**
  * The primary key class for the menu_detalle database table.
@@ -20,8 +16,8 @@ public class MenuDetallePK implements Serializable {
 	@Column(name="fe_consumo", unique=true, nullable=false)
 	private java.util.Date feConsumo;
 
-	@Column(name="id_plato", unique=true, nullable=false)
-	private Integer idPlato;
+	@Column(name="id_generado", unique=true, nullable=false)
+	private Long idGenerado;
 
 	public MenuDetallePK() {
 	}
@@ -31,11 +27,11 @@ public class MenuDetallePK implements Serializable {
 	public void setFeConsumo(java.util.Date feConsumo) {
 		this.feConsumo = feConsumo;
 	}
-	public Integer getIdPlato() {
-		return this.idPlato;
+	public Long getIdGenerado() {
+		return this.idGenerado;
 	}
-	public void setIdPlato(Integer idPlato) {
-		this.idPlato = idPlato;
+	public void setIdGenerado(Long idGenerado) {
+		this.idGenerado = idGenerado;
 	}
 
 	public boolean equals(Object other) {
@@ -48,14 +44,14 @@ public class MenuDetallePK implements Serializable {
 		MenuDetallePK castOther = (MenuDetallePK)other;
 		return 
 			this.feConsumo.equals(castOther.feConsumo)
-			&& this.idPlato.equals(castOther.idPlato);
+			&& this.idGenerado.equals(castOther.idGenerado);
 	}
 
 	public int hashCode() {
 		final int prime = 31;
 		int hash = 17;
 		hash = hash * prime + this.feConsumo.hashCode();
-		hash = hash * prime + this.idPlato.hashCode();
+		hash = hash * prime + this.idGenerado.hashCode();
 		
 		return hash;
 	}

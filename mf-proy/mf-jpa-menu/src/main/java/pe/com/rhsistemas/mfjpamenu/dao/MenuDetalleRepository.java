@@ -17,6 +17,6 @@ import pe.com.rhsistemas.mfjpamenu.entity.MenuDetallePK;
  */
 public interface MenuDetalleRepository extends JpaRepository<MenuDetalle, MenuDetallePK>{
 
-	@Query(value = "select d from MenuDetalle d where d.idGenerado = ?1")
-	List<MenuDetalle> findByMenuGenerado(Integer idGenerado);
+	@Query(value = "select d from MenuDetalle d where d.id.idGenerado = ?1")
+	List<MenuDetalle> findByMenuGenerado(Long idGenerado);
 }

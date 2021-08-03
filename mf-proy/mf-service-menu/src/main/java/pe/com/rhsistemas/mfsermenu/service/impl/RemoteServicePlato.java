@@ -56,6 +56,7 @@ public class RemoteServicePlato {
 	@Autowired
 	private RestTemplate restTemplate;
 
+	@SuppressWarnings("rawtypes")
 	public List<PlatoDto> consultarPlatos() throws MfServiceMenuException {
 		List<PlatoDto> listaPlatos = null;
 		try {
@@ -74,10 +75,10 @@ public class RemoteServicePlato {
 		    factory.enable(Feature.ALLOW_SINGLE_QUOTES);
 		    ObjectMapper mapper = new ObjectMapper(factory);
 			
-		    List<Map> datosLista = (List<Map>) respuesta.getBody().get(Constantes.VALOR_DATA_MAP);
+		    List datosLista = (List) respuesta.getBody().get(Constantes.VALOR_DATA_MAP);
 		    listaPlatos = new ArrayList<>();
 		    for (Object objeto : datosLista) {
-		    	LinkedHashMap<String,Object> map = (LinkedHashMap<String,Object>) objeto;
+		    	LinkedHashMap map = (LinkedHashMap) objeto;
 		    	
 		    	listaPlatos.add(mapper.convertValue(map, PlatoDto.class));
 			}
@@ -146,6 +147,7 @@ public class RemoteServicePlato {
 		return listaPlatos;
 	}
 	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public List<PlatoTipoPlatoDto> consultarTipoPlatoxPlato(Integer idPersona, Date fechaCorteDesde, Date fechaCorteHasta) throws MfServiceMenuException{
 		List<PlatoTipoPlatoDto> listaTipoPlato = null;
 		

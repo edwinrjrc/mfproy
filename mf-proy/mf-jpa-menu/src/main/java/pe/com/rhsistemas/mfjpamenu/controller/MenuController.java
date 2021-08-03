@@ -29,6 +29,7 @@ import pe.com.rhsistemas.mf.cross.util.UtilMfDto;
 import pe.com.rhsistemas.mfjpamenu.dao.MenuDetalleRepository;
 import pe.com.rhsistemas.mfjpamenu.dao.MenuRepository;
 import pe.com.rhsistemas.mfjpamenu.entity.MenuDetalle;
+import pe.com.rhsistemas.mfjpamenu.entity.MenuDetallePK;
 import pe.com.rhsistemas.mfjpamenu.entity.MenuGenerado;
 import pe.com.rhsistemas.mfjpamenu.entity.Persona;
 import pe.com.rhsistemas.mfjpamenu.util.Utilmfjpa;
@@ -68,7 +69,7 @@ public class MenuController {
 			for (MenuDetalle menuDetalle : listaMenus) {
 				menuDetalleDto = new MenuDetalleDto();
 				menuDetalleDto.setFechaConsumo(menuDetalle.getId().getFeConsumo());
-				menuDetalleDto.getPlatoDto().setId(menuDetalle.getId().getIdPlato());
+				menuDetalleDto.getPlatoDto().setId(menuDetalle.getIdPlato());
 				menuDetalleDto.setFechaRegistro(menuDetalle.getFeRegistro());
 				menuDetalleDto.setIdUsuarioRegistro(menuDetalle.getIdUsuaCrea());
 				listaMenuDto.add(menuDetalleDto);
@@ -108,7 +109,10 @@ public class MenuController {
 			MenuDetalle entityDetalle = null;
 			for (MenuDetalleDto dto : menuGeneradoDto.getListaPlatos()) {
 				entityDetalle = Utilmfjpa.parseaMenuDetalleDto(dto);
-				entityDetalle.setIdGenerado(resp.getIdGenerado());
+				MenuDetallePK idMenuDetalle = new MenuDetallePK();
+				idMenuDetalle.setFeConsumo(dto.getFechaConsumo());
+				idMenuDetalle.setIdGenerado(resp.getIdGenerado());
+				entityDetalle.setId(idMenuDetalle);
 
 				listaMenuDetalle.add(entityDetalle);
 			}
@@ -151,7 +155,7 @@ public class MenuController {
 			for (MenuGenerado menuGenerado : ultimoMenu) {
 				MenuGeneradoDto menuGeneradoDto = Utilmfjpa.parseMenuGenerado(menuGenerado);
 
-				List<MenuDetalle> listaMenuDetalle = menuDetalleRepository.findByMenuGenerado(menuGenerado.getIdGenerado().intValue());
+				List<MenuDetalle> listaMenuDetalle = menuDetalleRepository.findByMenuGenerado(menuGenerado.getIdGenerado());
 				listaDetalle = new ArrayList<>();
 				for (MenuDetalle menuDetalle : listaMenuDetalle) {
 					listaDetalle.add(Utilmfjpa.parseMenuDetalle(menuDetalle));

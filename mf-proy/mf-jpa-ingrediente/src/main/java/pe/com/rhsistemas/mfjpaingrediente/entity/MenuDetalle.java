@@ -1,13 +1,8 @@
 package pe.com.rhsistemas.mfjpaingrediente.entity;
 
 import java.io.Serializable;
+import javax.persistence.*;
 import java.sql.Timestamp;
-
-import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
 
 
 /**
@@ -15,7 +10,7 @@ import javax.persistence.Table;
  * 
  */
 @Entity
-@Table(schema = "sistema", name="menu_detalle")
+@Table(name="menu_detalle", schema = "sistema")
 @NamedQuery(name="MenuDetalle.findAll", query="SELECT m FROM MenuDetalle m")
 public class MenuDetalle implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -29,8 +24,8 @@ public class MenuDetalle implements Serializable {
 	@Column(name="fe_registro", nullable=false)
 	private Timestamp feRegistro;
 
-	@Column(name="id_generado", nullable=false)
-	private Long idGenerado;
+	@Column(name="id_plato", nullable=false)
+	private Integer idPlato;
 
 	@Column(name="id_usua_crea", nullable=false)
 	private Integer idUsuaCrea;
@@ -65,12 +60,12 @@ public class MenuDetalle implements Serializable {
 		this.feRegistro = feRegistro;
 	}
 
-	public Long getIdGenerado() {
-		return this.idGenerado;
+	public Integer getIdPlato() {
+		return this.idPlato;
 	}
 
-	public void setIdGenerado(Long idGenerado) {
-		this.idGenerado = idGenerado;
+	public void setIdPlato(Integer idPlato) {
+		this.idPlato = idPlato;
 	}
 
 	public Integer getIdUsuaCrea() {

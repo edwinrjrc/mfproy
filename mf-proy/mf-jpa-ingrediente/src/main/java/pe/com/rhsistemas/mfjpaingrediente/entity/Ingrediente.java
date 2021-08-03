@@ -28,7 +28,7 @@ public class Ingrediente implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(schema = "sistema", name="INGREDIENTE_IDINGREDIENTE_GENERATOR", sequenceName="SEQ_INGREDIENTE")
+	@SequenceGenerator(allocationSize = 1, initialValue = 1,schema = "sistema", name="INGREDIENTE_IDINGREDIENTE_GENERATOR", sequenceName="SEQ_INGREDIENTE")
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="INGREDIENTE_IDINGREDIENTE_GENERATOR")
 	@Column(name="id_ingrediente", unique=true, nullable=false)
 	private Integer idIngrediente;

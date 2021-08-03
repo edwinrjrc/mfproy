@@ -26,7 +26,7 @@ public class Plato implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(schema = "sistema", name="PLATO_IDPLATO_GENERATOR", sequenceName="SEQ_PLATO")
+	@SequenceGenerator(allocationSize = 1, initialValue = 1,schema = "sistema", name="PLATO_IDPLATO_GENERATOR", sequenceName="SEQ_PLATO")
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="PLATO_IDPLATO_GENERATOR")
 	@Column(name="id_plato", unique=true, nullable=false)
 	private Integer idPlato;

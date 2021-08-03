@@ -12,6 +12,7 @@ pe\com\rhsistemas\mf\cross\dto\BaseDto.class
 pe\com\rhsistemas\mf\cross\dto\BaseValor.class
 pe\com\rhsistemas\mf\cross\dto\PasoPreparacionDto.class
 pe\com\rhsistemas\mf\cross\dto\PersonaDto.class
+pe\com\rhsistemas\mf\cross\dto\TipoPlatoDto.class
 pe\com\rhsistemas\mf\cross\dto\UsuarioRolesDto.class
 pe\com\rhsistemas\mf\cross\dto\PersonaJuridicaDto.class
 pe\com\rhsistemas\mf\cross\dto\MenuGeneradoDto.class

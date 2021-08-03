@@ -26,7 +26,7 @@ public class Direccion implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(schema = "sistema", name="DIRECCION_IDDIRECCION_GENERATOR", sequenceName="SEQ_DIRECCION")
+	@SequenceGenerator(allocationSize = 1, initialValue = 1,schema = "sistema", name="DIRECCION_IDDIRECCION_GENERATOR", sequenceName="SEQ_DIRECCION")
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="DIRECCION_IDDIRECCION_GENERATOR")
 	@Column(name="id_direccion", unique=true, nullable=false)
 	private Long idDireccion;

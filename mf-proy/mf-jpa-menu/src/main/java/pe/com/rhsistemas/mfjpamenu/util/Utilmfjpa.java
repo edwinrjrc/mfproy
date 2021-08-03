@@ -1,8 +1,6 @@
 package pe.com.rhsistemas.mfjpamenu.util;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
 
 import pe.com.rhsistemas.mf.cross.dto.BaseValor;
 import pe.com.rhsistemas.mf.cross.dto.IngredienteDto;
@@ -11,7 +9,6 @@ import pe.com.rhsistemas.mf.cross.dto.MenuGeneradoDto;
 import pe.com.rhsistemas.mf.cross.dto.PlatoIngredienteDto;
 import pe.com.rhsistemas.mf.cross.util.UtilMfDto;
 import pe.com.rhsistemas.mfjpamenu.entity.MenuDetalle;
-import pe.com.rhsistemas.mfjpamenu.entity.MenuDetallePK;
 import pe.com.rhsistemas.mfjpamenu.entity.MenuGenerado;
 import pe.com.rhsistemas.mfjpamenu.entity.PlatoIngrediente;
 
@@ -28,13 +25,8 @@ public class Utilmfjpa {
 			entity.setIdUsuaCrea(dto.getIdUsuarioRegistro());
 			entity.setIdUsuaModi(dto.getIdUsuarioModificacion());
 			entity.setIdPersona(UtilMfDto.parseIntALong(dto.getIdPersona()));
-			List<MenuDetalle> menuDetalles = new ArrayList<>();
-			MenuDetalle menuDetalle = null;
-			for (MenuDetalleDto detaDto : dto.getListaPlatos()) {
-				menuDetalle = parseaMenuDetalleDto(detaDto);
-				menuDetalle.setIdGenerado(dto.getIdGenerado());
-				menuDetalles.add(menuDetalle);
-			}
+			entity.setIdGenerado(dto.getIdGenerado());
+			
 			entity.setNuDias(dto.getNumeroDias());
 		}
 		
@@ -64,7 +56,7 @@ public class Utilmfjpa {
 		dto.setFechaConsumo(entity.getId().getFeConsumo());
 		dto.setFechaModificacion(entity.getFeModificacion());
 		dto.setFechaRegistro(entity.getFeRegistro());
-		dto.getPlatoDto().setId(entity.getId().getIdPlato());
+		dto.getPlatoDto().setId(entity.getIdPlato());
 		dto.setIdUsuarioModificacion(entity.getIdUsuaModi());
 		dto.setIdUsuarioRegistro(entity.getIdUsuaCrea());
 		
@@ -73,13 +65,9 @@ public class Utilmfjpa {
 	
 	public static MenuDetalle parseaMenuDetalleDto(MenuDetalleDto detaDto) {
 		MenuDetalle menuDetalle = new MenuDetalle();
-		MenuDetallePK menuDetalleId = new MenuDetallePK();
-		menuDetalleId.setFeConsumo(UtilMfDto.parseDateASqlTimestamp(detaDto.getFechaConsumo()));
-		menuDetalleId.setIdPlato(detaDto.getPlatoDto().getId());
-		
-		menuDetalle.setId(menuDetalleId);
 		menuDetalle.setFeModificacion(new Timestamp(System.currentTimeMillis()));
 		menuDetalle.setFeRegistro(new Timestamp(System.currentTimeMillis()));
+		menuDetalle.setIdPlato(detaDto.getPlatoDto().getId());
 		
 		menuDetalle.setIdUsuaCrea(detaDto.getIdUsuarioRegistro());
 		menuDetalle.setIdUsuaModi(detaDto.getIdUsuarioModificacion());
