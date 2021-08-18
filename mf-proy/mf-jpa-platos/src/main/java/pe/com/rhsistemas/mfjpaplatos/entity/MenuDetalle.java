@@ -24,8 +24,11 @@ public class MenuDetalle implements Serializable {
 	@Column(name="fe_registro", nullable=false)
 	private Timestamp feRegistro;
 
-	@Column(name="id_plato", nullable=false)
+	@Column(name="id_plato")
 	private Integer idPlato;
+
+	@Column(name="id_tipo_plato")
+	private Integer idTipoPlato;
 
 	@Column(name="id_usua_crea", nullable=false)
 	private Integer idUsuaCrea;
@@ -66,6 +69,14 @@ public class MenuDetalle implements Serializable {
 
 	public void setIdPlato(Integer idPlato) {
 		this.idPlato = idPlato;
+	}
+
+	public Integer getIdTipoPlato() {
+		return this.idTipoPlato;
+	}
+
+	public void setIdTipoPlato(Integer idTipoPlato) {
+		this.idTipoPlato = idTipoPlato;
 	}
 
 	public Integer getIdUsuaCrea() {

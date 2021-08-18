@@ -15,6 +15,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -79,6 +81,35 @@ public class MenuDetalleController {
 		
 		salida = new ResponseEntity<>(mapeo,status);
 
+		return salida;
+	}
+	
+	@PostMapping(value = "/menuDetalle")
+	public ResponseEntity<Map<String, Object>> grabarDetalleMenuDia(@RequestBody MenuDetalleDto menudetalleDto){
+		ResponseEntity<Map<String, Object>> salida = null;
+		Map<String, Object> mapeo = null;
+		HttpStatus status = null;
+		
+		log.info("Recibiendo parametros");
+		UtilMfDto.pintaLog(menudetalleDto, "menudetalleDto");
+		
+		try {
+			menuDetalleRepository.save(Utilmfjpa.parseaMenuDetalleDto(menudetalleDto));
+			
+			mapeo = new HashMap<String, Object>();
+			mapeo.put("error", false);
+			mapeo.put("mensaje", "Operacion Completada");
+			
+			status = HttpStatus.CREATED;
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+			mapeo = new HashMap<String, Object>();
+			mapeo.put("error", true);
+			mapeo.put("mensaje", "Operacion no completada");
+		}
+		salida = new ResponseEntity<>(mapeo,status);
+		
 		return salida;
 	}
 }

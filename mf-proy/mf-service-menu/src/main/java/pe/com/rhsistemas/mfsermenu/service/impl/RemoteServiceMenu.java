@@ -8,6 +8,7 @@ import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -102,6 +103,16 @@ public class RemoteServiceMenu {
 			throw new MfServiceMenuException(e);
 		}
 	}
+	
+	public void grabarMenuDetalleDia(MenuDetalleDto menuDetalleDto) throws MfServiceMenuException {
+		try {
+			restTemplate.postForEntity(obtenerUri(URL_SERVICE_2), menuDetalleDto, Map.class);
+
+		} catch (RestClientException e) {
+			log.error(e.getMessage(), e);
+			throw new MfServiceMenuException(e);
+		}
+	}
 
 	@SuppressWarnings("rawtypes")
 	public List<MenuGeneradoDto> obtenerMenuGeneradoCabecera(Integer idPersona) throws MfServiceMenuException {
@@ -136,7 +147,7 @@ public class RemoteServiceMenu {
 	}
 
 	@SuppressWarnings("rawtypes")
-	public List<MenuDetalleDto> obtenerMenuGeneradoDetalle(Integer idMenuGenerado) throws MfServiceMenuException {
+	public Map<Integer,MenuDetalleDto> obtenerMenuGeneradoDetalle(Integer idMenuGenerado) throws MfServiceMenuException {
 		HttpMethod metodoServicio = HttpMethod.GET;
 
 		HttpHeaders headers = new HttpHeaders();
@@ -157,14 +168,21 @@ public class RemoteServiceMenu {
 
 		List<?> datosLista = (List) respuesta.getBody().get(Constantes.VALOR_DATA_MAP);
 
-		List<MenuDetalleDto> listaMenuDetalle = new ArrayList<>();
+		Map<Integer,MenuDetalleDto> menuDetalle = new HashMap<Integer,MenuDetalleDto>();
+		
+		Calendar cal = Calendar.getInstance();
 
 		for (Object objeto : datosLista) {
 			LinkedHashMap map = (LinkedHashMap) objeto;
-			listaMenuDetalle.add(mapper.convertValue(map, MenuDetalleDto.class));
+			MenuDetalleDto objetoDetalle = mapper.convertValue(map, MenuDetalleDto.class);
+			
+			cal.setTime(objetoDetalle.getFechaConsumo());
+			
+			menuDetalle.put(cal.get(Calendar.DAY_OF_WEEK), objetoDetalle);
+			
 		}
 
-		return listaMenuDetalle;
+		return menuDetalle;
 	}
 
 	private URI obtenerUri(String cadenaUrl) throws MfServiceMenuException {

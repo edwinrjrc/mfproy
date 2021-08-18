@@ -1,6 +1,7 @@
 package pe.com.rhsistemas.mfjpamenu.util;
 
 import java.sql.Timestamp;
+import java.util.Date;
 
 import pe.com.rhsistemas.mf.cross.dto.BaseValor;
 import pe.com.rhsistemas.mf.cross.dto.IngredienteDto;
@@ -9,6 +10,7 @@ import pe.com.rhsistemas.mf.cross.dto.MenuGeneradoDto;
 import pe.com.rhsistemas.mf.cross.dto.PlatoIngredienteDto;
 import pe.com.rhsistemas.mf.cross.util.UtilMfDto;
 import pe.com.rhsistemas.mfjpamenu.entity.MenuDetalle;
+import pe.com.rhsistemas.mfjpamenu.entity.MenuDetallePK;
 import pe.com.rhsistemas.mfjpamenu.entity.MenuGenerado;
 import pe.com.rhsistemas.mfjpamenu.entity.PlatoIngrediente;
 
@@ -57,6 +59,7 @@ public class Utilmfjpa {
 		dto.setFechaModificacion(entity.getFeModificacion());
 		dto.setFechaRegistro(entity.getFeRegistro());
 		dto.getPlatoDto().setId(entity.getIdPlato());
+		dto.setIdTipoPlato(entity.getIdTipoPlato());
 		dto.setIdUsuarioModificacion(entity.getIdUsuaModi());
 		dto.setIdUsuarioRegistro(entity.getIdUsuaCrea());
 		
@@ -68,9 +71,13 @@ public class Utilmfjpa {
 		menuDetalle.setFeModificacion(new Timestamp(System.currentTimeMillis()));
 		menuDetalle.setFeRegistro(new Timestamp(System.currentTimeMillis()));
 		menuDetalle.setIdPlato(detaDto.getPlatoDto().getId());
-		
+		menuDetalle.setIdTipoPlato(detaDto.getIdTipoPlato());
 		menuDetalle.setIdUsuaCrea(detaDto.getIdUsuarioRegistro());
 		menuDetalle.setIdUsuaModi(detaDto.getIdUsuarioModificacion());
+		MenuDetallePK detapk = new MenuDetallePK();
+		detapk.setFeConsumo(detaDto.getFechaConsumo());
+		detapk.setIdGenerado(Long.valueOf(detaDto.getIdGenerado()));
+		menuDetalle.setId(detapk);
 		
 		return menuDetalle;
 	}

@@ -18,4 +18,6 @@ public interface MenuLogicaService {
 	public void generarMenu(Integer idPersona, Integer idUsuario) throws MfServiceMenuException, UtilMfDtoException;
 	
 	public List<Map<String, Object>> consultarMenuActivo(Integer idPersona) throws MfServiceMenuException;
+	
+	public void cambiarPlatoDia(Integer idPersona, Integer idTipoPlato, Integer numeroDia) throws MfServiceMenuException;
 }

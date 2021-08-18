@@ -18,6 +18,7 @@ import pe.com.rhsistemas.mf.cross.dto.PlatoIngredienteDto;
 import pe.com.rhsistemas.mf.cross.dto.PlatoTipoPlatoDto;
 import pe.com.rhsistemas.mf.cross.dto.TipoPlatoDto;
 import pe.com.rhsistemas.mf.cross.dto.ValorNutricionalDto;
+import pe.com.rhsistemas.mf.cross.exception.UtilMfDtoException;
 import pe.com.rhsistemas.mf.cross.util.UtilMfDto;
 import pe.com.rhsistemas.mfjpaplatos.entity.Ingrediente;
 import pe.com.rhsistemas.mfjpaplatos.entity.Plato;
@@ -39,7 +40,7 @@ import pe.com.rhsistemas.mfjpaplatos.entity.ValorNutricionalPK;
  */
 public class Utilmfjpa {
 
-	public static Plato parsePlatoDto(PlatoDto dto) {
+	public static Plato parsePlatoDto(PlatoDto dto) throws UtilMfDtoException {
 		Plato entity = new Plato();
 		if (dto != null && StringUtils.isBlank(dto.getNombrePlato())) {
 			entity.setFeModificacion(new Timestamp(System.currentTimeMillis()));
@@ -112,28 +113,24 @@ public class Utilmfjpa {
 	public static List<Ingrediente> parseListaIngredienteDto(List<IngredienteDto> lista) {
 		List<Ingrediente> listaSalida = new ArrayList<>();
 		for (IngredienteDto dto : lista) {
-			if (dto != null) {
-				listaSalida.add(parseIngredienteDto(dto));
-			}
+			listaSalida.add(parseIngredienteDto(dto));
 		}
 		
 		return listaSalida;
 	}
 	
-	public static List<PlatoIngrediente> parseListaPlatoIngrediente(List<PlatoIngredienteDto> lista){
+	public static List<PlatoIngrediente> parseListaPlatoIngrediente(List<PlatoIngredienteDto> lista) throws UtilMfDtoException{
 		List<PlatoIngrediente> listaSalida = new ArrayList<>();
 		
 		for (PlatoIngredienteDto dto : lista) {
-			if (dto != null) {
-				listaSalida.add(parsePlatoIngredienteDto(dto));
-			}
+			listaSalida.add(parsePlatoIngredienteDto(dto));
 		}
 		
 		return listaSalida;
 		
 	}
 	
-	public static PlatoIngrediente parsePlatoIngredienteDto(PlatoIngredienteDto dto) {
+	public static PlatoIngrediente parsePlatoIngredienteDto(PlatoIngredienteDto dto) throws UtilMfDtoException {
 		PlatoIngrediente entity = new PlatoIngrediente();
 		
 		if (dto != null) {

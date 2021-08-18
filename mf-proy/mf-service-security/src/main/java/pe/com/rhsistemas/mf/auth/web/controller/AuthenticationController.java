@@ -32,6 +32,7 @@ import pe.com.rhsistemas.mf.auth.model.UserTokenState;
 import pe.com.rhsistemas.mf.auth.security.TokenHelper;
 import pe.com.rhsistemas.mf.auth.service.CustomUserDetailsService;
 import pe.com.rhsistemas.mf.auth.service.UserService;
+import pe.com.rhsistemas.mf.cross.compartido.Constantes;
 import pe.com.rhsistemas.mf.cross.util.UtilMfDto;
 
 @RestController
@@ -77,7 +78,7 @@ public class AuthenticationController {
 			userToken.setIdUsuario(usuario.getIdPersona().intValue());
 
 			mapeo = new HashMap<String, Object>();
-			mapeo.put("userToken", userToken);
+			mapeo.put(Constantes.VALOR_DATA_MAP, userToken);
 			mapeo.put("error", false);
 			mapeo.put("mensaje", "Autenticacion Correcta");
 

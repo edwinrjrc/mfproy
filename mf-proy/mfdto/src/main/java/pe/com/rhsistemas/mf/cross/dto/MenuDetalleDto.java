@@ -15,8 +15,10 @@ public class MenuDetalleDto extends BaseDto {
 	
 	private Date fechaConsumo;
 	private String nombreDia;
-	private int numSemana;
+	private Integer numSemana;
 	private PlatoDto platoDto;
+	private Integer idTipoPlato;
+	private Integer idGenerado;
 
 	public MenuDetalleDto() {
 		// TODO Auto-generated constructor stub
@@ -56,14 +58,14 @@ public class MenuDetalleDto extends BaseDto {
 	/**
 	 * @return the numSemana
 	 */
-	public int getNumSemana() {
+	public Integer getNumSemana() {
 		return numSemana;
 	}
 
 	/**
 	 * @param numSemana the numSemana to set
 	 */
-	public void setNumSemana(int numSemana) {
+	public void setNumSemana(Integer numSemana) {
 		this.numSemana = numSemana;
 	}
 
@@ -79,6 +81,34 @@ public class MenuDetalleDto extends BaseDto {
 	 */
 	public void setNombreDia(String nombreDia) {
 		this.nombreDia = nombreDia;
+	}
+
+	/**
+	 * @return the idTipoPlato
+	 */
+	public Integer getIdTipoPlato() {
+		return idTipoPlato;
+	}
+
+	/**
+	 * @param idTipoPlato the idTipoPlato to set
+	 */
+	public void setIdTipoPlato(Integer idTipoPlato) {
+		this.idTipoPlato = idTipoPlato;
+	}
+
+	/**
+	 * @return the idGenerado
+	 */
+	public Integer getIdGenerado() {
+		return idGenerado;
+	}
+
+	/**
+	 * @param idGenerado the idGenerado to set
+	 */
+	public void setIdGenerado(Integer idGenerado) {
+		this.idGenerado = idGenerado;
 	}
 
 }

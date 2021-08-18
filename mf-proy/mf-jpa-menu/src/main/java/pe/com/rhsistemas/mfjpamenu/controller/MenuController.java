@@ -108,11 +108,9 @@ public class MenuController {
 			List<MenuDetalle> listaMenuDetalle = new ArrayList<>();
 			MenuDetalle entityDetalle = null;
 			for (MenuDetalleDto dto : menuGeneradoDto.getListaPlatos()) {
+				dto.setFechaConsumo(dto.getFechaConsumo());
+				dto.setIdGenerado(Long.valueOf(resp.getIdGenerado()).intValue());
 				entityDetalle = Utilmfjpa.parseaMenuDetalleDto(dto);
-				MenuDetallePK idMenuDetalle = new MenuDetallePK();
-				idMenuDetalle.setFeConsumo(dto.getFechaConsumo());
-				idMenuDetalle.setIdGenerado(resp.getIdGenerado());
-				entityDetalle.setId(idMenuDetalle);
 
 				listaMenuDetalle.add(entityDetalle);
 			}

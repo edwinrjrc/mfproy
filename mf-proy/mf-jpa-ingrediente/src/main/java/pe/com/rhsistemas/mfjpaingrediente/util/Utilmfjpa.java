@@ -16,6 +16,7 @@ import pe.com.rhsistemas.mf.cross.dto.PersonaDto;
 import pe.com.rhsistemas.mf.cross.dto.PlatoDto;
 import pe.com.rhsistemas.mf.cross.dto.PlatoIngredienteDto;
 import pe.com.rhsistemas.mf.cross.dto.ValorNutricionalDto;
+import pe.com.rhsistemas.mf.cross.exception.UtilMfDtoException;
 import pe.com.rhsistemas.mf.cross.util.UtilMfDto;
 import pe.com.rhsistemas.mfjpaingrediente.entity.Ingrediente;
 import pe.com.rhsistemas.mfjpaingrediente.entity.Plato;
@@ -35,7 +36,7 @@ import pe.com.rhsistemas.mfjpaingrediente.entity.ValorNutricionalPK;
  */
 public class Utilmfjpa {
 
-	public static Plato parsePlatoDto(PlatoDto dto) {
+	public static Plato parsePlatoDto(PlatoDto dto) throws UtilMfDtoException {
 		Plato entity = new Plato();
 		if (dto != null && !StringUtils.isEmpty(dto.getNombrePlato())) {
 			entity.setFeModificacion(new Timestamp(System.currentTimeMillis()));
@@ -116,7 +117,7 @@ public class Utilmfjpa {
 		return listaSalida;
 	}
 	
-	public static List<PlatoIngrediente> parseListaPlatoIngrediente(List<PlatoIngredienteDto> lista){
+	public static List<PlatoIngrediente> parseListaPlatoIngrediente(List<PlatoIngredienteDto> lista) throws UtilMfDtoException{
 		List<PlatoIngrediente> listaSalida = new ArrayList<>();
 		
 		for (PlatoIngredienteDto dto : lista) {
@@ -129,7 +130,7 @@ public class Utilmfjpa {
 		
 	}
 	
-	public static PlatoIngrediente parsePlatoIngredienteDto(PlatoIngredienteDto dto) {
+	public static PlatoIngrediente parsePlatoIngredienteDto(PlatoIngredienteDto dto) throws UtilMfDtoException {
 		PlatoIngrediente entity = new PlatoIngrediente();
 		
 		if (dto != null) {

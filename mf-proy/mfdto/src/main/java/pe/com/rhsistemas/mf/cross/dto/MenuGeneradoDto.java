@@ -4,7 +4,9 @@
 package pe.com.rhsistemas.mf.cross.dto;
 
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map.Entry;
 
 /**
  * @author Edwin
@@ -19,6 +21,7 @@ public class MenuGeneradoDto extends BaseDto {
 	private int numeroDias;
 	private int idPersona;
 	private List<MenuDetalleDto> listaPlatos;
+	private Iterator<Entry<Integer, MenuDetalleDto>> detalleMenu;
 	private Date fechaDesde;
 	private Date fechaHasta;
 
@@ -122,6 +125,20 @@ public class MenuGeneradoDto extends BaseDto {
 	 */
 	public void setFechaHasta(Date fechaHasta) {
 		this.fechaHasta = fechaHasta;
+	}
+
+	/**
+	 * @return the detalleMenu
+	 */
+	public Iterator<Entry<Integer, MenuDetalleDto>> getDetalleMenu() {
+		return detalleMenu;
+	}
+
+	/**
+	 * @param detalleMenu the detalleMenu to set
+	 */
+	public void setDetalleMenu(Iterator<Entry<Integer, MenuDetalleDto>> detalleMenu) {
+		this.detalleMenu = detalleMenu;
 	}
 
 }

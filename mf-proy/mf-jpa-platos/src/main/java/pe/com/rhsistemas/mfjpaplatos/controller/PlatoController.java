@@ -154,5 +154,44 @@ public class PlatoController {
 		salida = new ResponseEntity<>(mapeo, status);
 		return salida;
 	}
+	
+	@GetMapping(value = "/platosNoConsumidosTipo", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Map<String, Object>> platosNoConsumidos(
+			@RequestParam(name = "idPersona", required = true) Integer idPersona,
+			@RequestParam(name = "fechaCorteDesde", required = true) Date fechaCorteDesde,
+			@RequestParam(name = "fechaCorteHasta", required = true) Date fechaCorteHasta,
+			@RequestParam(name = "idTipoPlato", required = true) Integer idTipoPlato
+			) {
+		ResponseEntity<Map<String, Object>> salida = null;
+		Map<String, Object> mapeo = null;
+		HttpStatus status = null;
+		try {
+			logger.info("recibiendo parametros");
+			UtilMfDto.pintaLog(idPersona, "idPersona");
+			UtilMfDto.pintaLog(fechaCorteDesde, "fechaCorteDesde");
+			UtilMfDto.pintaLog(fechaCorteHasta, "fechaCorteHasta");
+
+			List<Plato> platos = platoRepository.platosNoConsumidosTipo(idPersona,
+					UtilMfDto.convertirUtilDateASqlDate(fechaCorteDesde), UtilMfDto.convertirUtilDateASqlDate(fechaCorteHasta),idTipoPlato);
+			List<PlatoDto> platosDto = new ArrayList<>();
+			for (Plato plato : platos) {
+				platosDto.add(Utilmfjpa.parsePlatoEntity(plato));
+			}
+			status = HttpStatus.OK;
+			mapeo = new HashMap<String, Object>();
+			mapeo.put("error", false);
+			mapeo.put("mensaje", "Operacion Completada");
+			mapeo.put(Constantes.VALOR_DATA_MAP, platosDto);
+
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+			mapeo = new HashMap<String, Object>();
+			mapeo.put("error", true);
+			mapeo.put("mensaje", "Operacion no completada");
+		}
+		salida = new ResponseEntity<>(mapeo, status);
+		return salida;
+	}
 
 }

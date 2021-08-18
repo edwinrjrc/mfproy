@@ -105,10 +105,12 @@ public class UtilMfDto {
 		return dato;
 	}
 	
-	public static Integer parseStringAInteger(String cadena) {
-		Integer valor = null;
-		valor = Integer.valueOf(cadena);
-		return valor;
+	public static Integer parseStringAInteger(String cadena) throws UtilMfDtoException {
+		try {
+			return Integer.valueOf(cadena);
+		} catch (NumberFormatException e) {
+			throw new UtilMfDtoException(e);
+		}
 	}
 	
 	public static Long parseIntALong(int valor) {
@@ -117,5 +119,6 @@ public class UtilMfDto {
 		salida = Long.valueOf(valor);
 		return salida;
 	}
+	
 
 }

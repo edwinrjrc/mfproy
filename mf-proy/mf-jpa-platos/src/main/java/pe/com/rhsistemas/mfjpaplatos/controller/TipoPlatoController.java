@@ -165,4 +165,46 @@ public class TipoPlatoController {
 		return salida;
 	}
 	
+	@GetMapping(value = "/tiposPlatoFondo", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Map<String, Object>> listaTiposPlatosFondo() {
+		ResponseEntity<Map<String, Object>> salida = null;
+		Map<String, Object> mapeo = null;
+		HttpStatus status = null;
+
+		try {
+			List<TipoPlato> listaTipos = tipoPlatoRepository.findByTiposxPlatoInFondo("S");
+			List<TipoPlatoDto> listaTipoPlato = null;
+
+			status = HttpStatus.NO_CONTENT;
+
+			if (UtilMfDto.listaNoVacia(listaTipos)) {
+				listaTipoPlato = new ArrayList<>();
+
+				for (TipoPlato entity : listaTipos) {
+					listaTipoPlato.add(Utilmfjpa.parseTipoPlato(entity));
+				}
+			}
+			
+			mapeo = new HashMap<String, Object>();
+			mapeo.put("error", false);
+			mapeo.put("mensaje", "Consulta completada");
+			mapeo.put(Constantes.VALOR_DATA_MAP, listaTipoPlato);
+			
+			status = HttpStatus.OK;
+			
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+
+			mapeo = new HashMap<String, Object>();
+			mapeo.put("error", true);
+			mapeo.put("mensaje", "Operacion no completada");
+
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+
+		salida = new ResponseEntity<Map<String, Object>>(mapeo, status);
+
+		return salida;
+	}
+	
 }
