@@ -94,7 +94,7 @@ public class MenuLogicaServiceImpl implements MenuLogicaService {
 
 		if (cal.get(Calendar.DAY_OF_WEEK) > Calendar.SUNDAY && cal.get(Calendar.DAY_OF_WEEK) < Calendar.SATURDAY) {
 			fechaCorte = UtilMfDto.parseStringADate(UtilMfDto.parseDateAString(fechaHoy, "dd/MM/yyyy") + " 11:00:00 am",
-					"dd/MM/yyyy HH:mm:ss aaa");
+					"dd/MM/yyyy HH:mm:ss aaa",null);
 			fechaInicio = cal.getTime();
 			if (fechaHoy.after(fechaCorte)) {
 				cal.add(Calendar.DATE, 1);
@@ -243,7 +243,7 @@ public class MenuLogicaServiceImpl implements MenuLogicaService {
 					menuDetalleDto.setFechaRegistro(fechaHoy);
 					String feConsumo = UtilMfDto.parseDateAString(calendario.getTime(),null);
 					feConsumo = feConsumo + " 01:00:00 PM";
-					menuDetalleDto.setFechaConsumo(UtilMfDto.parseStringADate(feConsumo, "dd/MM/yyyy hh:mm:ss a"));
+					menuDetalleDto.setFechaConsumo(UtilMfDto.parseStringADate(feConsumo, "dd/MM/yyyy hh:mm:ss a",null));
 					menuDetalleDto.getPlatoDto().setId(idPlatoElegido);
 					menuDetalleDto.setIdTipoPlato(mapeoTipoPlato.get(diaSemana).intValue());
 					menuDetalleDto.setIdUsuarioRegistro(idUsuario);
@@ -343,6 +343,8 @@ public class MenuLogicaServiceImpl implements MenuLogicaService {
 		
 		menuDia.getPlatoDto().setId(idPlatoElegido);
 		menuDia.setIdGenerado(Long.valueOf(ultimoMenuGenerado.getIdGenerado()).intValue());
+		
+		log.info("fecha consumo :: "+menuDia.getFechaConsumo());
 		
 		this.remoteServiceMenu.grabarMenuDetalleDia(menuDia);
 	}

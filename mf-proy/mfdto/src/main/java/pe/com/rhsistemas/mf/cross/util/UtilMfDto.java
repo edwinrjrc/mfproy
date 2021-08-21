@@ -8,6 +8,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -56,13 +57,18 @@ public class UtilMfDto {
 		return rpta;
 	}
 	
-	public static Date parseStringADate(String cadenaFecha, String patron) throws UtilMfDtoException {
+	public static Date parseStringADate(String cadenaFecha, String patron, TimeZone timeZone) throws UtilMfDtoException {
 		try {
 			if (StringUtils.isBlank(cadenaFecha)) {
 				throw new UtilMfDtoException("La fecha a convertir esta en blanco o es nula");
 			}
 			log.info(patron);
 			SimpleDateFormat sdf = new SimpleDateFormat((StringUtils.isBlank(patron)?PATRON_SDF_DEFECTO:patron));
+			sdf.setTimeZone(TimeZone.getDefault());
+			if (timeZone != null) {
+				sdf.setTimeZone(timeZone);
+			}
+			
 			return sdf.parse(cadenaFecha);
 		} catch (ParseException e) {
 			throw new UtilMfDtoException(e);

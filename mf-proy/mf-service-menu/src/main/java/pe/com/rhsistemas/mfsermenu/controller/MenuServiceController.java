@@ -146,7 +146,7 @@ public class MenuServiceController {
 			log.info("Recibiendo parametros cambiarPlatoMenu");
 			UtilMfDto.pintaLog(datos, "datos");
 			
-			Date fechaInput = UtilMfDto.parseStringADate(datos.getFechaConsumo(), Constantes.FORMAT_DATE_MAPPER);
+			Date fechaInput = UtilMfDto.parseStringADate(datos.getFechaConsumo(), Constantes.FORMAT_DATE_MAPPER, null);
 			
 			log.info("fechaInput ::"+fechaInput);
 			log.info("fechaInput 2::"+fechaInput.toString());
@@ -154,7 +154,7 @@ public class MenuServiceController {
 			String fechaStr = UtilMfDto.parseDateAString(fechaInput, "dd/MM/yyyy");
 			
 			Calendar cal = Calendar.getInstance();
-			cal.setTime(UtilMfDto.parseStringADate(fechaStr, "dd/MM/yyyy"));
+			cal.setTime(UtilMfDto.parseStringADate(fechaStr, "dd/MM/yyyy",null));
 			
 			menuLogicaService.cambiarPlatoDia(UtilMfDto.parseStringAInteger(datos.getIdPersona()), UtilMfDto.parseStringAInteger(datos.getIdTipoPlato()), cal.get(Calendar.DAY_OF_WEEK));
 

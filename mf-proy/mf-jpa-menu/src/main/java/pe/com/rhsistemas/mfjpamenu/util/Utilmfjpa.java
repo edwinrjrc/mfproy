@@ -1,13 +1,14 @@
 package pe.com.rhsistemas.mfjpamenu.util;
 
 import java.sql.Timestamp;
-import java.util.Date;
 
+import pe.com.rhsistemas.mf.cross.compartido.Constantes;
 import pe.com.rhsistemas.mf.cross.dto.BaseValor;
 import pe.com.rhsistemas.mf.cross.dto.IngredienteDto;
 import pe.com.rhsistemas.mf.cross.dto.MenuDetalleDto;
 import pe.com.rhsistemas.mf.cross.dto.MenuGeneradoDto;
 import pe.com.rhsistemas.mf.cross.dto.PlatoIngredienteDto;
+import pe.com.rhsistemas.mf.cross.exception.UtilMfDtoException;
 import pe.com.rhsistemas.mf.cross.util.UtilMfDto;
 import pe.com.rhsistemas.mfjpamenu.entity.MenuDetalle;
 import pe.com.rhsistemas.mfjpamenu.entity.MenuDetallePK;
@@ -52,9 +53,10 @@ public class Utilmfjpa {
 		return dto;
 	}
 	
-	public static MenuDetalleDto parseMenuDetalle(MenuDetalle entity) {
+	public static MenuDetalleDto parseMenuDetalle(MenuDetalle entity) throws UtilMfDtoException {
 		MenuDetalleDto dto = new MenuDetalleDto();
 		
+		dto.setFechaConsumoStr(UtilMfDto.parseDateAString(entity.getId().getFeConsumo(), Constantes.FORMAT_DATE_MAPPER));
 		dto.setFechaConsumo(entity.getId().getFeConsumo());
 		dto.setFechaModificacion(entity.getFeModificacion());
 		dto.setFechaRegistro(entity.getFeRegistro());

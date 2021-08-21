@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -60,6 +61,7 @@ public class RemoteServiceMenu {
 
 			HttpHeaders headers = new HttpHeaders();
 			headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+			headers.setContentType(MediaType.APPLICATION_JSON);
 
 			Map<String, Object> map = new HashMap<>();
 			map.put("idPersona", idPersona);
@@ -152,6 +154,7 @@ public class RemoteServiceMenu {
 
 		HttpHeaders headers = new HttpHeaders();
 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+		headers.setContentType(MediaType.APPLICATION_JSON);
 
 		HttpEntity<Map<String, Object>> requestEntity = new HttpEntity<Map<String, Object>>(headers);
 		Class<Map> responseType = Map.class;
@@ -159,12 +162,13 @@ public class RemoteServiceMenu {
 
 		ResponseEntity<Map> respuesta = restTemplate.exchange(obtenerUri(url), metodoServicio, requestEntity, responseType);
 		
-		SimpleDateFormat df = new SimpleDateFormat(Constantes.FORMAT_DATE_MAPPER);
-
+		SimpleDateFormat df = new SimpleDateFormat(Constantes.FORMAT_DATE_MAPPER_FULL);
+		df.setTimeZone(TimeZone.getDefault());
 		JsonFactory factory = new JsonFactory();
 		factory.enable(Feature.ALLOW_SINGLE_QUOTES);
 		ObjectMapper mapper = new ObjectMapper(factory);
 		mapper.setDateFormat(df);
+		mapper.setTimeZone(TimeZone.getDefault());
 
 		List<?> datosLista = (List) respuesta.getBody().get(Constantes.VALOR_DATA_MAP);
 

@@ -29,7 +29,6 @@ import pe.com.rhsistemas.mf.cross.util.UtilMfDto;
 import pe.com.rhsistemas.mfjpamenu.dao.MenuDetalleRepository;
 import pe.com.rhsistemas.mfjpamenu.dao.MenuRepository;
 import pe.com.rhsistemas.mfjpamenu.entity.MenuDetalle;
-import pe.com.rhsistemas.mfjpamenu.entity.MenuDetallePK;
 import pe.com.rhsistemas.mfjpamenu.entity.MenuGenerado;
 import pe.com.rhsistemas.mfjpamenu.entity.Persona;
 import pe.com.rhsistemas.mfjpamenu.util.Utilmfjpa;
@@ -68,6 +67,7 @@ public class MenuController {
 			MenuDetalleDto menuDetalleDto = null;
 			for (MenuDetalle menuDetalle : listaMenus) {
 				menuDetalleDto = new MenuDetalleDto();
+				menuDetalleDto.setFechaConsumoStr(UtilMfDto.parseDateAString(menuDetalle.getId().getFeConsumo(), Constantes.FORMAT_DATE_MAPPER));
 				menuDetalleDto.setFechaConsumo(menuDetalle.getId().getFeConsumo());
 				menuDetalleDto.getPlatoDto().setId(menuDetalle.getIdPlato());
 				menuDetalleDto.setFechaRegistro(menuDetalle.getFeRegistro());

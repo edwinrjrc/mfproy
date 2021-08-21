@@ -14,6 +14,7 @@ public class MenuDetalleDto extends BaseDto {
 	private static final long serialVersionUID = 3549472290139151728L;
 	
 	private Date fechaConsumo;
+	private String fechaConsumoStr;
 	private String nombreDia;
 	private Integer numSemana;
 	private PlatoDto platoDto;
@@ -109,6 +110,20 @@ public class MenuDetalleDto extends BaseDto {
 	 */
 	public void setIdGenerado(Integer idGenerado) {
 		this.idGenerado = idGenerado;
+	}
+
+	/**
+	 * @return the fechaConsumoStr
+	 */
+	public String getFechaConsumoStr() {
+		return fechaConsumoStr;
+	}
+
+	/**
+	 * @param fechaConsumoStr the fechaConsumoStr to set
+	 */
+	public void setFechaConsumoStr(String fechaConsumoStr) {
+		this.fechaConsumoStr = fechaConsumoStr;
 	}
 
 }
