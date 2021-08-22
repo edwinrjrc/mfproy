@@ -20,6 +20,10 @@ public interface TipoPlatoRepository extends JpaRepository<TipoPlato, Integer> {
 	
 	List<TipoPlato> findByInFondo(String inFondo);
 	
-	@Query(value = "Select tp from TipoPlato tp inner join PlatoTipoPlato ptp on ptp.id.idTipoPlat = tp.idTipoPlat where tp.inFondo = ?1")
+	//distinct tp2.id_tipo_plat, tp2.de_tipo_plat
+	@Query(value = "Select tp"
+			+ "       from TipoPlato tp "
+			+ "      where tp.inFondo = ?1 "
+			+ "        and tp.idTipoPlat in (select ptp.id.idTipoPlat from PlatoTipoPlato ptp) ")
 	List<TipoPlato> findByTiposxPlatoInFondo(String inFondo);
 }

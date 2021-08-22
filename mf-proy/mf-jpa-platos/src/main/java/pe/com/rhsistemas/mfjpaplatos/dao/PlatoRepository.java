@@ -28,7 +28,7 @@ public interface PlatoRepository extends JpaRepository<Plato, Integer>{
 	@Query(value = "select p.* from sistema.plato p" + 
 			" inner join sistema.plato_tipo_plato ptp on p.id_plato = ptp.id_plato" + 
 			" where ptp.id_tipo_plat = ?4" +
-			"   and id_plato not in (select d.id_plato" + 
+			"   and p.id_plato not in (select d.id_plato" + 
 			"                          from sistema.menu_detalle d" + 
 			"			             where d.id_generado in (select m.id_generado" + 
 			"			                                      from sistema.menu_generado m" + 

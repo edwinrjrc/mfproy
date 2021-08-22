@@ -12,7 +12,7 @@
 	<artifactId>mf-service-menu</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>mf-service-menu</name>
-	<description>Proyecto que concentra las funcionalidades referida a los platos</description>
+	<description>Proyecto que concentra las funcionalidades referida a los menus generados</description>
 	<properties>
 		<java.version>1.8</java.version>
 		<spring-cloud.version>2020.0.2</spring-cloud.version>

@@ -56,6 +56,8 @@ public class RemoteServicePlato {
 	
 	private static final String URL_SERVICE_4 = "http://mf-jpa-platos/TipoPlatoRJPAService/tiposPlatoFondo";
 	
+	private static final String URL_SERVICE_5 = "http://mf-jpa-platos/PlatoRJPAService/platosNoConsumidosTipo";
+	
 	@Autowired
 	private RestTemplate restTemplate;
 
@@ -157,7 +159,7 @@ public class RemoteServicePlato {
 			HttpEntity<Map> requestEntity = new HttpEntity<Map>(generarHttpHeaders());
 			Class<Map> responseType = Map.class;
 			
-			UriComponentsBuilder builderURI = UriComponentsBuilder.fromHttpUrl(URL_SERVICE_2);
+			UriComponentsBuilder builderURI = UriComponentsBuilder.fromHttpUrl(URL_SERVICE_5);
 			builderURI.queryParam("idPersona", idPersona);
 			builderURI.queryParam("fechaCorteDesde", UtilMfDto.parseDateAString(fechaCorteDesde, ""));
 			builderURI.queryParam("fechaCorteHasta", UtilMfDto.parseDateAString(fechaCorteHasta, ""));
