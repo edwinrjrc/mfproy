@@ -14,9 +14,9 @@
   	<module>mf-jpa-receta</module>
   	<module>mf-service-ingrediente</module>
   	<module>mf-service-menu</module>
+  	<module>mf-service-plato</module>
   	<module>mf-service-security</module>
   	<module>mf-gateway</module>
   	<module>mf-eureka-server</module>
-  	<module>mf-service-plato</module>
   </modules>
 </project>
