@@ -5,6 +5,8 @@ package pe.com.rhsistemas.mfsermenu.service.impl;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,10 +35,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import pe.com.rhsistemas.mf.cross.compartido.Constantes;
 import pe.com.rhsistemas.mf.cross.dto.PlatoDto;
+import pe.com.rhsistemas.mf.cross.dto.PlatoFavoritoDto;
 import pe.com.rhsistemas.mf.cross.dto.PlatoTipoPlatoDto;
 import pe.com.rhsistemas.mf.cross.dto.TipoPlatoDto;
 import pe.com.rhsistemas.mf.cross.exception.UtilMfDtoException;
 import pe.com.rhsistemas.mf.cross.util.UtilMfDto;
+import pe.com.rhsistemas.mf.post.dto.PlatoFavoritoPkDto;
 import pe.com.rhsistemas.mfsermenu.exception.MfServiceMenuException;
 
 /**
@@ -57,6 +61,8 @@ public class RemoteServicePlato {
 	private static final String URL_SERVICE_4 = "http://mf-jpa-platos/TipoPlatoRJPAService/tiposPlatoFondo";
 	
 	private static final String URL_SERVICE_5 = "http://mf-jpa-platos/PlatoRJPAService/platosNoConsumidosTipo";
+	
+	private static final String URL_SERVICE_6 = "http://mf-jpa-platos/PlatoFavoritoRJPAService/platoFavorito";
 	
 	@Autowired
 	private RestTemplate restTemplate;
@@ -255,9 +261,7 @@ public class RemoteServicePlato {
 		    List<?> datosLista = (List<?>) respuesta.getBody().get(Constantes.VALOR_DATA_MAP);
 		    listaTipoPlato = new ArrayList<>();
 		    for (Object objeto : datosLista) {
-		    	LinkedHashMap map = (LinkedHashMap) objeto;
-		    	
-		    	listaTipoPlato.add(mapper.convertValue(map, TipoPlatoDto.class));
+		    	listaTipoPlato.add(mapper.convertValue((LinkedHashMap) objeto, TipoPlatoDto.class));
 			}
 			
 		} catch (RestClientException e) {
@@ -268,6 +272,42 @@ public class RemoteServicePlato {
 			throw new MfServiceMenuException(e);
 		}
 		return listaTipoPlato;
+	}
+	
+	public List<PlatoFavoritoDto> consultarPlatoFavorito(String listaPlatos, Integer idPersona) throws MfServiceMenuException {
+		List<PlatoFavoritoDto> listaPlatoFavorito = null;
+		try {
+			HttpMethod metodoServicio = HttpMethod.GET;
+			
+			HttpEntity<Map<String, Object>> requestEntity = new HttpEntity<Map<String,Object>>(generarHttpHeaders());
+			Class<Map> responseType = Map.class;
+			
+			JsonFactory factory = new JsonFactory();
+		    factory.enable(Feature.ALLOW_SINGLE_QUOTES);
+		    ObjectMapper mapper = new ObjectMapper(factory);
+		    
+			UriComponentsBuilder builderURI = UriComponentsBuilder.fromHttpUrl(URL_SERVICE_6);
+			builderURI.queryParam("listaPlatoFavorito", listaPlatos);
+			builderURI.queryParam("idPersona", idPersona.toString());
+			
+			log.info("valor json :: "+new String(builderURI.toUriString().getBytes(),StandardCharsets.UTF_8));
+			
+			ResponseEntity<Map> respuesta = restTemplate.exchange(builderURI.toUriString(), metodoServicio, requestEntity, responseType);
+			
+		    List<?> datosLista = (List<?>) respuesta.getBody().get(Constantes.VALOR_DATA_MAP);
+		    listaPlatoFavorito = new ArrayList<>();
+		    for (Object objeto : datosLista) {
+		    	listaPlatoFavorito.add(mapper.convertValue((LinkedHashMap) objeto, PlatoFavoritoDto.class));
+			}
+			
+		} catch (RestClientException e) {
+			log.error(e.getMessage(),e);
+			throw new MfServiceMenuException(e);
+		} catch (Exception e) {
+			log.error(e.getMessage(),e);
+			throw new MfServiceMenuException(e);
+		}
+		return listaPlatoFavorito;
 	}
 
 	private URI obtenerUri(String cadenaUrl) throws MfServiceMenuException {
@@ -286,6 +326,7 @@ public class RemoteServicePlato {
 		HttpHeaders headers = new HttpHeaders();
 	    headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
 	    headers.setContentType(MediaType.APPLICATION_JSON);
+	    
 	    
 	    return headers;
 	}

@@ -126,5 +126,11 @@ public class UtilMfDto {
 		return salida;
 	}
 	
-
+	public static Long parseIntegerALong(Integer valor) throws UtilMfDtoException {
+		try {
+			return Long.valueOf(valor);
+		} catch (Exception e) {
+			throw new UtilMfDtoException(e);
+		}
+	}
 }

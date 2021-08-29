@@ -22,6 +22,8 @@ public class PlatoDto extends BaseDto {
 	private BaseValor tipoCocina;
 	
 	private List<PlatoIngredienteDto> ingredientes;
+	
+	private boolean favorito;
 
 	/**
 	 * @return the id
@@ -133,6 +135,20 @@ public class PlatoDto extends BaseDto {
 	 */
 	public void setIngredientes(List<PlatoIngredienteDto> ingredientes) {
 		this.ingredientes = ingredientes;
+	}
+
+	/**
+	 * @return the favorito
+	 */
+	public boolean isFavorito() {
+		return favorito;
+	}
+
+	/**
+	 * @param favorito the favorito to set
+	 */
+	public void setFavorito(boolean favorito) {
+		this.favorito = favorito;
 	}
 	
 	

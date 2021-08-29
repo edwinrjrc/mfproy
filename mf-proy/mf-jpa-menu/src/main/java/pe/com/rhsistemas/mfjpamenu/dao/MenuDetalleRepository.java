@@ -19,4 +19,5 @@ public interface MenuDetalleRepository extends JpaRepository<MenuDetalle, MenuDe
 
 	@Query(value = "select d from MenuDetalle d where d.id.idGenerado = ?1")
 	List<MenuDetalle> findByMenuGenerado(Long idGenerado);
+	
 }

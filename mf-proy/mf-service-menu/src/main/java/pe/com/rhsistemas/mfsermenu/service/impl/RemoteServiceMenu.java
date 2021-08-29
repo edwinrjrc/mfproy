@@ -59,14 +59,10 @@ public class RemoteServiceMenu {
 		try {
 			HttpMethod metodoServicio = HttpMethod.GET;
 
-			HttpHeaders headers = new HttpHeaders();
-			headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-			headers.setContentType(MediaType.APPLICATION_JSON);
-
 			Map<String, Object> map = new HashMap<>();
 			map.put("idPersona", idPersona);
 
-			HttpEntity<Map<String, Object>> requestEntity = new HttpEntity<Map<String, Object>>(map, headers);
+			HttpEntity<Map<String, Object>> requestEntity = new HttpEntity<Map<String, Object>>(map, generarHttpHeaders());
 			Class<Map> responseType = Map.class;
 			String url = URL_SERVICE + "/" + idPersona;
 			ResponseEntity<Map> respuesta = restTemplate.exchange(obtenerUri(url), metodoServicio, requestEntity, responseType);
@@ -120,10 +116,7 @@ public class RemoteServiceMenu {
 	public List<MenuGeneradoDto> obtenerMenuGeneradoCabecera(Integer idPersona) throws MfServiceMenuException {
 		HttpMethod metodoServicio = HttpMethod.GET;
 
-		HttpHeaders headers = new HttpHeaders();
-		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-
-		HttpEntity<Map<String, Object>> requestEntity = new HttpEntity<Map<String, Object>>(headers);
+		HttpEntity<Map<String, Object>> requestEntity = new HttpEntity<Map<String, Object>>(generarHttpHeaders());
 		Class<Map> responseType = Map.class;
 		String url = URL_SERVICE + "/" + idPersona;
 
@@ -152,11 +145,7 @@ public class RemoteServiceMenu {
 	public Map<Integer,MenuDetalleDto> obtenerMenuGeneradoDetalle(Integer idMenuGenerado) throws MfServiceMenuException {
 		HttpMethod metodoServicio = HttpMethod.GET;
 
-		HttpHeaders headers = new HttpHeaders();
-		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-		headers.setContentType(MediaType.APPLICATION_JSON);
-
-		HttpEntity<Map<String, Object>> requestEntity = new HttpEntity<Map<String, Object>>(headers);
+		HttpEntity<Map<String, Object>> requestEntity = new HttpEntity<Map<String, Object>>(generarHttpHeaders());
 		Class<Map> responseType = Map.class;
 		String url = URL_SERVICE_2 + "/" + idMenuGenerado;
 
@@ -199,6 +188,14 @@ public class RemoteServiceMenu {
 			throw new MfServiceMenuException(e);
 		}
 		return url;
+	}
+	
+	private HttpHeaders generarHttpHeaders() {
+		HttpHeaders headers = new HttpHeaders();
+	    headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+	    headers.setContentType(MediaType.APPLICATION_JSON);
+	    
+	    return headers;
 	}
 
 }

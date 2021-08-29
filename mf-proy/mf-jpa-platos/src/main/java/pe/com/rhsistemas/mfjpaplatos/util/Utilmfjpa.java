@@ -14,14 +14,18 @@ import pe.com.rhsistemas.mf.cross.dto.IngredienteDto;
 import pe.com.rhsistemas.mf.cross.dto.PasoPreparacionDto;
 import pe.com.rhsistemas.mf.cross.dto.PersonaDto;
 import pe.com.rhsistemas.mf.cross.dto.PlatoDto;
+import pe.com.rhsistemas.mf.cross.dto.PlatoFavoritoDto;
 import pe.com.rhsistemas.mf.cross.dto.PlatoIngredienteDto;
 import pe.com.rhsistemas.mf.cross.dto.PlatoTipoPlatoDto;
 import pe.com.rhsistemas.mf.cross.dto.TipoPlatoDto;
 import pe.com.rhsistemas.mf.cross.dto.ValorNutricionalDto;
 import pe.com.rhsistemas.mf.cross.exception.UtilMfDtoException;
 import pe.com.rhsistemas.mf.cross.util.UtilMfDto;
+import pe.com.rhsistemas.mf.post.dto.PlatoFavoritoPkDto;
 import pe.com.rhsistemas.mfjpaplatos.entity.Ingrediente;
 import pe.com.rhsistemas.mfjpaplatos.entity.Plato;
+import pe.com.rhsistemas.mfjpaplatos.entity.PlatoFavorito;
+import pe.com.rhsistemas.mfjpaplatos.entity.PlatoFavoritoPK;
 import pe.com.rhsistemas.mfjpaplatos.entity.PlatoIngrediente;
 import pe.com.rhsistemas.mfjpaplatos.entity.PlatoIngredientePK;
 import pe.com.rhsistemas.mfjpaplatos.entity.PlatoTipoPlato;
@@ -247,4 +251,48 @@ public class Utilmfjpa {
 		dto.setFechaRegistro(entity.getFeRegistro());
 		return dto;
 	}
+	
+	public static PlatoFavorito parsePlatoFavoritoDto(PlatoFavoritoDto dto) {
+		PlatoFavorito entity = new PlatoFavorito();
+		PlatoFavoritoPK pk = new PlatoFavoritoPK();
+		pk.setIdPersona(dto.getIdPersona());
+		pk.setIdPlato(dto.getIdPlato());
+		entity.setId(pk);
+		entity.setFeModificacion(UtilMfDto.parseDateASqlTimestamp(dto.getFechaModificacion()));
+		entity.setFeRegistro(UtilMfDto.parseDateASqlTimestamp(dto.getFechaRegistro()));
+		entity.setIdUsuaCrea(dto.getIdUsuarioRegistro());
+		entity.setIdUsuaModi(dto.getIdUsuarioModificacion());
+		entity.setStPlatFavo(dto.getEstadoPlatoFavorito());
+		
+		return entity;
+	}
+	
+	public static PlatoFavoritoPK parseaPlatoFavoritoPk(PlatoFavoritoPkDto dtoPk) throws UtilMfDtoException {
+		PlatoFavoritoPK pk = new PlatoFavoritoPK();
+		pk.setIdPersona(UtilMfDto.parseIntegerALong(dtoPk.getIdPersona()));
+		pk.setIdPlato(dtoPk.getIdPlato());
+		
+		return pk;
+	}
+	
+	public static PlatoFavoritoPK parseaPlatoFavoritoPk(Long idPersona, Integer idPlato) throws UtilMfDtoException {
+		PlatoFavoritoPK pk = new PlatoFavoritoPK();
+		pk.setIdPersona(idPersona);
+		pk.setIdPlato(idPlato);
+		
+		return pk;
+	}
+	
+	public static PlatoFavoritoDto parseaPlatoFavorito(PlatoFavorito entity) {
+		PlatoFavoritoDto dto = new PlatoFavoritoDto();
+		dto.setFechaModificacion(entity.getFeModificacion());
+		dto.setFechaRegistro(entity.getFeRegistro());
+		dto.setIdPersona(entity.getId().getIdPersona());
+		dto.setIdPlato(entity.getId().getIdPlato());
+		dto.setIdUsuarioModificacion(entity.getIdUsuaModi());
+		dto.setIdUsuarioRegistro(entity.getIdUsuaCrea());
+		
+		return dto;
+	}
+	
 }

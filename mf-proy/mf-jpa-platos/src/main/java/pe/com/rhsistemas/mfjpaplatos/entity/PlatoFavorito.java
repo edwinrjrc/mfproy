@@ -22,6 +22,9 @@ public class PlatoFavorito implements Serializable {
 
 	@EmbeddedId
 	private PlatoFavoritoPK id;
+	
+	@Column(name="st_plat_favo", nullable=false)
+	private String stPlatFavo;
 
 	@Column(name="fe_modificacion", nullable=false)
 	private Timestamp feModificacion;
@@ -76,6 +79,20 @@ public class PlatoFavorito implements Serializable {
 
 	public void setIdUsuaModi(Integer idUsuaModi) {
 		this.idUsuaModi = idUsuaModi;
+	}
+
+	/**
+	 * @return the stPlatFavo
+	 */
+	public String getStPlatFavo() {
+		return stPlatFavo;
+	}
+
+	/**
+	 * @param stPlatFavo the stPlatFavo to set
+	 */
+	public void setStPlatFavo(String stPlatFavo) {
+		this.stPlatFavo = stPlatFavo;
 	}
 
 }

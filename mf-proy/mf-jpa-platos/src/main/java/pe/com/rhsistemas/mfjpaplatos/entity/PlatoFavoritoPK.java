@@ -22,6 +22,7 @@ public class PlatoFavoritoPK implements Serializable {
 
 	public PlatoFavoritoPK() {
 	}
+	
 	public Long getIdPersona() {
 		return this.idPersona;
 	}

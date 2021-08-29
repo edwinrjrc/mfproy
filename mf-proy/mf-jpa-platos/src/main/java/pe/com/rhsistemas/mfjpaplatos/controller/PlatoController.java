@@ -41,7 +41,7 @@ public class PlatoController {
 
 	@Autowired
 	private PlatoRepository platoRepository;
-
+	
 	@PostMapping(value = "/plato")
 	public ResponseEntity<Map<String, Object>> registrarPlato(@RequestBody PlatoDto platoDto) {
 		ResponseEntity<Map<String, Object>> salida = null;
@@ -193,5 +193,5 @@ public class PlatoController {
 		salida = new ResponseEntity<>(mapeo, status);
 		return salida;
 	}
-
+	
 }

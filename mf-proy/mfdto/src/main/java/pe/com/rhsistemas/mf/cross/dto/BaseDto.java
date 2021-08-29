@@ -17,7 +17,7 @@ public abstract class BaseDto implements Serializable{
 	/**
 	 * Identificador de usuario que registra
 	 */
-	private int idUsuarioRegistro;
+	private Integer idUsuarioRegistro;
 	/**
 	 * Fecha que se realizo el registro
 	 */
@@ -25,7 +25,7 @@ public abstract class BaseDto implements Serializable{
 	/**
 	 * Identificador de usuario que realizo la modificacion
 	 */
-	private int idUsuarioModificacion;
+	private Integer idUsuarioModificacion;
 	/**
 	 * Fecha que se realizo la modificacion
 	 */
@@ -35,13 +35,13 @@ public abstract class BaseDto implements Serializable{
 	/**
 	 * @return the idUsuarioRegistro
 	 */
-	public int getIdUsuarioRegistro() {
+	public Integer getIdUsuarioRegistro() {
 		return idUsuarioRegistro;
 	}
 	/**
 	 * @param idUsuarioRegistro the idUsuarioRegistro to set
 	 */
-	public void setIdUsuarioRegistro(int idUsuarioRegistro) {
+	public void setIdUsuarioRegistro(Integer idUsuarioRegistro) {
 		this.idUsuarioRegistro = idUsuarioRegistro;
 	}
 	/**
@@ -59,13 +59,13 @@ public abstract class BaseDto implements Serializable{
 	/**
 	 * @return the idUsuarioModificacion
 	 */
-	public int getIdUsuarioModificacion() {
+	public Integer getIdUsuarioModificacion() {
 		return idUsuarioModificacion;
 	}
 	/**
 	 * @param idUsuarioModificacion the idUsuarioModificacion to set
 	 */
-	public void setIdUsuarioModificacion(int idUsuarioModificacion) {
+	public void setIdUsuarioModificacion(Integer idUsuarioModificacion) {
 		this.idUsuarioModificacion = idUsuarioModificacion;
 	}
 	/**

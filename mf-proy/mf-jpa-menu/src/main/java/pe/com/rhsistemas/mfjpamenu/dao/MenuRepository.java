@@ -30,4 +30,5 @@ public interface MenuRepository extends JpaRepository<MenuGenerado, Long> {
 	
 	@Query(value = "SELECT g FROM MenuGenerado g WHERE g.feGenerado = ?1")
 	List<MenuGenerado> findByFechaGenerado(Date fechaGenerado);
+	
 }

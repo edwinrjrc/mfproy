@@ -16,10 +16,10 @@ public class MenuGeneradoDto extends BaseDto {
 	
 	private static final long serialVersionUID = 1440805495819436622L;
 	
-	private long idGenerado;
+	private Long idGenerado;
 	private Date fechaGenerado;
 	private int numeroDias;
-	private int idPersona;
+	private Integer idPersona;
 	private List<MenuDetalleDto> listaPlatos;
 	private Iterator<Entry<Integer, MenuDetalleDto>> detalleMenu;
 	private Date fechaDesde;
@@ -32,14 +32,14 @@ public class MenuGeneradoDto extends BaseDto {
 	/**
 	 * @return the idGenerado
 	 */
-	public long getIdGenerado() {
+	public Long getIdGenerado() {
 		return idGenerado;
 	}
 
 	/**
 	 * @param idGenerado the idGenerado to set
 	 */
-	public void setIdGenerado(long idGenerado) {
+	public void setIdGenerado(Long idGenerado) {
 		this.idGenerado = idGenerado;
 	}
 
@@ -60,14 +60,14 @@ public class MenuGeneradoDto extends BaseDto {
 	/**
 	 * @return the idPersona
 	 */
-	public int getIdPersona() {
+	public Integer getIdPersona() {
 		return idPersona;
 	}
 
 	/**
 	 * @param idPersona the idPersona to set
 	 */
-	public void setIdPersona(int idPersona) {
+	public void setIdPersona(Integer idPersona) {
 		this.idPersona = idPersona;
 	}
 

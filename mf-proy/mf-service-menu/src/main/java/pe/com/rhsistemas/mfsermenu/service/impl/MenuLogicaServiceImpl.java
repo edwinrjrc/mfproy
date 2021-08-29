@@ -1,5 +1,6 @@
 package pe.com.rhsistemas.mfsermenu.service.impl;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -9,21 +10,25 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import pe.com.rhsistemas.mf.cross.dto.MenuDetalleDto;
 import pe.com.rhsistemas.mf.cross.dto.MenuGeneradoDto;
 import pe.com.rhsistemas.mf.cross.dto.PlatoDto;
+import pe.com.rhsistemas.mf.cross.dto.PlatoFavoritoDto;
 import pe.com.rhsistemas.mf.cross.dto.PlatoTipoPlatoDto;
 import pe.com.rhsistemas.mf.cross.dto.TipoPlatoDto;
 import pe.com.rhsistemas.mf.cross.exception.UtilMfDtoException;
 import pe.com.rhsistemas.mf.cross.util.UtilMfDto;
+import pe.com.rhsistemas.mf.post.dto.PlatoFavoritoPkDto;
 import pe.com.rhsistemas.mfsermenu.exception.MfServiceMenuException;
 import pe.com.rhsistemas.mfsermenu.service.MenuLogicaService;
 
@@ -46,7 +51,10 @@ public class MenuLogicaServiceImpl implements MenuLogicaService {
 	@Bean
 	@LoadBalanced
 	public RestTemplate restTemplate() {
-		return new RestTemplate();
+		RestTemplate restTemplate = new RestTemplate();
+		restTemplate.getMessageConverters().add(0, new StringHttpMessageConverter(StandardCharsets.UTF_8));
+		
+		return restTemplate;
 	}
 	
 	public void generarMenu(Integer idPersona, Integer idUsuario) throws MfServiceMenuException, UtilMfDtoException {
@@ -284,14 +292,30 @@ public class MenuLogicaServiceImpl implements MenuLogicaService {
 				menuDto = salidaCabecera.get(0);
 
 				if (UtilMfDto.listaNoVacia(menuDto.getListaPlatos())) {
-					Iterator<Entry<Integer, MenuDetalleDto>> listaDetalle = remoteServiceMenu
-							.obtenerMenuGeneradoDetalle(Long.valueOf(menuDto.getIdGenerado()).intValue()).entrySet().iterator();
+					Map<Integer, MenuDetalleDto> detallePlatos = remoteServiceMenu
+							.obtenerMenuGeneradoDetalle(Long.valueOf(menuDto.getIdGenerado()).intValue());
+					
+					List<PlatoFavoritoDto> lista = obtenerPlatosFavoritos(new ArrayList<MenuDetalleDto>(detallePlatos.values()), menuDto.getIdPersona());
+					
+					Iterator<Entry<Integer, MenuDetalleDto>> listaDetalle = detallePlatos.entrySet().iterator();
 
 					while (listaDetalle.hasNext()) {
 						Entry<Integer, MenuDetalleDto> entryMenuDetalle = listaDetalle.next();
 						MenuDetalleDto menuDetalleDto = entryMenuDetalle.getValue();
 						
+						boolean favorito = false;
+						
 						menuDetalleDto.setPlatoDto(mapPlatos.get(menuDetalleDto.getPlatoDto().getId()));
+						if (UtilMfDto.listaNoVacia(lista)) {
+							favorito = false;
+							for (PlatoFavoritoDto favoritoDto : lista) {
+								if (menuDetalleDto.getPlatoDto().getId().equals(favoritoDto.getIdPlato())) {
+									favorito = true;
+									break;
+								}
+							}
+						}
+						menuDetalleDto.getPlatoDto().setFavorito(favorito);
 						c.setTime(menuDetalleDto.getFechaConsumo());
 						menuDetalleDto.setNumSemana(c.get(Calendar.WEEK_OF_YEAR));
 						menuDetalleDto.setNombreDia(diaSemana.get(c.get(Calendar.DAY_OF_WEEK)));
@@ -313,6 +337,18 @@ public class MenuLogicaServiceImpl implements MenuLogicaService {
 		return listaSemana;
 	}
 	
+	private List<PlatoFavoritoDto> obtenerPlatosFavoritos(List<MenuDetalleDto> listPlatos, Integer idPersona) throws MfServiceMenuException {
+		String listaPlatos = "";
+		if (UtilMfDto.listaNoVacia(listPlatos)) {
+			for (MenuDetalleDto detaDto : listPlatos) {
+				listaPlatos = listaPlatos + detaDto.getPlatoDto().getId() + ",";
+			}
+		}
+		listaPlatos = StringUtils.substring(listaPlatos, 0, StringUtils.length(listaPlatos)-1);
+		
+		return this.remoteServicePlato.consultarPlatoFavorito(listaPlatos, idPersona);
+	}
+
 	public void cambiarPlatoDia(Integer idPersona, Integer idTipoPlato, Integer numeroDia) throws MfServiceMenuException {
 		List<MenuGeneradoDto> menus = this.remoteServiceMenu.ultimoMenu(idPersona);
 		MenuGeneradoDto ultimoMenuGenerado = null;

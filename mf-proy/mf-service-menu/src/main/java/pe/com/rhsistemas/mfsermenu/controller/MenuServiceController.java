@@ -87,6 +87,13 @@ public class MenuServiceController {
 			mapeo = new HashMap<String, Object>();
 			mapeo.put("error", false);
 			mapeo.put("mensaje", "Operacion no completada");
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+
+			mapeo = new HashMap<String, Object>();
+			mapeo.put("error", false);
+			mapeo.put("mensaje", "Operacion no completada");
 		}
 		salida = new ResponseEntity<Map<String, Object>>(mapeo, status);
 

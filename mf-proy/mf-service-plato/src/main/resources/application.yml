@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: mf-service-plato
+ 
+#Tomcat Embedded Server Configuration
+server: 
+  port: 24210
+  
+  servlet:
+    context-path: /mf-service-plato
+ 
+#Eureka Configuration Properties  
+eureka: 
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka

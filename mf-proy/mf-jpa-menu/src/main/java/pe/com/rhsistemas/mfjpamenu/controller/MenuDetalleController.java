@@ -72,6 +72,8 @@ public class MenuDetalleController {
 				status = HttpStatus.FOUND;
 				mapeo.put(Constantes.VALOR_DATA_MAP, listaMenuDetalle);
 			}
+			
+			
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
 			status = HttpStatus.INTERNAL_SERVER_ERROR;

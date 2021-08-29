@@ -8,6 +8,9 @@ pe\com\rhsistemas\mf\cross\dto\RolDto.class
 pe\com\rhsistemas\mf\cross\dto\BaseValor.class
 pe\com\rhsistemas\mf\cross\dto\DocumentoIdentidadDto.class
 pe\com\rhsistemas\mf\cross\util\UtilMfDto.class
+pe\com\rhsistemas\mf\post\dto\PlatoFavoritoPkDto.class
+pe\com\rhsistemas\mf\cross\dto\PlatoFavoritoDto.class
+pe\com\rhsistemas\mf\post\dto\PlatoFavoritoPostDto.class
 pe\com\rhsistemas\mf\cross\dto\PlatoIngredienteDto.class
 pe\com\rhsistemas\mf\cross\dto\ValorNutricionalDto.class
 pe\com\rhsistemas\mf\cross\dto\IngredienteDto.class
