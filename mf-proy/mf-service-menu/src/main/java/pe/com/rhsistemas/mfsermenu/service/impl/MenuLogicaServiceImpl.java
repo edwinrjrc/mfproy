@@ -28,7 +28,6 @@ import pe.com.rhsistemas.mf.cross.dto.PlatoTipoPlatoDto;
 import pe.com.rhsistemas.mf.cross.dto.TipoPlatoDto;
 import pe.com.rhsistemas.mf.cross.exception.UtilMfDtoException;
 import pe.com.rhsistemas.mf.cross.util.UtilMfDto;
-import pe.com.rhsistemas.mf.post.dto.PlatoFavoritoPkDto;
 import pe.com.rhsistemas.mfsermenu.exception.MfServiceMenuException;
 import pe.com.rhsistemas.mfsermenu.service.MenuLogicaService;
 

@@ -14,7 +14,7 @@
 	<name>mf-service-menu</name>
 	<description>Proyecto que concentra las funcionalidades referida a los menus generados</description>
 	<properties>
-		<java.version>1.8</java.version>
+		<java.version>11</java.version>
 		<spring-cloud.version>2020.0.3</spring-cloud.version>
 	</properties>
 	<dependencies>

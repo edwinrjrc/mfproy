@@ -5,7 +5,6 @@ package pe.com.rhsistemas.mfsermenu.service.impl;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -40,7 +39,6 @@ import pe.com.rhsistemas.mf.cross.dto.PlatoTipoPlatoDto;
 import pe.com.rhsistemas.mf.cross.dto.TipoPlatoDto;
 import pe.com.rhsistemas.mf.cross.exception.UtilMfDtoException;
 import pe.com.rhsistemas.mf.cross.util.UtilMfDto;
-import pe.com.rhsistemas.mf.post.dto.PlatoFavoritoPkDto;
 import pe.com.rhsistemas.mfsermenu.exception.MfServiceMenuException;
 
 /**
@@ -244,6 +242,7 @@ public class RemoteServicePlato {
 		return listaTipoPlato;
 	}
 	
+	@SuppressWarnings("rawtypes")
 	public List<TipoPlatoDto> consultarTiposPlatoPlatos() throws MfServiceMenuException {
 		List<TipoPlatoDto> listaTipoPlato = null;
 		try {
@@ -261,7 +260,7 @@ public class RemoteServicePlato {
 		    List<?> datosLista = (List<?>) respuesta.getBody().get(Constantes.VALOR_DATA_MAP);
 		    listaTipoPlato = new ArrayList<>();
 		    for (Object objeto : datosLista) {
-		    	listaTipoPlato.add(mapper.convertValue((LinkedHashMap) objeto, TipoPlatoDto.class));
+		    	listaTipoPlato.add(mapper.convertValue((LinkedHashMap<?,?>) objeto, TipoPlatoDto.class));
 			}
 			
 		} catch (RestClientException e) {
@@ -274,6 +273,7 @@ public class RemoteServicePlato {
 		return listaTipoPlato;
 	}
 	
+	@SuppressWarnings("rawtypes")
 	public List<PlatoFavoritoDto> consultarPlatoFavorito(String listaPlatos, Integer idPersona) throws MfServiceMenuException {
 		List<PlatoFavoritoDto> listaPlatoFavorito = null;
 		try {
@@ -297,7 +297,7 @@ public class RemoteServicePlato {
 		    List<?> datosLista = (List<?>) respuesta.getBody().get(Constantes.VALOR_DATA_MAP);
 		    listaPlatoFavorito = new ArrayList<>();
 		    for (Object objeto : datosLista) {
-		    	listaPlatoFavorito.add(mapper.convertValue((LinkedHashMap) objeto, PlatoFavoritoDto.class));
+		    	listaPlatoFavorito.add(mapper.convertValue((LinkedHashMap<?,?>) objeto, PlatoFavoritoDto.class));
 			}
 			
 		} catch (RestClientException e) {

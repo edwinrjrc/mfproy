@@ -37,6 +37,7 @@ public class RemoteServicePlato {
 	@Autowired
 	private RestTemplate restTemplate;
 	
+	@SuppressWarnings("rawtypes")
 	public void guardarPlatoFavorito(PlatoFavoritoDto platoFavoritoDto) throws MFServicePlatoException {
 		try {
 			HttpMethod metodoServicio = HttpMethod.POST;
