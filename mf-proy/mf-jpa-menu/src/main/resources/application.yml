@@ -13,7 +13,14 @@ spring:
  
 #Tomcat Embedded Server Configuration
 server: 
-  port: 24232
+  port: 0
+
+#  ssl:
+#    enabled:  true
+#    key-store-type: PKCS12
+#    key-store: classpath:keystore/mfkey.p12
+#    key-store-password: mfCl4V3$RHSistemA$
+#    key-alias: mfkey
 
 #Eureka Configuration Properties  
 eureka: 
@@ -21,3 +28,9 @@ eureka:
     serviceUrl:
       defaultZone: http://localhost:8761/eureka
       
+#  instance:
+#    non-secure-port-enabled: false
+#    secure-port-enabled: true
+#    statusPageUrl: https://localhost:24219/info
+#    healthCheckUrl: https://localhost:24219/health
+#    homePageUrl: https://localhost:24219/

@@ -54,6 +54,9 @@ public class Plato implements Serializable {
 
 	@Column(name="no_plato", length=100)
 	private String noPlato;
+	
+	@Column(name="de_plato", length=500)
+	private String dePlato;
 
 	//bi-directional many-to-one association to TipoCocina
 	@ManyToOne
@@ -141,6 +144,20 @@ public class Plato implements Serializable {
 
 	public void setTipoCocina(TipoCocina tipoCocina) {
 		this.tipoCocina = tipoCocina;
+	}
+
+	/**
+	 * @return the dePlato
+	 */
+	public String getDePlato() {
+		return dePlato;
+	}
+
+	/**
+	 * @param dePlato the dePlato to set
+	 */
+	public void setDePlato(String dePlato) {
+		this.dePlato = dePlato;
 	}
 
 }

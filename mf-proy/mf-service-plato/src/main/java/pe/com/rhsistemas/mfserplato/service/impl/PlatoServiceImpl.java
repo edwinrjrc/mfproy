@@ -4,6 +4,7 @@
 package pe.com.rhsistemas.mfserplato.service.impl;
 
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
@@ -12,6 +13,7 @@ import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import pe.com.rhsistemas.mf.cross.dto.PlatoDto;
 import pe.com.rhsistemas.mf.cross.dto.PlatoFavoritoDto;
 import pe.com.rhsistemas.mfserplato.exception.MFServicePlatoException;
 import pe.com.rhsistemas.mfserplato.service.PlatoService;
@@ -41,4 +43,8 @@ public class PlatoServiceImpl implements PlatoService {
 		remoteServicePlato.guardarPlatoFavorito(platoFavoritoDto);
 	}
 
+	@Override
+	public List<PlatoDto> listarPlatos() throws MFServicePlatoException{
+		return remoteServicePlato.listarPlatos();
+	}
 }
