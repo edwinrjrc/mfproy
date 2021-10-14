@@ -1,9 +1,7 @@
 package pe.com.rhsistemas.mfjpaplatos.entity;
 
 import java.io.Serializable;
-
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
+import javax.persistence.*;
 
 /**
  * The primary key class for the plato_ingrediente database table.
@@ -17,7 +15,7 @@ public class PlatoIngredientePK implements Serializable {
 	@Column(name="id_plato", unique=true, nullable=false)
 	private Integer idPlato;
 
-	@Column(name="id_ingrediente", unique=true, nullable=false)
+	@Column(name="id_ingrediente", insertable=false, updatable=false, unique=true, nullable=false)
 	private Integer idIngrediente;
 
 	public PlatoIngredientePK() {

@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,9 +25,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import pe.com.rhsistemas.mf.cross.compartido.Constantes;
 import pe.com.rhsistemas.mf.cross.dto.PlatoDto;
+import pe.com.rhsistemas.mf.cross.dto.PlatoIngredienteDto;
 import pe.com.rhsistemas.mf.cross.util.UtilMfDto;
+import pe.com.rhsistemas.mfjpaplatos.dao.PlatoIngredienteRepository;
 import pe.com.rhsistemas.mfjpaplatos.dao.PlatoRepository;
 import pe.com.rhsistemas.mfjpaplatos.entity.Plato;
+import pe.com.rhsistemas.mfjpaplatos.entity.PlatoIngrediente;
 import pe.com.rhsistemas.mfjpaplatos.util.Utilmfjpa;
 
 /**
@@ -41,6 +45,8 @@ public class PlatoController {
 
 	@Autowired
 	private PlatoRepository platoRepository;
+	@Autowired
+	private PlatoIngredienteRepository platoIngredienteRepository;
 	
 	@PostMapping(value = "/plato")
 	public ResponseEntity<Map<String, Object>> registrarPlato(@RequestBody PlatoDto platoDto) {
@@ -96,8 +102,11 @@ public class PlatoController {
 		Map<String, Object> mapeo = null;
 		HttpStatus status = null;
 		try {
-			List<Plato> platos = platoRepository.findAll();
+			List<Plato> platos = platoRepository.findByOrderByNoPlatoAsc();
 			List<PlatoDto> platosDto = new ArrayList<>();
+			
+			status = HttpStatus.NO_CONTENT;
+			
 			for (Plato plato : platos) {
 				platosDto.add(Utilmfjpa.parsePlatoEntity(plato));
 			}
@@ -131,6 +140,8 @@ public class PlatoController {
 			UtilMfDto.pintaLog(idPersona, "idPersona");
 			UtilMfDto.pintaLog(fechaCorteDesde, "fechaCorteDesde");
 			UtilMfDto.pintaLog(fechaCorteHasta, "fechaCorteHasta");
+			
+			status = HttpStatus.NO_CONTENT;
 
 			List<Plato> platos = platoRepository.platosNoConsumidos(idPersona,
 					UtilMfDto.convertirUtilDateASqlDate(fechaCorteDesde), UtilMfDto.convertirUtilDateASqlDate(fechaCorteHasta));
@@ -170,6 +181,8 @@ public class PlatoController {
 			UtilMfDto.pintaLog(idPersona, "idPersona");
 			UtilMfDto.pintaLog(fechaCorteDesde, "fechaCorteDesde");
 			UtilMfDto.pintaLog(fechaCorteHasta, "fechaCorteHasta");
+			
+			status = HttpStatus.NO_CONTENT;
 
 			List<Plato> platos = platoRepository.platosNoConsumidosTipo(idPersona,
 					UtilMfDto.convertirUtilDateASqlDate(fechaCorteDesde), UtilMfDto.convertirUtilDateASqlDate(fechaCorteHasta),idTipoPlato);
@@ -191,6 +204,68 @@ public class PlatoController {
 			mapeo.put("mensaje", "Operacion no completada");
 		}
 		salida = new ResponseEntity<>(mapeo, status);
+		return salida;
+	}
+	
+	@GetMapping(value = "/ingredientesPlato")
+	public ResponseEntity<Map<String, Object>> consultaIngredientesPlato(@RequestParam(name = "idPlato", required = true) Integer idPlato) {
+		ResponseEntity<Map<String, Object>> salida = null;
+		Map<String, Object> mapeo = null;
+		HttpStatus status = null;
+		try {
+			logger.info("recibiendo parametros");
+			UtilMfDto.pintaLog(idPlato, "idPlato");
+			
+			status = HttpStatus.NO_CONTENT;
+			
+			List<PlatoIngredienteDto> listaPlatoIngrediente = new ArrayList<>();
+			List<PlatoIngrediente> listaEntity = platoIngredienteRepository.findAllByPlato(idPlato);
+			if (UtilMfDto.listaNoVacia(listaEntity)) {
+				for (PlatoIngrediente platoIngrediente : listaEntity) {
+					listaPlatoIngrediente.add(Utilmfjpa.parsePlatoIngrediente(platoIngrediente));
+				}
+			}
+
+			status = HttpStatus.OK;
+			mapeo = new HashMap<String, Object>();
+			mapeo.put("error", false);
+			mapeo.put("mensaje", "Operacion Completada");
+			mapeo.put(Constantes.VALOR_DATA_MAP, listaPlatoIngrediente);
+			
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+			mapeo = new HashMap<String, Object>();
+			mapeo.put("error", true);
+			mapeo.put("mensaje", "Operacion no completada");
+		}
+		salida = new ResponseEntity<Map<String, Object>>(mapeo, status);
+		return salida;
+	}
+	
+	@GetMapping(value = "/plato", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Map<String, Object>> consultarPlato(@RequestParam(name = "idPlato", required = true) Integer idPlato) {
+		ResponseEntity<Map<String, Object>> salida = null;
+		Map<String, Object> mapeo = null;
+		HttpStatus status = null;
+		
+		try {
+			status = HttpStatus.NO_CONTENT;
+			Optional<Plato> platoEntity = platoRepository.findById(idPlato);
+			
+			status = HttpStatus.OK;
+			mapeo = new HashMap<String, Object>();
+			mapeo.put("error", false);
+			mapeo.put("mensaje", "Operacion Completada");
+			mapeo.put(Constantes.VALOR_DATA_MAP, Utilmfjpa.parsePlatoEntity(platoEntity.get()));
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+			mapeo = new HashMap<String, Object>();
+			mapeo.put("error", true);
+			mapeo.put("mensaje", "Operacion no completada");
+		}
+		salida = new ResponseEntity<Map<String, Object>>(mapeo, status);
 		return salida;
 	}
 	

@@ -1,15 +1,8 @@
 package pe.com.rhsistemas.mfjpaplatos.entity;
 
 import java.io.Serializable;
+import javax.persistence.*;
 import java.sql.Timestamp;
-
-import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
 
 
 /**
@@ -45,11 +38,6 @@ public class Receta implements Serializable {
 
 	@Column(name="nu_minu_comp")
 	private Integer nuMinuComp;
-
-	//bi-directional many-to-one association to Ingrediente
-	@ManyToOne
-	@JoinColumn(name="id_ingrediente", nullable=false, insertable=false, updatable=false)
-	private Ingrediente ingrediente;
 
 	public Receta() {
 	}
@@ -116,14 +104,6 @@ public class Receta implements Serializable {
 
 	public void setNuMinuComp(Integer nuMinuComp) {
 		this.nuMinuComp = nuMinuComp;
-	}
-
-	public Ingrediente getIngrediente() {
-		return this.ingrediente;
-	}
-
-	public void setIngrediente(Ingrediente ingrediente) {
-		this.ingrediente = ingrediente;
 	}
 
 }

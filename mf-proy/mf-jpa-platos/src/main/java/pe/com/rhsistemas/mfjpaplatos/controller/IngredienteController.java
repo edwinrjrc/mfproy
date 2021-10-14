@@ -47,7 +47,7 @@ public class IngredienteController {
 		HttpStatus status = null;
 
 		try {
-			log.debug("Parametros recibidos");
+			log.info("Parametros recibidos");
 			UtilMfDto.pintaLog(dto, "ingredienteDto");
 
 			ingredienteRepository.save(Utilmfjpa.parseIngredienteDto(dto));

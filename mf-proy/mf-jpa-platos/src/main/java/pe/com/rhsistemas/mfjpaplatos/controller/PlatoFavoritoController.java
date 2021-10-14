@@ -99,7 +99,7 @@ public class PlatoFavoritoController {
 		HttpStatus status = null;
 
 		try {
-			log.info("recibiendo parametros en " + this.getClass().getName() + " en guardarPlatoFavorito");
+			log.info("recibiendo parametros en " + this.getClass().getName() + " en consultarPlatoFavorito");
 			UtilMfDto.pintaLog(listaPlatoFavorito, "listaPlatoFavorito");
 			UtilMfDto.pintaLog(idPersona, "idPersona");
 
@@ -131,6 +131,46 @@ public class PlatoFavoritoController {
 				mapeo.put(Constantes.VALOR_DATA_MAP, listaFavoritosDto);
 				status = HttpStatus.OK;
 			}
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+			mapeo = new HashMap<String, Object>();
+			mapeo.put("error", true);
+			mapeo.put("mensaje", "Operacion no completada");
+		}
+
+		salida = new ResponseEntity<>(mapeo, status);
+		return salida;
+	}
+	
+	@GetMapping(value = "/platosFavoritos", produces = { MediaType.APPLICATION_JSON_VALUE }, consumes = {
+			MediaType.APPLICATION_JSON_VALUE })
+	public ResponseEntity<Map<String, Object>> consultarPlatosFavoritos(
+			@RequestParam(name = "idPersona", required = true) String idPersona) {
+		ResponseEntity<Map<String, Object>> salida = null;
+		Map<String, Object> mapeo = null;
+		HttpStatus status = null;
+
+		try {
+			log.info("recibiendo parametros en " + this.getClass().getName() + " en consultarPlatosFavoritos");
+			UtilMfDto.pintaLog(idPersona, "idPersona");
+
+			status = HttpStatus.NO_CONTENT;
+			
+			List<PlatoFavorito> listaFavoritos = platoFavoritoRepository.findByIdPersona(UtilMfDto.parseStringALong(idPersona));
+
+			if (UtilMfDto.listaNoVacia(listaFavoritos)) {
+				List<PlatoFavoritoDto> listaFavoritosDto = new ArrayList<>();
+				for (PlatoFavorito platoFavorito : listaFavoritos) {
+					listaFavoritosDto.add(Utilmfjpa.parseaPlatoFavorito(platoFavorito));
+				}
+				mapeo = new HashMap<String, Object>();
+				mapeo.put("error", false);
+				mapeo.put("mensaje", "Operacion Completada");
+				mapeo.put(Constantes.VALOR_DATA_MAP, listaFavoritosDto);
+				status = HttpStatus.OK;
+			}
+
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
 			status = HttpStatus.INTERNAL_SERVER_ERROR;

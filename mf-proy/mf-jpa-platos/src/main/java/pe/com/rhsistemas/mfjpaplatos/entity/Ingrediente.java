@@ -1,20 +1,9 @@
 package pe.com.rhsistemas.mfjpaplatos.entity;
 
 import java.io.Serializable;
+import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.List;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
 
 
 /**
@@ -22,14 +11,12 @@ import javax.persistence.Table;
  * 
  */
 @Entity
-@Table(schema = "sistema", name="ingrediente")
+@Table(name="ingrediente")
 @NamedQuery(name="Ingrediente.findAll", query="SELECT i FROM Ingrediente i")
 public class Ingrediente implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(allocationSize = 1, initialValue = 1,schema = "sistema", name="INGREDIENTE_IDINGREDIENTE_GENERATOR", sequenceName="SEQ_INGREDIENTE")
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="INGREDIENTE_IDINGREDIENTE_GENERATOR")
 	@Column(name="id_ingrediente", unique=true, nullable=false)
 	private Integer idIngrediente;
 
@@ -62,13 +49,9 @@ public class Ingrediente implements Serializable {
 	@JoinColumn(name="id_tipo_ingr", nullable=false)
 	private TipoIngrediente tipoIngrediente;
 
-	//bi-directional many-to-one association to Receta
+	//bi-directional many-to-one association to PlatoIngrediente
 	@OneToMany(mappedBy="ingrediente")
-	private List<Receta> recetas;
-
-	//bi-directional many-to-one association to ValorNutricional
-	@OneToMany(mappedBy="ingrediente")
-	private List<ValorNutricional> valorNutricionals;
+	private List<PlatoIngrediente> platoIngredientes;
 
 	public Ingrediente() {
 	}
@@ -153,48 +136,26 @@ public class Ingrediente implements Serializable {
 		this.tipoIngrediente = tipoIngrediente;
 	}
 
-	public List<Receta> getRecetas() {
-		return this.recetas;
+	public List<PlatoIngrediente> getPlatoIngredientes() {
+		return this.platoIngredientes;
 	}
 
-	public void setRecetas(List<Receta> recetas) {
-		this.recetas = recetas;
+	public void setPlatoIngredientes(List<PlatoIngrediente> platoIngredientes) {
+		this.platoIngredientes = platoIngredientes;
 	}
 
-	public Receta addReceta(Receta receta) {
-		getRecetas().add(receta);
-		receta.setIngrediente(this);
+	public PlatoIngrediente addPlatoIngrediente(PlatoIngrediente platoIngrediente) {
+		getPlatoIngredientes().add(platoIngrediente);
+		platoIngrediente.setIngrediente(this);
 
-		return receta;
+		return platoIngrediente;
 	}
 
-	public Receta removeReceta(Receta receta) {
-		getRecetas().remove(receta);
-		receta.setIngrediente(null);
+	public PlatoIngrediente removePlatoIngrediente(PlatoIngrediente platoIngrediente) {
+		getPlatoIngredientes().remove(platoIngrediente);
+		platoIngrediente.setIngrediente(null);
 
-		return receta;
-	}
-
-	public List<ValorNutricional> getValorNutricionals() {
-		return this.valorNutricionals;
-	}
-
-	public void setValorNutricionals(List<ValorNutricional> valorNutricionals) {
-		this.valorNutricionals = valorNutricionals;
-	}
-
-	public ValorNutricional addValorNutricional(ValorNutricional valorNutricional) {
-		getValorNutricionals().add(valorNutricional);
-		valorNutricional.setIngrediente(this);
-
-		return valorNutricional;
-	}
-
-	public ValorNutricional removeValorNutricional(ValorNutricional valorNutricional) {
-		getValorNutricionals().remove(valorNutricional);
-		valorNutricional.setIngrediente(null);
-
-		return valorNutricional;
+		return platoIngrediente;
 	}
 
 }

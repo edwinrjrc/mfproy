@@ -1,20 +1,8 @@
 package pe.com.rhsistemas.mfjpamenu.entity;
 
 import java.io.Serializable;
+import javax.persistence.*;
 import java.sql.Timestamp;
-import java.util.List;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
 
 
 /**
@@ -61,14 +49,6 @@ public class Ingrediente implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="id_tipo_ingr", nullable=false)
 	private TipoIngrediente tipoIngrediente;
-
-	//bi-directional many-to-one association to Receta
-	@OneToMany(mappedBy="ingrediente")
-	private List<Receta> recetas;
-
-	//bi-directional many-to-one association to ValorNutricional
-	@OneToMany(mappedBy="ingrediente")
-	private List<ValorNutricional> valorNutricionals;
 
 	public Ingrediente() {
 	}
@@ -151,50 +131,6 @@ public class Ingrediente implements Serializable {
 
 	public void setTipoIngrediente(TipoIngrediente tipoIngrediente) {
 		this.tipoIngrediente = tipoIngrediente;
-	}
-
-	public List<Receta> getRecetas() {
-		return this.recetas;
-	}
-
-	public void setRecetas(List<Receta> recetas) {
-		this.recetas = recetas;
-	}
-
-	public Receta addReceta(Receta receta) {
-		getRecetas().add(receta);
-		receta.setIngrediente(this);
-
-		return receta;
-	}
-
-	public Receta removeReceta(Receta receta) {
-		getRecetas().remove(receta);
-		receta.setIngrediente(null);
-
-		return receta;
-	}
-
-	public List<ValorNutricional> getValorNutricionals() {
-		return this.valorNutricionals;
-	}
-
-	public void setValorNutricionals(List<ValorNutricional> valorNutricionals) {
-		this.valorNutricionals = valorNutricionals;
-	}
-
-	public ValorNutricional addValorNutricional(ValorNutricional valorNutricional) {
-		getValorNutricionals().add(valorNutricional);
-		valorNutricional.setIngrediente(this);
-
-		return valorNutricional;
-	}
-
-	public ValorNutricional removeValorNutricional(ValorNutricional valorNutricional) {
-		getValorNutricionals().remove(valorNutricional);
-		valorNutricional.setIngrediente(null);
-
-		return valorNutricional;
 	}
 
 }

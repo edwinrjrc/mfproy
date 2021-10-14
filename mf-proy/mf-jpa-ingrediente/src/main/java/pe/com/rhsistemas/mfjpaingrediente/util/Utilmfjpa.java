@@ -175,9 +175,6 @@ public class Utilmfjpa {
 		
 		entity.setIdUsuaCrea(dto.getIdUsuarioRegistro());
 		entity.setIdUsuaModi(dto.getIdUsuarioModificacion());
-		Ingrediente ingrediente = new Ingrediente();
-		ingrediente.setIdIngrediente(dto.getIngredientes().get(0).getId());
-		entity.setIngrediente(ingrediente);
 		
 		entity.setInPasoCocc(dto.isUsaFuego()?1:0);
 		entity.setNuMinuComp(dto.getTiempoMinutos());

@@ -133,4 +133,12 @@ public class UtilMfDto {
 			throw new UtilMfDtoException(e);
 		}
 	}
+	
+	public static Long parseStringALong(String valor) throws UtilMfDtoException {
+		try {
+			return Long.valueOf(valor);
+		} catch (Exception e) {
+			throw new UtilMfDtoException(e);
+		}
+	}
 }

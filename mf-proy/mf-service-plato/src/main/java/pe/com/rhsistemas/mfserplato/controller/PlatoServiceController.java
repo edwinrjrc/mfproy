@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -80,8 +81,8 @@ public class PlatoServiceController {
 	}
 
 	@CrossOrigin(origins = "http://localhost:4200")
-	@GetMapping(value = "/platos")
-	public ResponseEntity<Map<String, Object>> listarPlatos() {
+	@GetMapping(value = "/platos/{idPersona}")
+	public ResponseEntity<Map<String, Object>> listarPlatos(@PathVariable Integer idPersona) {
 		ResponseEntity<Map<String, Object>> salida = null;
 		Map<String, Object> mapeo = null;
 		HttpStatus status = null;
@@ -91,7 +92,7 @@ public class PlatoServiceController {
 			mapeo = new HashMap<String, Object>();
 			mapeo.put("error", false);
 			mapeo.put("mensaje", "Generacion Correcta");
-			mapeo.put(Constantes.VALOR_DATA_MAP, platoService.listarPlatos());
+			mapeo.put(Constantes.VALOR_DATA_MAP, platoService.listarPlatos(idPersona));
 		} catch (MFServicePlatoException e) {
 			log.error(e.getMessage(), e);
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
@@ -111,4 +112,37 @@ public class PlatoServiceController {
 
 		return salida;
 	}
+	
+	@CrossOrigin(origins = "http://localhost:4200")
+	@GetMapping(value = "/plato/{idPersona}")
+	public ResponseEntity<Map<String, Object>> consultaPlato(@PathVariable Integer idPersona) {
+		ResponseEntity<Map<String, Object>> salida = null;
+		Map<String, Object> mapeo = null;
+		HttpStatus status = null;
+		
+		try {
+			status = HttpStatus.CREATED;
+			mapeo = new HashMap<String, Object>();
+			mapeo.put("error", false);
+			mapeo.put("mensaje", "Generacion Correcta");
+			mapeo.put(Constantes.VALOR_DATA_MAP, platoService.listarPlatos(idPersona));
+		} catch (MFServicePlatoException e) {
+			log.error(e.getMessage(), e);
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+
+			mapeo = new HashMap<String, Object>();
+			mapeo.put("error", false);
+			mapeo.put("mensaje", "Operacion no completada");
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+
+			mapeo = new HashMap<String, Object>();
+			mapeo.put("error", false);
+			mapeo.put("mensaje", "Operacion no completada");
+		}
+		salida = new ResponseEntity<Map<String, Object>>(mapeo, status);
+		return salida;
+	}
+	
 }

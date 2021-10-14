@@ -3,6 +3,7 @@
  */
 package pe.com.rhsistemas.mfjpaingrediente.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import pe.com.rhsistemas.mf.cross.compartido.Constantes;
 import pe.com.rhsistemas.mf.cross.dto.IngredienteDto;
+import pe.com.rhsistemas.mf.cross.dto.PlatoIngredienteDto;
 import pe.com.rhsistemas.mf.cross.util.UtilMfDto;
 import pe.com.rhsistemas.mfjpaingrediente.dao.IngredienteRepository;
 import pe.com.rhsistemas.mfjpaingrediente.dao.PlatoIngredienteRepository;
@@ -139,12 +141,17 @@ public class IngredienteController {
 			List<PlatoIngrediente> listaPlatoIngredientes = platoIngredienteRepository.findAllByPlato(idPlato);
 
 			status = HttpStatus.NO_CONTENT;
-
+			
+			List<PlatoIngredienteDto> listaPlatoIngredienteDto = new ArrayList<>();
 			if (UtilMfDto.listaNoVacia(listaPlatoIngredientes)) {
-				mapeo = new HashMap<String, Object>();
-				mapeo.put(Constantes.VALOR_DATA_MAP, listaPlatoIngredientes);
-				status = HttpStatus.OK;
+				for (PlatoIngrediente platoIngrediente : listaPlatoIngredientes) {
+					
+				}
 			}
+			
+			mapeo = new HashMap<String, Object>();
+			mapeo.put(Constantes.VALOR_DATA_MAP, listaPlatoIngredientes);
+			status = HttpStatus.OK;
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
 			status = HttpStatus.INTERNAL_SERVER_ERROR;

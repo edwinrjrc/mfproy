@@ -47,6 +47,10 @@ public class RemoteServicePlato {
 	
 	private static final String URL_SERVICE_2 = "http://mf-jpa-platos/PlatoRJPAService/platos";
 	
+	private static final String URL_SERVICE_3 = "http://mf-jpa-platos/PlatoFavoritoRJPAService/platosFavoritos";
+	
+	private static final String URL_SERVICE_4 = "http://mf-jpa-platos/PlatoRJPAService/plato";
+	
 	@Autowired
 	private RestTemplate restTemplate;
 	
@@ -102,6 +106,71 @@ public class RemoteServicePlato {
 			throw new MFServicePlatoException(e);
 		}
 		return listaPlatos;
+	}
+	
+	@SuppressWarnings("rawtypes")
+	public List<PlatoFavoritoDto> listarPlatosFavoritos(Integer idPersona) throws MFServicePlatoException{
+		List<PlatoFavoritoDto> listaFavoritos = null;
+		try {
+			HttpMethod metodoServicio = HttpMethod.GET;
+			
+			HttpEntity<Map<String, Object>> requestEntity = new HttpEntity<Map<String,Object>>(generarHttpHeaders());
+			Class<Map> responseType = Map.class;
+			
+			UriComponentsBuilder builderURI = UriComponentsBuilder.fromHttpUrl(URL_SERVICE_3);
+			builderURI.queryParam("idPersona", idPersona);
+			
+			ResponseEntity<Map> respuesta = restTemplate.exchange(builderURI.toUriString(), metodoServicio, requestEntity, responseType);
+			
+			JsonFactory factory = new JsonFactory();
+		    factory.enable(Feature.ALLOW_SINGLE_QUOTES);
+		    ObjectMapper mapper = new ObjectMapper(factory);
+			
+		    List<?> datosLista = (List<?>) respuesta.getBody().get(Constantes.VALOR_DATA_MAP);
+		    listaFavoritos = new ArrayList<>();
+		    for (Object objeto : datosLista) {
+		    	listaFavoritos.add(mapper.convertValue((LinkedHashMap<?,?>) objeto, PlatoFavoritoDto.class));
+			}
+			
+		} catch (RestClientException e) {
+			log.error(e.getMessage(),e);
+			throw new MFServicePlatoException(e);
+		} catch (Exception e) {
+			log.error(e.getMessage(),e);
+			throw new MFServicePlatoException(e);
+		}
+		return listaFavoritos;
+	}
+	
+	@SuppressWarnings("rawtypes")
+	public PlatoDto consultarPlato(Integer idPlato) throws MFServicePlatoException {
+		PlatoDto platoDto = null;
+		try {
+			HttpMethod metodoServicio = HttpMethod.GET;
+			
+			HttpEntity<Map<String, Object>> requestEntity = new HttpEntity<Map<String,Object>>(generarHttpHeaders());
+			Class<Map> responseType = Map.class;
+			
+			UriComponentsBuilder builderURI = UriComponentsBuilder.fromHttpUrl(URL_SERVICE_4);
+			builderURI.queryParam("idPlato", idPlato);
+			
+			ResponseEntity<Map> respuesta = restTemplate.exchange(builderURI.toUriString(), metodoServicio, requestEntity, responseType);
+			
+			JsonFactory factory = new JsonFactory();
+		    factory.enable(Feature.ALLOW_SINGLE_QUOTES);
+		    ObjectMapper mapper = new ObjectMapper(factory);
+			
+		    LinkedHashMap<?,?> dato = (LinkedHashMap<?,?>) respuesta.getBody().get(Constantes.VALOR_DATA_MAP);
+		    platoDto = mapper.convertValue(dato, PlatoDto.class);
+			
+		} catch (RestClientException e) {
+			log.error(e.getMessage(),e);
+			throw new MFServicePlatoException(e);
+		} catch (Exception e) {
+			log.error(e.getMessage(),e);
+			throw new MFServicePlatoException(e);
+		}
+		return platoDto;
 	}
 	
 	private URI obtenerUri(String cadenaUrl) throws MFServicePlatoException {

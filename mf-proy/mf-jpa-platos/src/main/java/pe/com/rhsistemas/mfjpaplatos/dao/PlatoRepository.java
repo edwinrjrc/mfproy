@@ -35,4 +35,6 @@ public interface PlatoRepository extends JpaRepository<Plato, Integer>{
 			"			                                     where m.id_persona = ?1 and m.fe_generado between ?2 and ?3))", nativeQuery = true)
 	List<Plato> platosNoConsumidosTipo(Integer idPersona, Date fechaCorteDesde, Date fechaCordeHasta, Integer idTipoPlato);
 	
+	
+	List<Plato> findByOrderByNoPlatoAsc();
 }

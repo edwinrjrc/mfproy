@@ -20,6 +20,7 @@ public class PlatoDto extends BaseDto {
 	private Integer idTipoPlato;
 	private boolean acompaniamiento;
 	private BaseValor tipoCocina;
+	private String descripcionPlato;
 	
 	private List<PlatoIngredienteDto> ingredientes;
 	
@@ -149,6 +150,20 @@ public class PlatoDto extends BaseDto {
 	 */
 	public void setFavorito(boolean favorito) {
 		this.favorito = favorito;
+	}
+
+	/**
+	 * @return the descripcionPlato
+	 */
+	public String getDescripcionPlato() {
+		return descripcionPlato;
+	}
+
+	/**
+	 * @param descripcionPlato the descripcionPlato to set
+	 */
+	public void setDescripcionPlato(String descripcionPlato) {
+		this.descripcionPlato = descripcionPlato;
 	}
 	
 	
