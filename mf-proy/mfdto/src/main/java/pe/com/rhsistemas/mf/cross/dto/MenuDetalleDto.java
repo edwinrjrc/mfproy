@@ -21,9 +21,6 @@ public class MenuDetalleDto extends BaseDto {
 	private Integer idTipoPlato;
 	private Integer idGenerado;
 
-	public MenuDetalleDto() {
-		// TODO Auto-generated constructor stub
-	}
 
 	/**
 	 * @return the fechaConsumo

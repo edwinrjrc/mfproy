@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -76,9 +77,7 @@ public class RemoteServicePlato {
 			
 			ResponseEntity<Map> respuesta = restTemplate.exchange(obtenerUri(URL_SERVICE_1), metodoServicio, requestEntity, responseType);
 			
-			JsonFactory factory = new JsonFactory();
-		    factory.enable(Feature.ALLOW_SINGLE_QUOTES);
-		    ObjectMapper mapper = new ObjectMapper(factory);
+			ObjectMapper mapper = obtenerMapper();
 			
 		    List datosLista = (List) respuesta.getBody().get(Constantes.VALOR_DATA_MAP);
 		    listaPlatos = new ArrayList<>();
@@ -128,9 +127,7 @@ public class RemoteServicePlato {
 			
 			ResponseEntity<Map> respuesta = restTemplate.exchange(builderURI.toUriString(), metodoServicio, requestEntity, responseType);
 			
-			JsonFactory factory = new JsonFactory();
-		    factory.enable(Feature.ALLOW_SINGLE_QUOTES);
-		    ObjectMapper mapper = new ObjectMapper(factory);
+			ObjectMapper mapper = obtenerMapper();
 			
 		    List datosLista = (List) respuesta.getBody().get(Constantes.VALOR_DATA_MAP);
 		    listaPlatos = new ArrayList<>();
@@ -171,9 +168,7 @@ public class RemoteServicePlato {
 			
 			ResponseEntity<Map> respuesta = restTemplate.exchange(builderURI.toUriString(), metodoServicio, requestEntity, responseType);
 			
-			JsonFactory factory = new JsonFactory();
-		    factory.enable(Feature.ALLOW_SINGLE_QUOTES);
-		    ObjectMapper mapper = new ObjectMapper(factory);
+			ObjectMapper mapper = obtenerMapper();
 			
 		    List datosLista = (List) respuesta.getBody().get(Constantes.VALOR_DATA_MAP);
 		    listaPlatos = new ArrayList<>();
@@ -214,11 +209,7 @@ public class RemoteServicePlato {
 			
 			ResponseEntity<Map> respuesta = restTemplate.exchange(builderURI.toUriString(), metodoServicio, requestEntity, responseType);
 			
-			SimpleDateFormat df = new SimpleDateFormat(Constantes.FORMAT_DATE_MAPPER);
-			JsonFactory factory = new JsonFactory();
-		    factory.enable(Feature.ALLOW_SINGLE_QUOTES);
-		    ObjectMapper mapper = new ObjectMapper(factory);
-		    mapper.setDateFormat(df);
+			ObjectMapper mapper = obtenerMapper();
 			
 		    List<LinkedHashMap<String,Object>> datosLista = (List<LinkedHashMap<String,Object>>) respuesta.getBody().get(Constantes.VALOR_DATA_MAP);
 		    if (UtilMfDto.listaNoVacia(datosLista)) {
@@ -253,9 +244,7 @@ public class RemoteServicePlato {
 			
 			ResponseEntity<Map> respuesta = restTemplate.exchange(obtenerUri(URL_SERVICE_4), metodoServicio, requestEntity, responseType);
 			
-			JsonFactory factory = new JsonFactory();
-		    factory.enable(Feature.ALLOW_SINGLE_QUOTES);
-		    ObjectMapper mapper = new ObjectMapper(factory);
+			ObjectMapper mapper = obtenerMapper();
 			
 		    List<?> datosLista = (List<?>) respuesta.getBody().get(Constantes.VALOR_DATA_MAP);
 		    listaTipoPlato = new ArrayList<>();
@@ -282,10 +271,6 @@ public class RemoteServicePlato {
 			HttpEntity<Map<String, Object>> requestEntity = new HttpEntity<Map<String,Object>>(generarHttpHeaders());
 			Class<Map> responseType = Map.class;
 			
-			JsonFactory factory = new JsonFactory();
-		    factory.enable(Feature.ALLOW_SINGLE_QUOTES);
-		    ObjectMapper mapper = new ObjectMapper(factory);
-		    
 			UriComponentsBuilder builderURI = UriComponentsBuilder.fromHttpUrl(URL_SERVICE_6);
 			builderURI.queryParam("listaPlatoFavorito", listaPlatos);
 			builderURI.queryParam("idPersona", idPersona.toString());
@@ -293,6 +278,8 @@ public class RemoteServicePlato {
 			log.info("valor json :: "+new String(builderURI.toUriString().getBytes(),StandardCharsets.UTF_8));
 			
 			ResponseEntity<Map> respuesta = restTemplate.exchange(builderURI.toUriString(), metodoServicio, requestEntity, responseType);
+			
+			ObjectMapper mapper = obtenerMapper();
 			
 		    List<?> datosLista = (List<?>) respuesta.getBody().get(Constantes.VALOR_DATA_MAP);
 		    listaPlatoFavorito = new ArrayList<>();
@@ -327,7 +314,19 @@ public class RemoteServicePlato {
 	    headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
 	    headers.setContentType(MediaType.APPLICATION_JSON);
 	    
-	    
 	    return headers;
+	}
+	
+	private ObjectMapper obtenerMapper () {
+		SimpleDateFormat df = new SimpleDateFormat(Constantes.FORMAT_DATE_MAPPER_FULL);
+		df.setTimeZone(TimeZone.getDefault());
+		
+		JsonFactory factory = new JsonFactory();
+	    factory.enable(Feature.ALLOW_SINGLE_QUOTES);
+	    ObjectMapper mapper = new ObjectMapper(factory);
+	    mapper.setDateFormat(df);
+		mapper.setTimeZone(TimeZone.getDefault());
+	    
+	    return mapper;
 	}
 }

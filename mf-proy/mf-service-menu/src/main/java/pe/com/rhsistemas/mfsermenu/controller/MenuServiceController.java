@@ -52,6 +52,7 @@ public class MenuServiceController {
 		HttpStatus status = null;
 
 		try {
+			status = HttpStatus.NO_CONTENT;
 			log.info("Recibiendo parametros");
 			UtilMfDto.pintaLog(param, "generarMenuDto");
 

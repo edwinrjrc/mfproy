@@ -69,14 +69,7 @@ public class RemoteServiceMenu {
 
 			List<?> datosLista = (List<?>) respuesta.getBody().get(Constantes.VALOR_DATA_MAP);
 			
-			SimpleDateFormat df = new SimpleDateFormat(Constantes.FORMAT_DATE_MAPPER);
-			
-			JsonFactory factory = new JsonFactory();
-			factory.enable(Feature.ALLOW_SINGLE_QUOTES);
-			
-			ObjectMapper mapper = new ObjectMapper(factory);
-			
-			mapper.setDateFormat(df);
+			ObjectMapper mapper = obtenerMapper();
 			
 			listaMenus = new ArrayList<>();
 			
@@ -122,13 +115,8 @@ public class RemoteServiceMenu {
 
 		ResponseEntity<Map> respuesta = restTemplate.exchange(obtenerUri(url), metodoServicio, requestEntity, responseType);
 
-		SimpleDateFormat df = new SimpleDateFormat(Constantes.FORMAT_DATE_MAPPER);
+		ObjectMapper mapper = obtenerMapper();
 		
-		JsonFactory factory = new JsonFactory();
-		factory.enable(Feature.ALLOW_SINGLE_QUOTES);
-		ObjectMapper mapper = new ObjectMapper(factory);
-		mapper.setDateFormat(df);
-
 		List<?> datosLista = (List<?>) respuesta.getBody().get(Constantes.VALOR_DATA_MAP);
 
 		List<MenuGeneradoDto> listaMenu = new ArrayList<>();
@@ -151,13 +139,7 @@ public class RemoteServiceMenu {
 
 		ResponseEntity<Map> respuesta = restTemplate.exchange(obtenerUri(url), metodoServicio, requestEntity, responseType);
 		
-		SimpleDateFormat df = new SimpleDateFormat(Constantes.FORMAT_DATE_MAPPER_FULL);
-		df.setTimeZone(TimeZone.getDefault());
-		JsonFactory factory = new JsonFactory();
-		factory.enable(Feature.ALLOW_SINGLE_QUOTES);
-		ObjectMapper mapper = new ObjectMapper(factory);
-		mapper.setDateFormat(df);
-		mapper.setTimeZone(TimeZone.getDefault());
+		ObjectMapper mapper = obtenerMapper();
 
 		List<?> datosLista = (List) respuesta.getBody().get(Constantes.VALOR_DATA_MAP);
 
@@ -196,6 +178,19 @@ public class RemoteServiceMenu {
 	    headers.setContentType(MediaType.APPLICATION_JSON);
 	    
 	    return headers;
+	}
+	
+	private ObjectMapper obtenerMapper () {
+		SimpleDateFormat df = new SimpleDateFormat(Constantes.FORMAT_DATE_MAPPER_FULL);
+		df.setTimeZone(TimeZone.getDefault());
+		
+		JsonFactory factory = new JsonFactory();
+	    factory.enable(Feature.ALLOW_SINGLE_QUOTES);
+	    ObjectMapper mapper = new ObjectMapper(factory);
+	    mapper.setDateFormat(df);
+		mapper.setTimeZone(TimeZone.getDefault());
+	    
+	    return mapper;
 	}
 
 }

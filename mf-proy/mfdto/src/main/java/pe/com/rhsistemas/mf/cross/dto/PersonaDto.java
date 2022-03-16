@@ -16,7 +16,7 @@ public class PersonaDto extends BaseDto {
 	/**
 	 * Identificador unico de la persona
 	 */
-	private long id;
+	private Long id;
 	/**
 	 * Documento de ldentidad de la persona que es tipo y numero
 	 */
@@ -30,13 +30,13 @@ public class PersonaDto extends BaseDto {
 	/**
 	 * @return the id
 	 */
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 	/**
 	 * @param id the id to set
 	 */
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 	/**
@@ -66,6 +66,5 @@ public class PersonaDto extends BaseDto {
 	public void setFechaNacimiento(Date fechaNacimiento) {
 		this.fechaNacimiento = fechaNacimiento;
 	}
-	
 	
 }

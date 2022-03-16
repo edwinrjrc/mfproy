@@ -49,6 +49,8 @@ public class PlatoServiceController {
 		HttpStatus status = null;
 
 		try {
+			status = HttpStatus.NO_CONTENT;
+			
 			log.info("recibiendo parametros en " + this.getClass().getName() + " en guardarPlatoFavorito");
 			UtilMfDto.pintaLog(platoFavoritoPostDto, "platoFavoritoPostDto");
 

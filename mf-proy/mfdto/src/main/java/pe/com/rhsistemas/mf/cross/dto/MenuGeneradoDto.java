@@ -18,7 +18,7 @@ public class MenuGeneradoDto extends BaseDto {
 	
 	private Long idGenerado;
 	private Date fechaGenerado;
-	private int numeroDias;
+	private Integer numeroDias;
 	private Integer idPersona;
 	private List<MenuDetalleDto> listaPlatos;
 	private Iterator<Entry<Integer, MenuDetalleDto>> detalleMenu;
@@ -46,14 +46,14 @@ public class MenuGeneradoDto extends BaseDto {
 	/**
 	 * @return the numeroDias
 	 */
-	public int getNumeroDias() {
+	public Integer getNumeroDias() {
 		return numeroDias;
 	}
 
 	/**
 	 * @param numeroDias the numeroDias to set
 	 */
-	public void setNumeroDias(int numeroDias) {
+	public void setNumeroDias(Integer numeroDias) {
 		this.numeroDias = numeroDias;
 	}
 

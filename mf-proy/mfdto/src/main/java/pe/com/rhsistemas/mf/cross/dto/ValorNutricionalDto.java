@@ -11,48 +11,46 @@ public class ValorNutricionalDto extends BaseDto {
 
 	private static final long serialVersionUID = -7387741760977073646L;
 	
-	private int idIngrediente;
-	private int idTipoCompo;
-	private float nuAporte;
+	private Integer idIngrediente;
+	private Integer idTipoCompo;
+	private Float nuAporte;
 	
 	
 	/**
 	 * @return the idIngrediente
 	 */
-	public int getIdIngrediente() {
+	public Integer getIdIngrediente() {
 		return idIngrediente;
 	}
 	/**
 	 * @param idIngrediente the idIngrediente to set
 	 */
-	public void setIdIngrediente(int idIngrediente) {
+	public void setIdIngrediente(Integer idIngrediente) {
 		this.idIngrediente = idIngrediente;
 	}
 	/**
 	 * @return the idTipoCompo
 	 */
-	public int getIdTipoCompo() {
+	public Integer getIdTipoCompo() {
 		return idTipoCompo;
 	}
 	/**
 	 * @param idTipoCompo the idTipoCompo to set
 	 */
-	public void setIdTipoCompo(int idTipoCompo) {
+	public void setIdTipoCompo(Integer idTipoCompo) {
 		this.idTipoCompo = idTipoCompo;
 	}
 	/**
 	 * @return the nuAporte
 	 */
-	public float getNuAporte() {
+	public Float getNuAporte() {
 		return nuAporte;
 	}
 	/**
 	 * @param nuAporte the nuAporte to set
 	 */
-	public void setNuAporte(float nuAporte) {
+	public void setNuAporte(Float nuAporte) {
 		this.nuAporte = nuAporte;
 	}
 
-	
-	
 }

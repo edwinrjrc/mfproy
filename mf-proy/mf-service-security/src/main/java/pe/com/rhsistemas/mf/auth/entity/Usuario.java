@@ -52,10 +52,10 @@ public class Usuario implements Serializable {
 	@Column(name="in_estado", length=1)
 	private String inEstado;
 
-	@Column(name="tx_login", length=100)
+	@Column(name="tx_login", length=100, nullable = false)
 	private String txLogin;
 
-	@Column(name="tx_password", length=500)
+	@Column(name="tx_password", length=500, nullable = false)
 	private String txPassword;
 
 	//bi-directional one-to-one association to Persona

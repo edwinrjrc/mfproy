@@ -11,20 +11,20 @@ public class RolDto extends BaseDto {
 
 	private static final long serialVersionUID = 3462919949169680187L;
 	
-	int idrol;
+	Integer idrol;
 	String nombre;
 	
 	
 	/**
 	 * @return the idrol
 	 */
-	public int getIdrol() {
+	public Integer getIdrol() {
 		return idrol;
 	}
 	/**
 	 * @param idrol the idrol to set
 	 */
-	public void setIdrol(int idrol) {
+	public void setIdrol(Integer idrol) {
 		this.idrol = idrol;
 	}
 	/**

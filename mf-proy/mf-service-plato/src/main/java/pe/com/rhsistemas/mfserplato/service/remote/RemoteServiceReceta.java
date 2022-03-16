@@ -5,11 +5,13 @@ package pe.com.rhsistemas.mfserplato.service.remote;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,7 +44,7 @@ public class RemoteServiceReceta {
 
 	private static final Logger log = LoggerFactory.getLogger(RemoteServiceReceta.class);
 
-	private static final String URL_SERVICE_1 = "http://mf-jpa-ingrediente/IngredienteRJPAService/ingredientes";
+	private static final String URL_SERVICE_1 = "http://mf-jpa-ingrediente/IngredienteRJPAService/ingredientesPlato";
 	
 	private static final String URL_SERVICE_2 = "http://mf-jpa-receta/RecetaPlatoRJPAService/receta";
 	
@@ -62,9 +64,7 @@ public class RemoteServiceReceta {
 			
 			ResponseEntity<Map> respuesta = restTemplate.exchange(builderURI.toUriString(), metodoServicio, requestEntity, responseType);
 			
-			JsonFactory factory = new JsonFactory();
-		    factory.enable(Feature.ALLOW_SINGLE_QUOTES);
-		    ObjectMapper mapper = new ObjectMapper(factory);
+			ObjectMapper mapper = obtenerMapper();
 			
 		    List<?> datosLista = (List<?>) respuesta.getBody().get(Constantes.VALOR_DATA_MAP);
 		    listaIngredientesPlato = new ArrayList<>();
@@ -95,9 +95,7 @@ public class RemoteServiceReceta {
 			
 			ResponseEntity<Map> respuesta = restTemplate.exchange(builderURI.toUriString(), metodoServicio, requestEntity, responseType);
 			
-			JsonFactory factory = new JsonFactory();
-		    factory.enable(Feature.ALLOW_SINGLE_QUOTES);
-		    ObjectMapper mapper = new ObjectMapper(factory);
+			ObjectMapper mapper = obtenerMapper();
 			
 		    List<?> datosLista = (List<?>) respuesta.getBody().get(Constantes.VALOR_DATA_MAP);
 		    listaReceta = new ArrayList<>();
@@ -133,6 +131,19 @@ public class RemoteServiceReceta {
 	    headers.setContentType(MediaType.APPLICATION_JSON);
 	    
 	    return headers;
+	}
+	
+	private ObjectMapper obtenerMapper () {
+		SimpleDateFormat df = new SimpleDateFormat(Constantes.FORMAT_DATE_MAPPER_FULL);
+		df.setTimeZone(TimeZone.getDefault());
+		
+		JsonFactory factory = new JsonFactory();
+	    factory.enable(Feature.ALLOW_SINGLE_QUOTES);
+	    ObjectMapper mapper = new ObjectMapper(factory);
+	    mapper.setDateFormat(df);
+		mapper.setTimeZone(TimeZone.getDefault());
+	    
+	    return mapper;
 	}
 	
 }

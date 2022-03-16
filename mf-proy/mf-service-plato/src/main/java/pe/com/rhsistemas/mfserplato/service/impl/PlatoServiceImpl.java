@@ -8,6 +8,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
@@ -32,6 +34,8 @@ import pe.com.rhsistemas.mfserplato.service.remote.RemoteServiceReceta;
  */
 @Service
 public class PlatoServiceImpl implements PlatoService {
+	
+	private static final Logger log = LoggerFactory.getLogger(PlatoServiceImpl.class);
 	
 	@Autowired
 	private RemoteServicePlato remoteServicePlato;
@@ -77,9 +81,24 @@ public class PlatoServiceImpl implements PlatoService {
 	@Override
 	public Map<String,Object> consultarCompletaPlato(Integer idPlato) throws MFServicePlatoException{
 		Map<String,Object> mapeoLista = new HashMap<String,Object>();
-		List<PlatoIngredienteDto> listaIngredientes = remoteServiceReceta.listarIngredientesPlato(idPlato);
-		List<RecetaDto> listaReceta = remoteServiceReceta.consultaRecetaPlato(idPlato);
-		PlatoDto plato = remoteServicePlato.consultarPlato(idPlato);
+		List<PlatoIngredienteDto> listaIngredientes = null;
+		try {
+			listaIngredientes = remoteServiceReceta.listarIngredientesPlato(idPlato);
+		} catch (MFServicePlatoException e) {
+			log.error(e.getMessage(),e);
+		}
+		List<RecetaDto> listaReceta = null;
+		try {
+			listaReceta = remoteServiceReceta.consultaRecetaPlato(idPlato);
+		} catch (MFServicePlatoException e) {
+			log.error(e.getMessage(),e);
+		}
+		PlatoDto plato = null;
+		try {
+			plato = remoteServicePlato.consultarPlato(idPlato);
+		} catch (MFServicePlatoException e) {
+			log.error(e.getMessage(),e);
+		}
 		
 		mapeoLista.put(Constantes.VALOR_DTO, plato);
 		mapeoLista.put(Constantes.VALOR_LISTA_RECETA, listaReceta);

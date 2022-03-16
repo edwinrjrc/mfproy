@@ -18,13 +18,13 @@ public class PlatoDto extends BaseDto {
 	private Integer idEstado;
 	private PersonaDto persona;
 	private Integer idTipoPlato;
-	private boolean acompaniamiento;
+	private Boolean acompaniamiento;
 	private BaseValor tipoCocina;
 	private String descripcionPlato;
 	
 	private List<PlatoIngredienteDto> ingredientes;
 	
-	private boolean favorito;
+	private Boolean favorito;
 
 	/**
 	 * @return the id
@@ -99,14 +99,14 @@ public class PlatoDto extends BaseDto {
 	/**
 	 * @return the acompaniamiento
 	 */
-	public boolean isAcompaniamiento() {
+	public Boolean isAcompaniamiento() {
 		return acompaniamiento;
 	}
 
 	/**
 	 * @param acompaniamiento the acompaniamiento to set
 	 */
-	public void setAcompaniamiento(boolean acompaniamiento) {
+	public void setAcompaniamiento(Boolean acompaniamiento) {
 		this.acompaniamiento = acompaniamiento;
 	}
 
@@ -141,14 +141,14 @@ public class PlatoDto extends BaseDto {
 	/**
 	 * @return the favorito
 	 */
-	public boolean isFavorito() {
+	public Boolean isFavorito() {
 		return favorito;
 	}
 
 	/**
 	 * @param favorito the favorito to set
 	 */
-	public void setFavorito(boolean favorito) {
+	public void setFavorito(Boolean favorito) {
 		this.favorito = favorito;
 	}
 
@@ -165,6 +165,5 @@ public class PlatoDto extends BaseDto {
 	public void setDescripcionPlato(String descripcionPlato) {
 		this.descripcionPlato = descripcionPlato;
 	}
-	
 	
 }

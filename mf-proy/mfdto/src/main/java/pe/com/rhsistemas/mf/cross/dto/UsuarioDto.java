@@ -13,16 +13,13 @@ public class UsuarioDto extends BaseDto {
 
 	private static final long serialVersionUID = -8805649676053592592L;
 	
-	/**
-	 * 
-	 */
 	private String login;
 	private String password;
 	private String estado;
 	private Date fechaUltActualizaPass;
 	private String inCuentaCaduca;
 	private Date fechaCaduca;
-	private int idPersona;
+	private Integer idPersona;
 	
 	
 	/**
@@ -88,13 +85,13 @@ public class UsuarioDto extends BaseDto {
 	/**
 	 * @return the idPersona
 	 */
-	public int getIdPersona() {
+	public Integer getIdPersona() {
 		return idPersona;
 	}
 	/**
 	 * @param idPersona the idPersona to set
 	 */
-	public void setIdPersona(int idPersona) {
+	public void setIdPersona(Integer idPersona) {
 		this.idPersona = idPersona;
 	}
 	/**
@@ -109,6 +106,5 @@ public class UsuarioDto extends BaseDto {
 	public void setInCuentaCaduca(String inCuentaCaduca) {
 		this.inCuentaCaduca = inCuentaCaduca;
 	}
-	
 	
 }

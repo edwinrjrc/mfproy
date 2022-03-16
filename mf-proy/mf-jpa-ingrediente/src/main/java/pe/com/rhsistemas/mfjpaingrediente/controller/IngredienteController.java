@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import pe.com.rhsistemas.mf.cross.compartido.Constantes;
@@ -128,8 +129,8 @@ public class IngredienteController {
 		return salida;
 	}
 
-	@GetMapping(value = "/ingredientes/{idPlato}")
-	public ResponseEntity<Map<String, Object>> ingredientesPlato(@PathVariable Integer idPlato) {
+	@GetMapping(value = "/ingredientesPlato")
+	public ResponseEntity<Map<String, Object>> ingredientesPlato(@RequestParam(name = "idPlato", required = true) Integer idPlato) {
 		ResponseEntity<Map<String, Object>> salida = null;
 		Map<String, Object> mapeo = null;
 		HttpStatus status = null;
@@ -139,19 +140,57 @@ public class IngredienteController {
 			UtilMfDto.pintaLog(idPlato, "idPlato");
 
 			List<PlatoIngrediente> listaPlatoIngredientes = platoIngredienteRepository.findAllByPlato(idPlato);
-
 			status = HttpStatus.NO_CONTENT;
 			
 			List<PlatoIngredienteDto> listaPlatoIngredienteDto = new ArrayList<>();
 			if (UtilMfDto.listaNoVacia(listaPlatoIngredientes)) {
 				for (PlatoIngrediente platoIngrediente : listaPlatoIngredientes) {
-					
+					listaPlatoIngredienteDto.add(Utilmfjpa.parsePlatoIngrediente(platoIngrediente));
 				}
 			}
 			
 			mapeo = new HashMap<String, Object>();
-			mapeo.put(Constantes.VALOR_DATA_MAP, listaPlatoIngredientes);
+			mapeo.put(Constantes.VALOR_DATA_MAP, listaPlatoIngredienteDto);
+			mapeo.put("error", false);
+			mapeo.put("mensaje", "Operacion completada");
 			status = HttpStatus.OK;
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+			mapeo = new HashMap<String, Object>();
+			mapeo.put("error", true);
+			mapeo.put("mensaje", "Operacion no completada");
+		}
+		salida = new ResponseEntity<Map<String, Object>>(mapeo, status);
+
+		return salida;
+	}
+	
+	@GetMapping(value = "/ingredientes")
+	public ResponseEntity<Map<String, Object>> listarIngredientes() {
+		ResponseEntity<Map<String, Object>> salida = null;
+		Map<String, Object> mapeo = null;
+		HttpStatus status = null;
+
+		try {
+			log.debug("Parametros recibidos");
+			status = HttpStatus.NO_CONTENT;
+
+			List<Ingrediente> listaIngredientes = ingredienteRepository.findByOrderByDeIngredienteAsc();
+			List<IngredienteDto> listaIngredientesDto = null;
+			if (UtilMfDto.listaNoVacia(listaIngredientes)) {
+				listaIngredientesDto = new ArrayList<>();
+				for (Ingrediente ingrediente : listaIngredientes) {
+					listaIngredientesDto.add(Utilmfjpa.parseIngrediente(ingrediente));
+				}
+			}
+			
+			mapeo = new HashMap<String, Object>();
+			mapeo.put(Constantes.VALOR_DATA_MAP, listaIngredientesDto);
+			mapeo.put("error", false);
+			mapeo.put("mensaje", "Operacion completada");
+			status = HttpStatus.OK;
+			
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
 			status = HttpStatus.INTERNAL_SERVER_ERROR;

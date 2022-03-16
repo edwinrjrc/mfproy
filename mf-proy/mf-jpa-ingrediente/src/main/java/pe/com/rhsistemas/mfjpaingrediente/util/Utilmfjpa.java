@@ -15,6 +15,7 @@ import pe.com.rhsistemas.mf.cross.dto.PasoPreparacionDto;
 import pe.com.rhsistemas.mf.cross.dto.PersonaDto;
 import pe.com.rhsistemas.mf.cross.dto.PlatoDto;
 import pe.com.rhsistemas.mf.cross.dto.PlatoIngredienteDto;
+import pe.com.rhsistemas.mf.cross.dto.UnidadMedidaDto;
 import pe.com.rhsistemas.mf.cross.dto.ValorNutricionalDto;
 import pe.com.rhsistemas.mf.cross.exception.UtilMfDtoException;
 import pe.com.rhsistemas.mf.cross.util.UtilMfDto;
@@ -103,6 +104,29 @@ public class Utilmfjpa {
 		}
 		
 		return entity;
+	}
+	
+	public static IngredienteDto parseIngrediente(Ingrediente entity) {
+		IngredienteDto dto = new IngredienteDto();
+		
+		dto.setFechaModificacion(entity.getFeModificacion());
+		dto.setFechaRegistro(entity.getFeRegistro());
+		dto.setId(entity.getIdIngrediente());
+		dto.setIdUsuarioModificacion(entity.getIdUsuaModi());
+		dto.setIdUsuarioRegistro(entity.getIdUsuaCrea());
+		dto.setNombreIngrediente(entity.getDeIngrediente());
+		dto.setNumeroCalorias(entity.getNuCalorias());
+		dto.setNumeroGrasas(entity.getNuGrasas());
+		dto.setNumeroProteina(entity.getNuProteina());
+		
+		BaseValor tipoIngrediente = new BaseValor();
+		tipoIngrediente.setCodigo(entity.getTipoIngrediente().getIdTipoIngr().toString());
+		tipoIngrediente.setNombre(entity.getTipoIngrediente().getNoTipoIngr());
+		tipoIngrediente.setValor(entity.getTipoIngrediente().getNoTipoIngr());
+		
+		dto.setTipoIngrediente(tipoIngrediente);
+		
+		return dto;
 	}
 	
 	
@@ -202,15 +226,20 @@ public class Utilmfjpa {
 	
 	public static PlatoIngredienteDto parsePlatoIngrediente(PlatoIngrediente entity) {
 		PlatoIngredienteDto dto = new PlatoIngredienteDto();
+		
 		dto.setIdPlato(entity.getId().getIdPlato());
+		
 		IngredienteDto ingrediente = new IngredienteDto();
 		ingrediente.setId(entity.getId().getIdIngrediente());
+		ingrediente.setNombreIngrediente(entity.getIngrediente().getDeIngrediente());
 		dto.setIngrediente(ingrediente);
 		dto.setCantidad(entity.getNuCantidad());
+		
 		BaseValor unidadMedida = new BaseValor();
 		unidadMedida.setCodigo(entity.getUnidadMedida().getIdUnidMedi().toString());
 		unidadMedida.setNombre(entity.getUnidadMedida().getDeUnidMedi());
 		dto.setUnidadMedida(unidadMedida);
+		
 		BaseValor tipoIngrediente = new BaseValor();
 		tipoIngrediente.setCodigo(entity.getTiIngrediente());
 		dto.setTipoIngrediente(tipoIngrediente);
@@ -218,6 +247,19 @@ public class Utilmfjpa {
 		dto.setIdUsuarioRegistro(entity.getIdUsuaCrea());
 		dto.setFechaModificacion(entity.getFeModificacion());
 		dto.setFechaRegistro(entity.getFeRegistro());
+		
+		return dto;
+	}
+	
+	public static UnidadMedidaDto parseUnidadMedidad (UnidadMedida entity) {
+		UnidadMedidaDto dto = new UnidadMedidaDto();
+		dto.setIdUnidadMedida(entity.getIdUnidMedi());
+		dto.setDescripcionUnidadMedida(entity.getDeUnidMedi());
+		dto.setIdUsuarioRegistro(entity.getIdUsuaCrea());
+		dto.setFechaRegistro(entity.getFeRegistro());
+		dto.setIdUsuarioModificacion(entity.getIdUsuaModi());
+		dto.setFechaModificacion(entity.getFeModificacion());
+		
 		return dto;
 	}
 	

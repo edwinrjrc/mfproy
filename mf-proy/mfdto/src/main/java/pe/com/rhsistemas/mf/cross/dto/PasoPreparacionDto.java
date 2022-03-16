@@ -12,24 +12,24 @@ import java.util.List;
 public class PasoPreparacionDto  extends BaseDto{
 
 	private static final long serialVersionUID = 3312480600442079735L;
-	private int idPaso;
-	private int idPlato;
+	private Integer idPaso;
+	private Integer idPlato;
 	private String descripcioPaso;
-	private int tiempoMinutos;
-	private boolean usaFuego;
+	private Integer tiempoMinutos;
+	private Boolean usaFuego;
 	private List<IngredienteDto> ingredientes;
 	
 	
 	/**
 	 * @return the idPaso
 	 */
-	public int getIdPaso() {
+	public Integer getIdPaso() {
 		return idPaso;
 	}
 	/**
 	 * @param idPaso the idPaso to set
 	 */
-	public void setIdPaso(int idPaso) {
+	public void setIdPaso(Integer idPaso) {
 		this.idPaso = idPaso;
 	}
 	/**
@@ -47,25 +47,25 @@ public class PasoPreparacionDto  extends BaseDto{
 	/**
 	 * @return the tiempoMinutos
 	 */
-	public int getTiempoMinutos() {
+	public Integer getTiempoMinutos() {
 		return tiempoMinutos;
 	}
 	/**
 	 * @param tiempoMinutos the tiempoMinutos to set
 	 */
-	public void setTiempoMinutos(int tiempoMinutos) {
+	public void setTiempoMinutos(Integer tiempoMinutos) {
 		this.tiempoMinutos = tiempoMinutos;
 	}
 	/**
 	 * @return the usaFuego
 	 */
-	public boolean isUsaFuego() {
+	public Boolean isUsaFuego() {
 		return usaFuego;
 	}
 	/**
 	 * @param usaFuego the usaFuego to set
 	 */
-	public void setUsaFuego(boolean usaFuego) {
+	public void setUsaFuego(Boolean usaFuego) {
 		this.usaFuego = usaFuego;
 	}
 	/**
@@ -83,13 +83,13 @@ public class PasoPreparacionDto  extends BaseDto{
 	/**
 	 * @return the idPlato
 	 */
-	public int getIdPlato() {
+	public Integer getIdPlato() {
 		return idPlato;
 	}
 	/**
 	 * @param idPlato the idPlato to set
 	 */
-	public void setIdPlato(int idPlato) {
+	public void setIdPlato(Integer idPlato) {
 		this.idPlato = idPlato;
 	}
 	

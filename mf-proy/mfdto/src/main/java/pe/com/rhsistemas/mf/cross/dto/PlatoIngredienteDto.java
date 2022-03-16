@@ -13,7 +13,7 @@ public class PlatoIngredienteDto extends BaseDto {
 
 	private IngredienteDto ingrediente;
 	private BaseValor unidadMedida;
-	private double cantidad;
+	private Float cantidad;
 	private BaseValor tipoIngrediente;
 	private Integer idPlato;
 	
@@ -45,13 +45,13 @@ public class PlatoIngredienteDto extends BaseDto {
 	/**
 	 * @return the cantidad
 	 */
-	public double getCantidad() {
+	public Float getCantidad() {
 		return cantidad;
 	}
 	/**
 	 * @param cantidad the cantidad to set
 	 */
-	public void setCantidad(double cantidad) {
+	public void setCantidad(Float cantidad) {
 		this.cantidad = cantidad;
 	}
 	/**

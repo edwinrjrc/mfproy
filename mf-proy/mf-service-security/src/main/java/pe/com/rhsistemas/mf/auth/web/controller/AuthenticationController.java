@@ -64,6 +64,7 @@ public class AuthenticationController {
 		UserTokenState userToken = null;
 		HttpStatus status = null;
 		try {
+			status = HttpStatus.NO_CONTENT;
 			final Authentication authentication = authenticationManager
 					.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(),
 							authenticationRequest.getPassword()));

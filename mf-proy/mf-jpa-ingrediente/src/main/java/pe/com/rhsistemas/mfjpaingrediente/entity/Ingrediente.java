@@ -37,13 +37,13 @@ public class Ingrediente implements Serializable {
 	private Integer idUsuaModi;
 
 	@Column(name="nu_calorias")
-	private float nuCalorias;
+	private Float nuCalorias;
 
 	@Column(name="nu_grasas")
-	private float nuGrasas;
+	private Float nuGrasas;
 
 	@Column(name="nu_proteina")
-	private float nuProteina;
+	private Float nuProteina;
 
 	//bi-directional many-to-one association to TipoIngrediente
 	@ManyToOne
@@ -101,27 +101,27 @@ public class Ingrediente implements Serializable {
 		this.idUsuaModi = idUsuaModi;
 	}
 
-	public float getNuCalorias() {
+	public Float getNuCalorias() {
 		return this.nuCalorias;
 	}
 
-	public void setNuCalorias(float nuCalorias) {
+	public void setNuCalorias(Float nuCalorias) {
 		this.nuCalorias = nuCalorias;
 	}
 
-	public float getNuGrasas() {
+	public Float getNuGrasas() {
 		return this.nuGrasas;
 	}
 
-	public void setNuGrasas(float nuGrasas) {
+	public void setNuGrasas(Float nuGrasas) {
 		this.nuGrasas = nuGrasas;
 	}
 
-	public float getNuProteina() {
+	public Float getNuProteina() {
 		return this.nuProteina;
 	}
 
-	public void setNuProteina(float nuProteina) {
+	public void setNuProteina(Float nuProteina) {
 		this.nuProteina = nuProteina;
 	}
 

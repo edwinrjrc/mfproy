@@ -11,24 +11,24 @@ public class IngredienteDto extends BaseDto {
 
 	private static final long serialVersionUID = -2673013093232639773L;
 	
-	private int id;
+	private Integer id;
 	private String nombreIngrediente;
-	private double numeroCalorias;
-	private double numeroGrasas;
-	private double numeroProteina;
+	private Float numeroCalorias;
+	private Float numeroGrasas;
+	private Float numeroProteina;
 	private BaseValor tipoIngrediente;
 	
 	
 	/**
 	 * @return the id
 	 */
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 	/**
 	 * @param id the id to set
 	 */
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 	/**
@@ -46,37 +46,37 @@ public class IngredienteDto extends BaseDto {
 	/**
 	 * @return the numeroCalorias
 	 */
-	public double getNumeroCalorias() {
+	public Float getNumeroCalorias() {
 		return numeroCalorias;
 	}
 	/**
 	 * @param numeroCalorias the numeroCalorias to set
 	 */
-	public void setNumeroCalorias(double numeroCalorias) {
+	public void setNumeroCalorias(Float numeroCalorias) {
 		this.numeroCalorias = numeroCalorias;
 	}
 	/**
 	 * @return the numeroGrasas
 	 */
-	public double getNumeroGrasas() {
+	public Float getNumeroGrasas() {
 		return numeroGrasas;
 	}
 	/**
 	 * @param numeroGrasas the numeroGrasas to set
 	 */
-	public void setNumeroGrasas(double numeroGrasas) {
+	public void setNumeroGrasas(Float numeroGrasas) {
 		this.numeroGrasas = numeroGrasas;
 	}
 	/**
 	 * @return the numeroProteina
 	 */
-	public double getNumeroProteina() {
+	public Float getNumeroProteina() {
 		return numeroProteina;
 	}
 	/**
 	 * @param numeroProteina the numeroProteina to set
 	 */
-	public void setNumeroProteina(double numeroProteina) {
+	public void setNumeroProteina(Float numeroProteina) {
 		this.numeroProteina = numeroProteina;
 	}
 	/**

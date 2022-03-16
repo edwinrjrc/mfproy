@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import pe.com.rhsistemas.mf.cross.compartido.Constantes;
+import pe.com.rhsistemas.mf.cross.dto.IngredienteDto;
 import pe.com.rhsistemas.mf.cross.dto.PlatoIngredienteDto;
 import pe.com.rhsistemas.mf.cross.util.UtilMfDto;
 import pe.com.rhsistemas.mf.post.dto.IngredientesPlatoDto;
@@ -45,8 +47,8 @@ public class IngredienteServiceController {
 		Map<String, Object> mapeo = null;
 		HttpStatus status = null;
 		try {
-			status = HttpStatus.NOT_FOUND;
-			log.info("Recibiendo parametros");
+			status = HttpStatus.NO_CONTENT;
+			log.info("Recibiendo parametros ingredientesPlato");
 			UtilMfDto.pintaLog(idPlato, "idPlato");
 			
 			List<PlatoIngredienteDto> listaIngredientes = ingredienteLogicaService.ingredientesPlato(idPlato);
@@ -83,7 +85,8 @@ public class IngredienteServiceController {
 		HttpStatus status = null;
 		
 		try {
-			log.info("Recibiendo parametros");
+			status = HttpStatus.NO_CONTENT;
+			log.info("Recibiendo parametros ingredientesPlato");
 			UtilMfDto.pintaLog(ingredientesPlatoDto, "ingredientesPlatoDto");
 			
 			ingredienteLogicaService.registrarIngredientesPlato(ingredientesPlatoDto.getIngredientes());
@@ -105,6 +108,43 @@ public class IngredienteServiceController {
 			mapeo.put("error", true);
 			mapeo.put("mensaje", "Operacion no completada");
 		}
+		salida = new ResponseEntity<Map<String, Object>>(mapeo, status);
+
+		return salida;
+	}
+	
+	@CrossOrigin(origins = "http://localhost:4200")
+	@GetMapping(value = "/ingredientes")
+	public ResponseEntity<Map<String, Object>> listarIngredientes() {
+		ResponseEntity<Map<String, Object>> salida = null;
+		Map<String, Object> mapeo = null;
+		HttpStatus status = null;
+		try {
+			status = HttpStatus.NO_CONTENT;
+			log.info("Recibiendo parametros listarIngredientes");
+			
+			List<IngredienteDto> listaIngredientes = ingredienteLogicaService.listarIngredientes();
+			if (UtilMfDto.listaNoVacia(listaIngredientes)) {
+				status = HttpStatus.OK;
+			}
+			mapeo = new HashMap<String, Object>();
+			mapeo.put("error", false);
+			mapeo.put("mensaje", "Existo");
+			mapeo.put(Constantes.VALOR_DATA_MAP, listaIngredientes);
+		} catch (MfServiceIngredienteException e) {
+			log.error(e.getMessage(), e);
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+			mapeo = new HashMap<String, Object>();
+			mapeo.put("error", true);
+			mapeo.put("mensaje", "Operacion no completada");
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+			mapeo = new HashMap<String, Object>();
+			mapeo.put("error", true);
+			mapeo.put("mensaje", "Operacion no completada");
+		}
+		
 		salida = new ResponseEntity<Map<String, Object>>(mapeo, status);
 
 		return salida;

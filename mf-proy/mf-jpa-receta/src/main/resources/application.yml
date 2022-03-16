@@ -13,7 +13,7 @@ spring:
  
 #Tomcat Embedded Server Configuration
 server: 
-  port: 24233
+  port: 0
 
 
 #Eureka Configuration Properties  
