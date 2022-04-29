@@ -19,4 +19,5 @@ public interface RecetaRepository extends JpaRepository<Receta, RecetaPK> {
 
 	@Query(value = "Select r from Receta r where r.id.idPlato = ?1 order by r.id.idPaso asc")
 	List<Receta> findByIdPlato(Integer idPlato);
+	
 }

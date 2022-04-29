@@ -45,7 +45,6 @@ public class PlatoRecetaController {
 		try {
 			status = HttpStatus.NO_CONTENT;
 			
-			
 			mapeo = new HashMap<String, Object>();
 			mapeo.put("error", false);
 			mapeo.put("mensaje", "Operacion Completada");

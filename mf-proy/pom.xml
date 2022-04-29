@@ -15,6 +15,7 @@
   	<module>mf-service-ingrediente</module>
   	<module>mf-service-menu</module>
   	<module>mf-service-plato</module>
+  	<module>mf-service-receta</module>
   	<module>mf-service-security</module>
   	<module>mf-gateway</module>
   	<module>mf-eureka-server</module>

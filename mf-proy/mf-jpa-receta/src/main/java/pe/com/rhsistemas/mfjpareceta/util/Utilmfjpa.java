@@ -3,9 +3,12 @@ package pe.com.rhsistemas.mfjpareceta.util;
  * 
  */
 
+import pe.com.rhsistemas.mf.cross.dto.RecetaComentarioDto;
 import pe.com.rhsistemas.mf.cross.dto.RecetaDto;
 import pe.com.rhsistemas.mf.cross.exception.UtilMfDtoException;
+import pe.com.rhsistemas.mf.cross.util.UtilMfDto;
 import pe.com.rhsistemas.mfjpareceta.entity.Receta;
+import pe.com.rhsistemas.mfjpareceta.entity.RecetaComentario;
 
 /**
  * @author Edwin
@@ -26,6 +29,38 @@ public class Utilmfjpa {
 			dto.setIdUsuarioModificacion(entity.getIdUsuaModi());
 			dto.setFechaModificacion(entity.getFeModificacion());
 		}
+		
+		return dto;
+	}
+	
+	public static RecetaComentario parseRecetaComentarioDto (RecetaComentarioDto dto) {
+		RecetaComentario entity = new RecetaComentario();
+		
+		entity.setFeModificacion(UtilMfDto.parseDateASqlTimestamp(dto.getFechaModificacion()));
+		entity.setFeRegistro(UtilMfDto.parseDateASqlTimestamp(dto.getFechaRegistro()));
+		
+		if (dto.getIdComentarioPlato() != null) {
+			entity.setIdComePlat(Long.valueOf(dto.getIdComentarioPlato()));
+		}
+		entity.setIdPlato(dto.getIdPlato());
+		entity.setIdUsuaCrea(dto.getIdUsuarioRegistro());
+		entity.setIdUsuaModi(dto.getIdUsuarioModificacion());
+		entity.setTxComentario(dto.getComentario());
+		
+		
+		return entity;
+	}
+	
+	public static RecetaComentarioDto parseRecetaComentario(RecetaComentario entity) {
+		RecetaComentarioDto dto = new RecetaComentarioDto();
+		
+		dto.setComentario(entity.getTxComentario());
+		dto.setFechaModificacion(entity.getFeModificacion());
+		dto.setFechaRegistro(entity.getFeRegistro());
+		dto.setIdComentarioPlato(entity.getIdComePlat().intValue());
+		dto.setIdPlato(entity.getIdPlato());
+		dto.setIdUsuarioModificacion(entity.getIdUsuaModi());
+		dto.setIdUsuarioRegistro(entity.getIdUsuaCrea());
 		
 		return dto;
 	}

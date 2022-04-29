@@ -32,6 +32,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import pe.com.rhsistemas.mf.cross.compartido.Constantes;
 import pe.com.rhsistemas.mf.cross.dto.PlatoIngredienteDto;
+import pe.com.rhsistemas.mf.cross.dto.RecetaComentarioDto;
 import pe.com.rhsistemas.mf.cross.dto.RecetaDto;
 import pe.com.rhsistemas.mfserplato.exception.MFServicePlatoException;
 
@@ -47,6 +48,8 @@ public class RemoteServiceReceta {
 	private static final String URL_SERVICE_1 = "http://mf-jpa-ingrediente/IngredienteRJPAService/ingredientesPlato";
 	
 	private static final String URL_SERVICE_2 = "http://mf-jpa-receta/RecetaPlatoRJPAService/receta";
+	
+	private static final String URL_SERVICE_3 = "http://mf-jpa-receta/RecetaPlatoRJPAService/recetaComentario";
 	
 	@Autowired
 	private RestTemplate restTemplate;
@@ -111,6 +114,37 @@ public class RemoteServiceReceta {
 			throw new MFServicePlatoException(e);
 		}
 		return listaReceta;
+	}
+	
+	public List<RecetaComentarioDto> consultaComentariosReceta(Integer idPlato) throws MFServicePlatoException{
+		List<RecetaComentarioDto> listaComentario = null;
+		try {
+			HttpMethod metodoServicio = HttpMethod.GET;
+			
+			HttpEntity<Map<String, Object>> requestEntity = new HttpEntity<Map<String,Object>>(generarHttpHeaders());
+			Class<Map> responseType = Map.class;
+			
+			UriComponentsBuilder builderURI = UriComponentsBuilder.fromHttpUrl(URL_SERVICE_3);
+			builderURI.queryParam("idPlato", idPlato);
+			
+			ResponseEntity<Map> respuesta = restTemplate.exchange(builderURI.toUriString(), metodoServicio, requestEntity, responseType);
+			
+			ObjectMapper mapper = obtenerMapper();
+			
+		    List<?> datosLista = (List<?>) respuesta.getBody().get(Constantes.VALOR_DATA_MAP);
+		    listaComentario = new ArrayList<>();
+		    for (Object objeto : datosLista) {
+		    	listaComentario.add(mapper.convertValue((LinkedHashMap<?,?>) objeto, RecetaComentarioDto.class));
+			}
+			
+		} catch (RestClientException e) {
+			log.error(e.getMessage(),e);
+			throw new MFServicePlatoException(e);
+		} catch (Exception e) {
+			log.error(e.getMessage(),e);
+			throw new MFServicePlatoException(e);
+		}
+		return listaComentario;
 	}
 	
 	private URI obtenerUri(String cadenaUrl) throws MFServicePlatoException {

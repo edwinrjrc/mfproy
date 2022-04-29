@@ -6,6 +6,7 @@ C:\git\mfproy\mf-proy\mfdto\src\main\java\pe\com\rhsistemas\mf\cross\compartido\
 C:\git\mfproy\mf-proy\mfdto\src\main\java\pe\com\rhsistemas\mf\cross\dto\PersonaDto.java
 C:\git\mfproy\mf-proy\mfdto\src\main\java\pe\com\rhsistemas\mf\cross\dto\TipoPlatoDto.java
 C:\git\mfproy\mf-proy\mfdto\src\main\java\pe\com\rhsistemas\mf\post\dto\CambiarMenuDto.java
+C:\git\mfproy\mf-proy\mfdto\src\main\java\pe\com\rhsistemas\mf\post\dto\RecetaModificadaDto.java
 C:\git\mfproy\mf-proy\mfdto\src\main\java\pe\com\rhsistemas\mf\post\dto\ListaPlatoDto.java
 C:\git\mfproy\mf-proy\mfdto\src\main\java\pe\com\rhsistemas\mf\post\dto\PlatoFavoritoPostDto.java
 C:\git\mfproy\mf-proy\mfdto\src\main\java\pe\com\rhsistemas\mf\cross\dto\UsuarioDto.java
@@ -23,7 +24,9 @@ C:\git\mfproy\mf-proy\mfdto\src\main\java\pe\com\rhsistemas\mf\cross\dto\RolDto.
 C:\git\mfproy\mf-proy\mfdto\src\main\java\pe\com\rhsistemas\mf\cross\dto\DocumentoIdentidadDto.java
 C:\git\mfproy\mf-proy\mfdto\src\main\java\pe\com\rhsistemas\mf\cross\dto\PlatoTipoPlatoDto.java
 C:\git\mfproy\mf-proy\mfdto\src\main\java\pe\com\rhsistemas\mf\cross\dto\RecetaDto.java
+C:\git\mfproy\mf-proy\mfdto\src\main\java\pe\com\rhsistemas\mf\cross\dto\RecetaComentarioDto.java
 C:\git\mfproy\mf-proy\mfdto\src\main\java\pe\com\rhsistemas\mf\post\dto\GenerarMenuDto.java
+C:\git\mfproy\mf-proy\mfdto\src\main\java\pe\com\rhsistemas\mf\post\dto\RecetaComentarioPostDto.java
 C:\git\mfproy\mf-proy\mfdto\src\main\java\pe\com\rhsistemas\mf\cross\dto\PlatoDto.java
 C:\git\mfproy\mf-proy\mfdto\src\main\java\pe\com\rhsistemas\mf\cross\dto\UnidadMedidaDto.java
 C:\git\mfproy\mf-proy\mfdto\src\main\java\pe\com\rhsistemas\mf\cross\dto\BaseDto.java

@@ -119,6 +119,14 @@ public class UtilMfDto {
 		}
 	}
 	
+	public static Double parseStringADouble(String cadena) throws UtilMfDtoException {
+		try {
+			return Double.valueOf(cadena);
+		} catch (NumberFormatException e) {
+			throw new UtilMfDtoException(e);
+		}
+	}
+	
 	public static Long parseIntALong(int valor) {
 		Long salida = null;
 		
@@ -140,5 +148,15 @@ public class UtilMfDto {
 		} catch (Exception e) {
 			throw new UtilMfDtoException(e);
 		}
+	}
+	
+	public static Date hoyDate() {
+		Date fechaHoy = new Date();
+		return fechaHoy;
+	}
+	
+	public static Timestamp hoyTimestamp() {
+		Timestamp fechaHoy = new Timestamp(System.currentTimeMillis());
+		return fechaHoy;
 	}
 }

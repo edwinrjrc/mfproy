@@ -21,6 +21,7 @@ import pe.com.rhsistemas.mf.cross.compartido.Constantes;
 import pe.com.rhsistemas.mf.cross.dto.PlatoDto;
 import pe.com.rhsistemas.mf.cross.dto.PlatoFavoritoDto;
 import pe.com.rhsistemas.mf.cross.dto.PlatoIngredienteDto;
+import pe.com.rhsistemas.mf.cross.dto.RecetaComentarioDto;
 import pe.com.rhsistemas.mf.cross.dto.RecetaDto;
 import pe.com.rhsistemas.mf.cross.util.UtilMfDto;
 import pe.com.rhsistemas.mfserplato.exception.MFServicePlatoException;
@@ -99,10 +100,17 @@ public class PlatoServiceImpl implements PlatoService {
 		} catch (MFServicePlatoException e) {
 			log.error(e.getMessage(),e);
 		}
+		List<RecetaComentarioDto> listaComentarios = null;
+		try {
+			listaComentarios = remoteServiceReceta.consultaComentariosReceta(idPlato);
+		} catch (MFServicePlatoException e) {
+			log.error(e.getMessage(),e);
+		}
 		
 		mapeoLista.put(Constantes.VALOR_DTO, plato);
 		mapeoLista.put(Constantes.VALOR_LISTA_RECETA, listaReceta);
 		mapeoLista.put(Constantes.VALOR_LISTA_INGREDIENTES, listaIngredientes);
+		mapeoLista.put(Constantes.VALOR_LISTA_COMENTARIOS, listaComentarios);
 		
 		return mapeoLista;
 	}
