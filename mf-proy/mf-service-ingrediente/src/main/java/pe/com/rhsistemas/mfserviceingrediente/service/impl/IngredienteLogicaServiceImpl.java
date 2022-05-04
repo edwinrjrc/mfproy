@@ -18,6 +18,8 @@ import pe.com.rhsistemas.mf.cross.dto.PlatoIngredienteDto;
 import pe.com.rhsistemas.mf.cross.dto.UnidadMedidaDto;
 import pe.com.rhsistemas.mfserviceingrediente.exception.MfServiceIngredienteException;
 import pe.com.rhsistemas.mfserviceingrediente.service.IngredienteLogicaService;
+import pe.com.rhsistemas.mfserviceingrediente.service.remote.RemoteServiceIngrediente;
+import pe.com.rhsistemas.mfserviceingrediente.service.remote.RemoteServiceUnidadMedida;
 
 /**
  * @author Edwin
@@ -74,6 +76,11 @@ public class IngredienteLogicaServiceImpl implements IngredienteLogicaService {
 		lista = remoteServiceIngrediente.listarIngredientes();
 		
 		return lista;
+	}
+	
+	@Override
+	public List<PlatoIngredienteDto> listarIngredientesMenu(Integer idMenu) throws MfServiceIngredienteException{
+		return remoteServiceIngrediente.listarIngredientesMenu(idMenu);
 	}
 
 }

@@ -1,6 +1,8 @@
 pe\com\rhsistemas\mf\cross\dto\MenuDetalleDto.class
 pe\com\rhsistemas\mf\cross\dto\PlatoDto.class
 pe\com\rhsistemas\mf\cross\dto\UsuarioDto.class
+pe\com\rhsistemas\mf\cross\dto\UnidadMedidaDto.class
+pe\com\rhsistemas\mf\post\dto\RecetaModificadaDto.class
 pe\com\rhsistemas\mf\cross\dto\RecetaDto.class
 pe\com\rhsistemas\mf\cross\dto\PersonaNaturalDto.class
 pe\com\rhsistemas\mf\post\dto\CambiarMenuDto.class
@@ -15,8 +17,10 @@ pe\com\rhsistemas\mf\post\dto\PlatoFavoritoPostDto.class
 pe\com\rhsistemas\mf\cross\dto\PlatoIngredienteDto.class
 pe\com\rhsistemas\mf\cross\dto\ValorNutricionalDto.class
 pe\com\rhsistemas\mf\cross\dto\IngredienteDto.class
+pe\com\rhsistemas\mf\cross\dto\RecetaComentarioDto.class
 pe\com\rhsistemas\mf\cross\compartido\Constantes.class
 pe\com\rhsistemas\mf\cross\dto\BaseDto.class
+pe\com\rhsistemas\mf\post\dto\RecetaComentarioPostDto.class
 pe\com\rhsistemas\mf\cross\dto\PasoPreparacionDto.class
 pe\com\rhsistemas\mf\cross\dto\PersonaDto.class
 pe\com\rhsistemas\mf\cross\dto\TipoPlatoDto.class

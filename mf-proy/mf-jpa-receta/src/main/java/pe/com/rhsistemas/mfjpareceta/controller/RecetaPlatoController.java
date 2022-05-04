@@ -7,7 +7,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,8 +31,10 @@ import pe.com.rhsistemas.mf.cross.util.UtilMfDto;
 import pe.com.rhsistemas.mf.post.dto.RecetaComentarioPostDto;
 import pe.com.rhsistemas.mfjpareceta.dao.RecetaComentarioRepository;
 import pe.com.rhsistemas.mfjpareceta.dao.RecetaRepository;
+import pe.com.rhsistemas.mfjpareceta.dao.UsuarioPersonaRepository;
 import pe.com.rhsistemas.mfjpareceta.entity.Receta;
 import pe.com.rhsistemas.mfjpareceta.entity.RecetaComentario;
+import pe.com.rhsistemas.mfjpareceta.entity.Usuario;
 import pe.com.rhsistemas.mfjpareceta.util.Utilmfjpa;
 
 /**
@@ -47,6 +51,8 @@ public class RecetaPlatoController {
 	private RecetaRepository recetaRepository;
 	@Autowired
 	private RecetaComentarioRepository recetaComentarioRepository;
+	@Autowired
+	private UsuarioPersonaRepository usuarioPersonaRepository;
 	
 	@GetMapping(value = "/receta", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Map<String, Object>> consultarPlatos(@RequestParam(name = "idPlato", required = true) Integer idPlato) {
@@ -132,9 +138,19 @@ public class RecetaPlatoController {
 				listaRecetaComentario = new ArrayList<>();
 				
 				for (RecetaComentario entity : listaComentario) {
-					listaRecetaComentario.add(Utilmfjpa.parseRecetaComentario(entity));
+					RecetaComentarioDto recetaComen = Utilmfjpa.parseRecetaComentario(entity);
+					Optional<Usuario> usuarioOptional = usuarioPersonaRepository.findById(Long.valueOf(recetaComen.getIdUsuarioRegistro()));
+					
+					String nombreUsuario = usuarioOptional.get().getPersona().getPersonaNatural().getNoPersona()+" ";
+					nombreUsuario = nombreUsuario + usuarioOptional.get().getPersona().getPersonaNatural().getTxPrimApel()+ " ";
+					nombreUsuario = nombreUsuario + usuarioOptional.get().getPersona().getPersonaNatural().getTxSeguApel();
+					
+					nombreUsuario = StringUtils.normalizeSpace(nombreUsuario);
+					
+					recetaComen.setNombreUsuario(nombreUsuario);
+					
+					listaRecetaComentario.add(recetaComen);
 				}
-				
 			}
 			
 			status = HttpStatus.CREATED;

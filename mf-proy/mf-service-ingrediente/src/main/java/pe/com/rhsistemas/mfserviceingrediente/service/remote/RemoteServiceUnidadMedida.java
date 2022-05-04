@@ -1,7 +1,7 @@
 /**
  * 
  */
-package pe.com.rhsistemas.mfserviceingrediente.service.impl;
+package pe.com.rhsistemas.mfserviceingrediente.service.remote;
 
 import java.net.URI;
 import java.net.URISyntaxException;

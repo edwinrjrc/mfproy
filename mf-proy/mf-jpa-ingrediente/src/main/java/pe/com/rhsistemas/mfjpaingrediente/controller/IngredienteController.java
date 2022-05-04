@@ -202,4 +202,40 @@ public class IngredienteController {
 
 		return salida;
 	}
+	
+	@GetMapping(value = "/ingredientesMenu")
+	public ResponseEntity<Map<String, Object>> ingredientesMenu(@RequestParam(name = "idMenu", required = true) Integer idMenu) {
+		ResponseEntity<Map<String, Object>> salida = null;
+		Map<String, Object> mapeo = null;
+		HttpStatus status = null;
+
+		try {
+			log.debug("Parametros recibidos");
+			UtilMfDto.pintaLog(idMenu, "idMenu");
+
+			List<PlatoIngrediente> listaPlatoIngrediente = platoIngredienteRepository.listaIngredientesMenu(idMenu);
+			List<PlatoIngredienteDto> listaPlatoIngredienteDto = null;
+			if (UtilMfDto.listaNoVacia(listaPlatoIngrediente)) {
+				listaPlatoIngredienteDto = new ArrayList<>();
+				for (PlatoIngrediente platoIngrediente : listaPlatoIngrediente) {
+					listaPlatoIngredienteDto.add(Utilmfjpa.parsePlatoIngrediente(platoIngrediente));
+				}
+			}
+			
+			mapeo = new HashMap<String, Object>();
+			mapeo.put(Constantes.VALOR_DATA_MAP, listaPlatoIngredienteDto);
+			mapeo.put("error", false);
+			mapeo.put("mensaje", "Operacion completada");
+			status = HttpStatus.OK;
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+			mapeo = new HashMap<String, Object>();
+			mapeo.put("error", true);
+			mapeo.put("mensaje", "Operacion no completada");
+		}
+		salida = new ResponseEntity<Map<String, Object>>(mapeo, status);
+
+		return salida;
+	}
 }

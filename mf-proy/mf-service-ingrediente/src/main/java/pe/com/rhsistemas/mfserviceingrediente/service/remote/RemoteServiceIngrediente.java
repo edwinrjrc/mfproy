@@ -1,7 +1,7 @@
 /**
  * 
  */
-package pe.com.rhsistemas.mfserviceingrediente.service.impl;
+package pe.com.rhsistemas.mfserviceingrediente.service.remote;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -24,6 +24,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser.Feature;
@@ -55,6 +56,8 @@ public class RemoteServiceIngrediente {
 	private static final String URL_SERVICE_2 = PATH_SERVICE + PATH_CONTROLLER_2 + "/ingredientes";
 
 	private static final String URL_SERVICE_3 = PATH_SERVICE + PATH_CONTROLLER_1 + "/ingredientes";
+	
+	private static final String URL_SERVICE_4 = PATH_SERVICE + PATH_CONTROLLER_2 + "/ingredientesMenu";
 
 	@Autowired
 	private RestTemplate restTemplate;
@@ -135,6 +138,39 @@ public class RemoteServiceIngrediente {
 					LinkedHashMap map1 = (LinkedHashMap) objeto;
 
 					listaSalida.add(mapper.convertValue(map1, IngredienteDto.class));
+				}
+			}
+
+		} catch (RestClientException e) {
+			log.error(e.getMessage(), e);
+			throw new MfServiceIngredienteException(e);
+		}
+		return listaSalida;
+	}
+	
+	@SuppressWarnings("rawtypes")
+	public List<PlatoIngredienteDto> listarIngredientesMenu(Integer idMenu) throws MfServiceIngredienteException {
+		List<PlatoIngredienteDto> listaSalida = null;
+		try {
+			HttpMethod metodoServicio = HttpMethod.GET;
+
+			HttpEntity<List<PlatoIngredienteDto>> requestEntity = new HttpEntity<>(null, obtenerHeaders());
+
+			Class<Map> responseType = Map.class;
+			UriComponentsBuilder builderURI = UriComponentsBuilder.fromHttpUrl(URL_SERVICE_4);
+			builderURI.queryParam("idMenu", idMenu);
+			ResponseEntity<Map> respuesta = restTemplate.exchange(builderURI.toUriString(), metodoServicio, requestEntity,
+					responseType);
+
+			List datosLista = (List) respuesta.getBody().get(Constantes.VALOR_DATA_MAP);
+
+			if (UtilMfDto.listaNoVacia(datosLista)) {
+				ObjectMapper mapper = obtenerMapper();
+				listaSalida = new ArrayList<>();
+				for (Object objeto : datosLista) {
+					LinkedHashMap map1 = (LinkedHashMap) objeto;
+
+					listaSalida.add(mapper.convertValue(map1, PlatoIngredienteDto.class));
 				}
 			}
 

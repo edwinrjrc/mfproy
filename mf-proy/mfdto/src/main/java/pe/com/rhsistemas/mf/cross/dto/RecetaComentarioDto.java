@@ -16,6 +16,8 @@ public class RecetaComentarioDto extends BaseDto {
 	private Integer idComentarioPlato;
 	
 	private String comentario;
+	
+	private String nombreUsuario;
 
 	public Integer getIdPlato() {
 		return idPlato;
@@ -45,6 +47,20 @@ public class RecetaComentarioDto extends BaseDto {
 	 */
 	public void setIdComentarioPlato(Integer idComentarioPlato) {
 		this.idComentarioPlato = idComentarioPlato;
+	}
+
+	/**
+	 * @return the nombreUsuario
+	 */
+	public String getNombreUsuario() {
+		return nombreUsuario;
+	}
+
+	/**
+	 * @param nombreUsuario the nombreUsuario to set
+	 */
+	public void setNombreUsuario(String nombreUsuario) {
+		this.nombreUsuario = nombreUsuario;
 	}
 
 	

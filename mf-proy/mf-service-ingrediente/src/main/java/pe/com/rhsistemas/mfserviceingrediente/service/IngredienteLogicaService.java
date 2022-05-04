@@ -23,4 +23,6 @@ public interface IngredienteLogicaService {
 	public List<UnidadMedidaDto> listarUnidadesMedida() throws MfServiceIngredienteException;
 
 	public List<IngredienteDto> listarIngredientes() throws MfServiceIngredienteException;
+
+	List<PlatoIngredienteDto> listarIngredientesMenu(Integer idMenu) throws MfServiceIngredienteException;
 }

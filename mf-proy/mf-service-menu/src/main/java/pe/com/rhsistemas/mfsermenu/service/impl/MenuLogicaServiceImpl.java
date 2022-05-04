@@ -30,6 +30,8 @@ import pe.com.rhsistemas.mf.cross.exception.UtilMfDtoException;
 import pe.com.rhsistemas.mf.cross.util.UtilMfDto;
 import pe.com.rhsistemas.mfsermenu.exception.MfServiceMenuException;
 import pe.com.rhsistemas.mfsermenu.service.MenuLogicaService;
+import pe.com.rhsistemas.mfsermenu.service.remote.RemoteServiceMenu;
+import pe.com.rhsistemas.mfsermenu.service.remote.RemoteServicePlato;
 
 /**
  * @author Edwin
