@@ -6,6 +6,7 @@ package pe.com.rhsistemas.mf.cross.util;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
@@ -158,5 +159,48 @@ public class UtilMfDto {
 	public static Timestamp hoyTimestamp() {
 		Timestamp fechaHoy = new Timestamp(System.currentTimeMillis());
 		return fechaHoy;
+	}
+	
+	public static String escribeObjetoEnLog(Object objeto) throws UtilMfDtoException {
+		try {
+			ObjectMapper Obj = new ObjectMapper();
+			
+			return Obj.writeValueAsString(objeto);
+		} catch (JsonProcessingException e) {
+			throw new UtilMfDtoException(e);
+		}
+	}
+	
+	public static String nombreDia(Date fecha) {
+		String nombreDia = null;
+		
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(fecha);
+		
+		switch (cal.get(Calendar.DAY_OF_WEEK)) {
+		case Calendar.SUNDAY:
+			nombreDia = "Domingo";
+			break;
+		case Calendar.MONDAY:
+			nombreDia = "Lunes";
+			break;
+		case Calendar.TUESDAY:
+			nombreDia = "Martes";
+			break;
+		case Calendar.WEDNESDAY:
+			nombreDia = "Miercoles";
+			break;
+		case Calendar.THURSDAY:
+			nombreDia = "Jueves";
+			break;
+		case Calendar.FRIDAY:
+			nombreDia = "Viernes";
+			break;
+		case Calendar.SATURDAY:
+			nombreDia = "Sabado";
+			break;
+		}
+		
+		return nombreDia;
 	}
 }

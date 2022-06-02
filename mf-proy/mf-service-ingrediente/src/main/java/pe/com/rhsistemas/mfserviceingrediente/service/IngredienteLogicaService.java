@@ -25,4 +25,6 @@ public interface IngredienteLogicaService {
 	public List<IngredienteDto> listarIngredientes() throws MfServiceIngredienteException;
 
 	List<PlatoIngredienteDto> listarIngredientesMenu(Integer idMenu) throws MfServiceIngredienteException;
+
+	void listarPlatoIngredientesMenu(Long idMenu) throws MfServiceIngredienteException;
 }

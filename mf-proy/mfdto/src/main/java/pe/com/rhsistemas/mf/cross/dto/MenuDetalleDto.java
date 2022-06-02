@@ -19,7 +19,7 @@ public class MenuDetalleDto extends BaseDto {
 	private Integer numSemana;
 	private PlatoDto platoDto;
 	private Integer idTipoPlato;
-	private Integer idGenerado;
+	private Long idGenerado;
 
 
 	/**
@@ -98,14 +98,14 @@ public class MenuDetalleDto extends BaseDto {
 	/**
 	 * @return the idGenerado
 	 */
-	public Integer getIdGenerado() {
+	public Long getIdGenerado() {
 		return idGenerado;
 	}
 
 	/**
 	 * @param idGenerado the idGenerado to set
 	 */
-	public void setIdGenerado(Integer idGenerado) {
+	public void setIdGenerado(Long idGenerado) {
 		this.idGenerado = idGenerado;
 	}
 

@@ -33,6 +33,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import pe.com.rhsistemas.mf.cross.compartido.Constantes;
 import pe.com.rhsistemas.mf.cross.dto.IngredienteDto;
 import pe.com.rhsistemas.mf.cross.dto.PlatoIngredienteDto;
+import pe.com.rhsistemas.mf.cross.dto.PlatoIngredienteExportDto;
 import pe.com.rhsistemas.mf.cross.util.UtilMfDto;
 import pe.com.rhsistemas.mfserviceingrediente.exception.MfServiceIngredienteException;
 
@@ -44,11 +45,11 @@ import pe.com.rhsistemas.mfserviceingrediente.exception.MfServiceIngredienteExce
 public class RemoteServiceIngrediente {
 
 	private static final Logger log = LoggerFactory.getLogger(RemoteServiceIngrediente.class);
-	
+
 	private static final String PATH_SERVICE = "http://mf-jpa-ingrediente";
-	
+
 	private static final String PATH_CONTROLLER_1 = "/IngredienteRJPAService";
-	
+
 	private static final String PATH_CONTROLLER_2 = "/PlatoIngredienteRJPAService";
 
 	private static final String URL_SERVICE_1 = PATH_SERVICE + PATH_CONTROLLER_1 + "/ingredientesPlato";
@@ -56,8 +57,10 @@ public class RemoteServiceIngrediente {
 	private static final String URL_SERVICE_2 = PATH_SERVICE + PATH_CONTROLLER_2 + "/ingredientes";
 
 	private static final String URL_SERVICE_3 = PATH_SERVICE + PATH_CONTROLLER_1 + "/ingredientes";
-	
+
 	private static final String URL_SERVICE_4 = PATH_SERVICE + PATH_CONTROLLER_2 + "/ingredientesMenu";
+
+	private static final String URL_SERVICE_5 = PATH_SERVICE + PATH_CONTROLLER_2 + "/platoIngredientes";
 
 	@Autowired
 	private RestTemplate restTemplate;
@@ -147,7 +150,43 @@ public class RemoteServiceIngrediente {
 		}
 		return listaSalida;
 	}
-	
+
+	@SuppressWarnings("rawtypes")
+	public List<PlatoIngredienteExportDto> listarPlatoIngredientesMenu(Long idMenu)
+			throws MfServiceIngredienteException {
+		List<PlatoIngredienteExportDto> listaSalida = null;
+		try {
+			HttpMethod metodoServicio = HttpMethod.GET;
+
+			HttpEntity<List<PlatoIngredienteDto>> requestEntity = new HttpEntity<>(null, obtenerHeaders());
+
+			Class<Map> responseType = Map.class;
+			UriComponentsBuilder builderURI = UriComponentsBuilder.fromHttpUrl(URL_SERVICE_5);
+			String url = builderURI.toUriString() + "/" + idMenu;
+
+			log.info(url);
+			ResponseEntity<Map> respuesta = restTemplate.exchange(url, metodoServicio,
+					requestEntity, responseType);
+
+			List datosLista = (List) respuesta.getBody().get(Constantes.VALOR_DATA_MAP);
+
+			if (UtilMfDto.listaNoVacia(datosLista)) {
+				ObjectMapper mapper = obtenerMapper();
+				listaSalida = new ArrayList<>();
+				for (Object objeto : datosLista) {
+					LinkedHashMap map1 = (LinkedHashMap) objeto;
+
+					listaSalida.add(mapper.convertValue(map1, PlatoIngredienteExportDto.class));
+				}
+			}
+
+		} catch (RestClientException e) {
+			log.error(e.getMessage(), e);
+			throw new MfServiceIngredienteException(e);
+		}
+		return listaSalida;
+	}
+
 	@SuppressWarnings("rawtypes")
 	public List<PlatoIngredienteDto> listarIngredientesMenu(Integer idMenu) throws MfServiceIngredienteException {
 		List<PlatoIngredienteDto> listaSalida = null;
@@ -158,9 +197,11 @@ public class RemoteServiceIngrediente {
 
 			Class<Map> responseType = Map.class;
 			UriComponentsBuilder builderURI = UriComponentsBuilder.fromHttpUrl(URL_SERVICE_4);
-			builderURI.queryParam("idMenu", idMenu);
-			ResponseEntity<Map> respuesta = restTemplate.exchange(builderURI.toUriString(), metodoServicio, requestEntity,
-					responseType);
+			String url = builderURI.toUriString() + "/" + idMenu;
+
+			log.info(url);
+
+			ResponseEntity<Map> respuesta = restTemplate.exchange(url, metodoServicio, requestEntity, responseType);
 
 			List datosLista = (List) respuesta.getBody().get(Constantes.VALOR_DATA_MAP);
 

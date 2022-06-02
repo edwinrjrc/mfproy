@@ -379,7 +379,7 @@ public class MenuLogicaServiceImpl implements MenuLogicaService {
 		Integer idPlatoElegido = listaPlatosNoConsumidos.get((numeroElegido == 0 ? 1 : numeroElegido) - 1).getId();
 		
 		menuDia.getPlatoDto().setId(idPlatoElegido);
-		menuDia.setIdGenerado(Long.valueOf(ultimoMenuGenerado.getIdGenerado()).intValue());
+		menuDia.setIdGenerado(ultimoMenuGenerado.getIdGenerado());
 		
 		log.info("fecha consumo :: "+menuDia.getFechaConsumo());
 		

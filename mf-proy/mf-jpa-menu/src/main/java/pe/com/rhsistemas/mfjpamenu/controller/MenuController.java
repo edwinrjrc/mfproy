@@ -4,10 +4,12 @@
 package pe.com.rhsistemas.mfjpamenu.controller;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,9 +30,11 @@ import pe.com.rhsistemas.mf.cross.dto.MenuGeneradoDto;
 import pe.com.rhsistemas.mf.cross.util.UtilMfDto;
 import pe.com.rhsistemas.mfjpamenu.dao.MenuDetalleRepository;
 import pe.com.rhsistemas.mfjpamenu.dao.MenuRepository;
+import pe.com.rhsistemas.mfjpamenu.dao.PlatoRepository;
 import pe.com.rhsistemas.mfjpamenu.entity.MenuDetalle;
 import pe.com.rhsistemas.mfjpamenu.entity.MenuGenerado;
 import pe.com.rhsistemas.mfjpamenu.entity.Persona;
+import pe.com.rhsistemas.mfjpamenu.entity.Plato;
 import pe.com.rhsistemas.mfjpamenu.util.Utilmfjpa;
 
 /**
@@ -45,6 +49,9 @@ public class MenuController {
 
 	@Autowired
 	private MenuRepository menuRepository;
+	
+	@Autowired
+	private PlatoRepository platoRepository;
 
 	@Autowired
 	private MenuDetalleRepository menuDetalleRepository;
@@ -109,7 +116,7 @@ public class MenuController {
 			MenuDetalle entityDetalle = null;
 			for (MenuDetalleDto dto : menuGeneradoDto.getListaPlatos()) {
 				dto.setFechaConsumo(dto.getFechaConsumo());
-				dto.setIdGenerado(Long.valueOf(resp.getIdGenerado()).intValue());
+				dto.setIdGenerado(resp.getIdGenerado());
 				entityDetalle = Utilmfjpa.parseaMenuDetalleDto(dto);
 
 				listaMenuDetalle.add(entityDetalle);
@@ -167,6 +174,81 @@ public class MenuController {
 			mapeo.put("error", false);
 			mapeo.put("mensaje", "Operacion Completada");
 			mapeo.put(Constantes.VALOR_DATA_MAP, listaMenuDto);
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+			mapeo = new HashMap<String, Object>();
+			mapeo.put("error", true);
+			mapeo.put("mensaje", "Operacion no completada");
+		}
+		salida = new ResponseEntity<Map<String, Object>>(mapeo, status);
+
+		return salida;
+	}
+	
+	
+	@GetMapping(value = "/menuGenerado2/{idMenu}")
+	public ResponseEntity<Map<String, Object>> consultaMenuGenerado2(@PathVariable Long idMenu) {
+		ResponseEntity<Map<String, Object>> salida = null;
+		Map<String, Object> mapeo = null;
+		HttpStatus status = null;
+
+		try {
+			log.debug("Parametros recibidos");
+			UtilMfDto.pintaLog(idMenu, "idMenu");
+			
+			Optional<MenuGenerado> menuGenerado = menuRepository.findById(idMenu);
+
+			List<MenuDetalleDto> listaDetalle = null;
+			
+			List<MenuDetalle> listaMenuDetalle = menuDetalleRepository.findByMenuGenerado(idMenu);
+			
+			MenuGeneradoDto menuGeneradoDto = Utilmfjpa.parseMenuGenerado(menuGenerado.get());
+			
+			if (UtilMfDto.listaNoVacia(listaMenuDetalle)) {
+				listaDetalle = new ArrayList<>();
+				MenuDetalleDto menuDetalleDto = null;
+				for (MenuDetalle menuDetalle : listaMenuDetalle) {
+					
+					menuDetalleDto = Utilmfjpa.parseMenuDetalle(menuDetalle);
+					
+					Optional<Plato> platoOptional = this.platoRepository.findById(menuDetalleDto.getPlatoDto().getId());
+					menuDetalleDto.getPlatoDto().setNombrePlato(platoOptional.get().getNoPlato());
+					menuDetalleDto.getPlatoDto().setDescripcionPlato(platoOptional.get().getDePlato());
+					menuDetalleDto.getPlatoDto().setFechaRegistro(menuDetalleDto.getFechaRegistro());
+					menuDetalleDto.getPlatoDto().setFechaModificacion(menuDetalleDto.getFechaModificacion());
+					menuDetalleDto.getPlatoDto().setIdUsuarioRegistro(menuDetalleDto.getIdUsuarioRegistro());
+					menuDetalleDto.getPlatoDto().setIdUsuarioModificacion(menuDetalleDto.getIdUsuarioModificacion());
+					menuDetalleDto.getPlatoDto().setIdEstado(platoOptional.get().getIdEstaPlat());
+					menuDetalleDto.getPlatoDto().setAcompaniamiento("S".equalsIgnoreCase(platoOptional.get().getInAcompaniamiento()));
+					log.info(platoOptional.get().getTipoCocina().toString());
+					menuDetalleDto.getPlatoDto().getTipoCocina().setCodigo(platoOptional.get().getTipoCocina().getIdTipoCoci().toString());
+					menuDetalleDto.getPlatoDto().getTipoCocina().setNombre(platoOptional.get().getTipoCocina().getDeTipoCoci());
+					menuDetalleDto.getPlatoDto().getTipoCocina().setValor(platoOptional.get().getTipoCocina().getDeTipoCoci());
+					menuDetalleDto.getPlatoDto().getTipoCocina().setIdUsuarioModificacion(platoOptional.get().getTipoCocina().getIdUsuaModi());
+					menuDetalleDto.getPlatoDto().getTipoCocina().setIdUsuarioRegistro(platoOptional.get().getTipoCocina().getIdUsuaRegi());
+					menuDetalleDto.getPlatoDto().getTipoCocina().setFechaModificacion(platoOptional.get().getTipoCocina().getFeModificacion());
+					menuDetalleDto.getPlatoDto().getTipoCocina().setFechaRegistro(platoOptional.get().getTipoCocina().getFeRegistro());
+					menuDetalleDto.getPlatoDto().getPersona().setId(platoOptional.get().getIdPersona());
+					menuDetalleDto.getPlatoDto().setIdTipoPlato(menuDetalle.getIdTipoPlato());
+					menuDetalleDto.setIdGenerado(idMenu);
+					
+					Calendar cal = Calendar.getInstance();
+					cal.setTime(menuDetalleDto.getFechaConsumo());
+					
+					menuDetalleDto.setNombreDia(UtilMfDto.nombreDia(menuDetalleDto.getFechaConsumo()));
+					menuDetalleDto.setNumSemana(cal.get(Calendar.WEEK_OF_YEAR));
+					
+					listaDetalle.add(menuDetalleDto);
+				}
+				menuGeneradoDto.setListaPlatos(listaDetalle);
+			}
+			
+			status = HttpStatus.OK;
+			mapeo = new HashMap<String, Object>();
+			mapeo.put("error", false);
+			mapeo.put("mensaje", "Operacion Completada");
+			mapeo.put(Constantes.VALOR_DATA_MAP, menuGeneradoDto);
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
 			status = HttpStatus.INTERNAL_SERVER_ERROR;

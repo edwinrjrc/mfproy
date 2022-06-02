@@ -22,10 +22,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import pe.com.rhsistemas.mf.cross.compartido.Constantes;
+import pe.com.rhsistemas.mf.cross.dto.BaseValor;
+import pe.com.rhsistemas.mf.cross.dto.IngredienteDto;
 import pe.com.rhsistemas.mf.cross.dto.PlatoIngredienteDto;
+import pe.com.rhsistemas.mf.cross.dto.PlatoIngredienteExportDto;
 import pe.com.rhsistemas.mf.cross.util.UtilMfDto;
 import pe.com.rhsistemas.mfjpaingrediente.dao.PlatoIngredienteRepository;
 import pe.com.rhsistemas.mfjpaingrediente.entity.PlatoIngrediente;
+import pe.com.rhsistemas.mfjpaingrediente.entity.PlatoIngredienteInter;
 import pe.com.rhsistemas.mfjpaingrediente.util.Utilmfjpa;
 
 /**
@@ -103,6 +107,55 @@ public class PlatoIngredienteController {
 			mapeo.put("mensaje", "Operacion Completada");
 			mapeo.put(Constantes.VALOR_DATA_MAP, listaIngredientesDto);
 			
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			estadoHttp = HttpStatus.INTERNAL_SERVER_ERROR;
+			mapeo = new HashMap<String, Object>();
+			mapeo.put("error", true);
+			mapeo.put("mensaje", "Operacion no completada");
+		}
+		salida = new ResponseEntity<Map<String, Object>>(mapeo, estadoHttp);
+		
+		return salida;
+	}
+	
+	@GetMapping(value = "/platoIngredientes/{idMenu}", consumes = { MediaType.APPLICATION_JSON_VALUE}, produces = { MediaType.APPLICATION_JSON_VALUE})
+	public ResponseEntity<Map<String, Object>> consultaIngredientesPlatoMenu(@PathVariable Integer idMenu) {
+		ResponseEntity<Map<String, Object>> salida = null;
+		HttpStatus estadoHttp = null;
+		Map<String, Object> mapeo = null;
+		
+		try {
+			log.info("Recibiendo parametros consultaIngredientesPlatoMenu");
+			UtilMfDto.pintaLog(idMenu, "idMenu");
+			estadoHttp = HttpStatus.NO_CONTENT;
+			
+			List<PlatoIngredienteInter> lista = platoIngredienteRepository.cantidadIngredientePlatoIngrediente(UtilMfDto.parseIntALong(idMenu));
+			List<PlatoIngredienteExportDto> listaIngredienteExport = null;
+			if (UtilMfDto.listaNoVacia(lista)) {
+				listaIngredienteExport = new ArrayList<>();
+				PlatoIngredienteExportDto dto = null;
+				for (PlatoIngredienteInter platoIngreInter : lista) {
+					dto = new PlatoIngredienteExportDto();
+					dto.setTotalIngrediente(platoIngreInter.getTotalIngrediente());
+					dto.setIdPlato(platoIngreInter.getIdPlato());
+					IngredienteDto ingredienteDto = new IngredienteDto();
+					ingredienteDto.setId(platoIngreInter.getIdIngrediente());
+					ingredienteDto.setNombreIngrediente(platoIngreInter.getDeIngrediente());
+					dto.setIngrediente(ingredienteDto);
+					BaseValor unidadMedidaDto = new BaseValor();
+					unidadMedidaDto.setCodigo(platoIngreInter.getIdUnidadMedida().toString());
+					unidadMedidaDto.setNombre(platoIngreInter.getDeUnidadMedida());
+					dto.setUnidadMedida(unidadMedidaDto);
+					listaIngredienteExport.add(dto);
+				}
+			}
+			
+			mapeo = new HashMap<String, Object>();
+			mapeo.put("error", false);
+			mapeo.put("mensaje", "Operacion Completada");
+			mapeo.put(Constantes.VALOR_DATA_MAP, listaIngredienteExport);
+			estadoHttp = HttpStatus.OK;
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
 			estadoHttp = HttpStatus.INTERNAL_SERVER_ERROR;

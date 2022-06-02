@@ -72,6 +72,9 @@ public class PlatoDto extends BaseDto {
 	 * @return the persona
 	 */
 	public PersonaDto getPersona() {
+		if (persona == null) {
+			persona = new PersonaDto();
+		}
 		return persona;
 	}
 
@@ -114,6 +117,9 @@ public class PlatoDto extends BaseDto {
 	 * @return the tipoCocina
 	 */
 	public BaseValor getTipoCocina() {
+		if (tipoCocina == null) {
+			tipoCocina = new BaseValor();
+		}
 		return tipoCocina;
 	}
 
