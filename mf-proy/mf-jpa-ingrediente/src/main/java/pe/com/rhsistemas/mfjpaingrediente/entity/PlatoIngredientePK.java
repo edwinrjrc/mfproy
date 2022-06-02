@@ -1,7 +1,9 @@
 package pe.com.rhsistemas.mfjpaingrediente.entity;
 
 import java.io.Serializable;
-import javax.persistence.*;
+
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
 
 /**
  * The primary key class for the plato_ingrediente database table.
