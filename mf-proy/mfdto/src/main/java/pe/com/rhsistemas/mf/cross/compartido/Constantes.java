@@ -25,4 +25,18 @@ public class Constantes {
 	
 	public static final String FORMAT_DATE_FULL = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
 	
+	public static final String PARAM_MENU_DIA_1 = "p_menu_domingo";
+	
+	public static final String PARAM_MENU_DIA_2 = "p_menu_lunes";
+	
+	public static final String PARAM_MENU_DIA_3 = "p_menu_martes";
+	
+	public static final String PARAM_MENU_DIA_4 = "p_menu_miercoles";
+	
+	public static final String PARAM_MENU_DIA_5 = "p_menu_jueves";
+	
+	public static final String PARAM_MENU_DIA_6 = "p_menu_viernes";
+	
+	public static final String PARAM_MENU_DIA_7 = "p_menu_sabado";
+	
 }

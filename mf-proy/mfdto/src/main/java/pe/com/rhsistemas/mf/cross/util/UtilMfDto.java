@@ -203,4 +203,11 @@ public class UtilMfDto {
 		
 		return nombreDia;
 	}
+	
+	public static int numeroDia(Date fecha) {
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(fecha);
+		
+		return cal.get(Calendar.DAY_OF_WEEK);
+	}
 }
