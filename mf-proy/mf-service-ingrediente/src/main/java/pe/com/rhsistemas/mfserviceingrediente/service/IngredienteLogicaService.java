@@ -4,6 +4,7 @@
 package pe.com.rhsistemas.mfserviceingrediente.service;
 
 import java.util.List;
+import java.util.Map;
 
 import pe.com.rhsistemas.mf.cross.dto.IngredienteDto;
 import pe.com.rhsistemas.mf.cross.dto.PlatoIngredienteDto;
@@ -26,5 +27,5 @@ public interface IngredienteLogicaService {
 
 	List<PlatoIngredienteDto> listarIngredientesMenu(Integer idMenu) throws MfServiceIngredienteException;
 
-	void listarPlatoIngredientesMenu(Long idMenu) throws MfServiceIngredienteException;
+	Map<String, Object> listarPlatoIngredientesMenu(Long idMenu) throws MfServiceIngredienteException;
 }

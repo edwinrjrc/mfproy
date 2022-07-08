@@ -9,7 +9,6 @@ package pe.com.rhsistemas.mfjpaingrediente.entity;
  */
 public interface PlatoIngredienteInter {
 
-	Integer getIdPlato();
 	Integer getIdIngrediente();
 	String getDeIngrediente();
 	Double getTotalIngrediente();

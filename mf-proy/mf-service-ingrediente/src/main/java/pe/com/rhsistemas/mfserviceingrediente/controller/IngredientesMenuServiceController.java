@@ -85,11 +85,13 @@ public class IngredientesMenuServiceController {
 			log.info("Recibiendo parametros ingredientesMenu");
 			UtilMfDto.pintaLog(idMenu, "idMenu");
 			
-			ingredienteLogicaService.listarPlatoIngredientesMenu(idMenu);
+			Map<String, Object> salidaPdf = ingredienteLogicaService.listarPlatoIngredientesMenu(idMenu);
 			
 			mapeo = new HashMap<String, Object>();
 			mapeo.put("error", false);
 			mapeo.put("mensaje", "Existo");
+			mapeo.put(Constantes.VALOR_DATA_MAP, salidaPdf);
+			status = HttpStatus.OK;
 		} catch (MfServiceIngredienteException e) {
 			log.error(e.getMessage(), e);
 			status = HttpStatus.INTERNAL_SERVER_ERROR;

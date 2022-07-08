@@ -14,7 +14,13 @@ public class PlatoIngredienteExportDto extends PlatoIngredienteDto {
 	private Double totalIngrediente;
 	
 	private Integer posicion;
-
+	
+	private String nroIngrediente;
+	private String descripcionIngrediente;
+	private String cantidadIngrediente;
+	private String descripcionUnidadMedida;
+	
+	
 	/**
 	 * @return the totalIngrediente
 	 */
@@ -41,6 +47,62 @@ public class PlatoIngredienteExportDto extends PlatoIngredienteDto {
 	 */
 	public void setPosicion(Integer posicion) {
 		this.posicion = posicion;
+	}
+
+	/**
+	 * @return the nroIngrediente
+	 */
+	public String getNroIngrediente() {
+		return nroIngrediente;
+	}
+
+	/**
+	 * @param nroIngrediente the nroIngrediente to set
+	 */
+	public void setNroIngrediente(String nroIngrediente) {
+		this.nroIngrediente = nroIngrediente;
+	}
+
+	/**
+	 * @return the descripcionIngrediente
+	 */
+	public String getDescripcionIngrediente() {
+		return descripcionIngrediente;
+	}
+
+	/**
+	 * @param descripcionIngrediente the descripcionIngrediente to set
+	 */
+	public void setDescripcionIngrediente(String descripcionIngrediente) {
+		this.descripcionIngrediente = descripcionIngrediente;
+	}
+
+	/**
+	 * @return the cantidadIngrediente
+	 */
+	public String getCantidadIngrediente() {
+		return cantidadIngrediente;
+	}
+
+	/**
+	 * @param cantidadIngrediente the cantidadIngrediente to set
+	 */
+	public void setCantidadIngrediente(String cantidadIngrediente) {
+		this.cantidadIngrediente = cantidadIngrediente;
+	}
+
+	/**
+	 * @return the descripcionUnidadMedida
+	 */
+	public String getDescripcionUnidadMedida() {
+		return descripcionUnidadMedida;
+	}
+
+	/**
+	 * @param descripcionUnidadMedida the descripcionUnidadMedida to set
+	 */
+	public void setDescripcionUnidadMedida(String descripcionUnidadMedida) {
+		this.descripcionUnidadMedida = descripcionUnidadMedida;
 	}
 	
 	

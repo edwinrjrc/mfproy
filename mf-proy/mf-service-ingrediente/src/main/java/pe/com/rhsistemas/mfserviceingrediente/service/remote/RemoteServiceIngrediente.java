@@ -173,10 +173,17 @@ public class RemoteServiceIngrediente {
 			if (UtilMfDto.listaNoVacia(datosLista)) {
 				ObjectMapper mapper = obtenerMapper();
 				listaSalida = new ArrayList<>();
+				int i = 1;
 				for (Object objeto : datosLista) {
 					LinkedHashMap map1 = (LinkedHashMap) objeto;
 
-					listaSalida.add(mapper.convertValue(map1, PlatoIngredienteExportDto.class));
+					PlatoIngredienteExportDto bean = mapper.convertValue(map1, PlatoIngredienteExportDto.class);
+					bean.setNroIngrediente(i+"");
+					bean.setDescripcionIngrediente(bean.getIngrediente().getNombreIngrediente());
+					bean.setCantidadIngrediente(bean.getTotalIngrediente().toString());
+					bean.setDescripcionUnidadMedida(bean.getUnidadMedida().getNombre());
+					listaSalida.add(bean);
+					i++;
 				}
 			}
 

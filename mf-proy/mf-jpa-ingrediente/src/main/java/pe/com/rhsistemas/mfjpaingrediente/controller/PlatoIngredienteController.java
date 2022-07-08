@@ -138,7 +138,6 @@ public class PlatoIngredienteController {
 				for (PlatoIngredienteInter platoIngreInter : lista) {
 					dto = new PlatoIngredienteExportDto();
 					dto.setTotalIngrediente(platoIngreInter.getTotalIngrediente());
-					dto.setIdPlato(platoIngreInter.getIdPlato());
 					IngredienteDto ingredienteDto = new IngredienteDto();
 					ingredienteDto.setId(platoIngreInter.getIdIngrediente());
 					ingredienteDto.setNombreIngrediente(platoIngreInter.getDeIngrediente());

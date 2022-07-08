@@ -12,6 +12,7 @@
   	<module>mf-jpa-menu</module>
   	<module>mf-jpa-platos</module>
   	<module>mf-jpa-receta</module>
+  	<module>mf-jpa-personas</module>
   	<module>mf-service-ingrediente</module>
   	<module>mf-service-menu</module>
   	<module>mf-service-plato</module>

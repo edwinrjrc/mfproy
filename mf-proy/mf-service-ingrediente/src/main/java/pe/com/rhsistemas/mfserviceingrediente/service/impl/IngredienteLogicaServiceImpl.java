@@ -3,6 +3,8 @@
  */
 package pe.com.rhsistemas.mfserviceingrediente.service.impl;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -13,7 +15,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -61,7 +62,7 @@ public class IngredienteLogicaServiceImpl implements IngredienteLogicaService {
 
 	@Autowired
 	private RemoteServiceUnidadMedida remoteServiceUnidadMedida;
-	
+
 	@Autowired
 	private RemoteServiceMenu remoteServiceMenu;
 
@@ -115,75 +116,70 @@ public class IngredienteLogicaServiceImpl implements IngredienteLogicaService {
 	}
 
 	@Override
-	public void listarPlatoIngredientesMenu(Long idMenu) throws MfServiceIngredienteException {
+	public Map<String,Object> listarPlatoIngredientesMenu(Long idMenu) throws MfServiceIngredienteException {
+		Map<String,Object> salidaPdf = null;
 		try {
 			List<PlatoIngredienteExportDto> salidaLista = remoteServiceIngrediente.listarPlatoIngredientesMenu(idMenu);
-			
-			for (PlatoIngredienteExportDto platoIngredienteExportDto : salidaLista) {
-				log.info("totalIngrediente ::"+platoIngredienteExportDto.getTotalIngrediente().toString());
-				log.info("Nombre Ingrediente ::"+platoIngredienteExportDto.getIngrediente().getNombreIngrediente());
-			}
-			
+
 			MenuGeneradoDto menuGeneradoDto = remoteServiceMenu.consultarMenuGenerado(idMenu);
-			log.info("Menu Generado ::"+UtilMfDto.escribeObjetoEnLog(menuGeneradoDto));
 			
-			InputStream menuIngredientesReporteStream = getClass().getResourceAsStream("D:\\ingredientesPlatos.jrxml");
-			JasperReport jasperReport = JasperCompileManager.compileReport(menuIngredientesReporteStream);
-			
+			String ruta = "C:\\Server\\jasper\\";
+
+			File archivoJRxml = new File(ruta + "ingredientesPlatos.jrxml");
+			InputStream is = new FileInputStream(archivoJRxml);
+			JasperReport jasperReport = JasperCompileManager.compileReport(is);
+
 			JRDataSource jds = new JRBeanCollectionDataSource(salidaLista);
+
+			JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, obtenerMapParameters(menuGeneradoDto),
+					jds);
 			
-			JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, obtenerMapParameters(menuGeneradoDto), jds);
-			byte[] salidaPdf = JasperExportManager.exportReportToPdf(jasperPrint);
+			String nombreArchivoPdf = "ingrPlato_"+idMenu + "_" + menuGeneradoDto.getIdPersona() + "_" + UtilMfDto.parseDateAString(UtilMfDto.hoyDate(), "yyyyMMddHHmmss");
+			nombreArchivoPdf = nombreArchivoPdf + ".pdf";
 			
-			OutputStream os = new FileOutputStream("D:\\archivo.pdf");
-			os.write(salidaPdf);
-			os.flush();
-			os.close();
+			salidaPdf = new HashMap<String,Object>();
+			salidaPdf.put("nombreArchivo", nombreArchivoPdf);
+			salidaPdf.put("bytes64", JasperExportManager.exportReportToPdf(jasperPrint));
+			
+			is.close();
 			
 		} catch (MfServiceIngredienteException e) {
-			throw new MfServiceIngredienteException(e);
-		} catch (UtilMfDtoException e) {
 			throw new MfServiceIngredienteException(e);
 		} catch (JRException e) {
 			throw new MfServiceIngredienteException(e);
 		} catch (IOException e) {
 			throw new MfServiceIngredienteException(e);
+		} catch (UtilMfDtoException e) {
+			throw new MfServiceIngredienteException(e);
 		}
+		return salidaPdf;
 	}
 
 	private Map<String, Object> obtenerMapParameters(MenuGeneradoDto menuGeneradoDto) {
-		Map<String,Object> mapParametros = new HashMap<String,Object>();
-		
-		Iterator<Entry<Integer, MenuDetalleDto>> detalleMenu = menuGeneradoDto.getDetalleMenu();
-		
-		while (detalleMenu.hasNext()) {
-			Entry<Integer, MenuDetalleDto> dtoDetalle = detalleMenu.next();
-			MenuDetalleDto menuDeta = dtoDetalle.getValue();
-			
+		Map<String, Object> mapParametros = new HashMap<String, Object>();
+
+		Iterator<MenuDetalleDto> iterador = menuGeneradoDto.getListaPlatos().iterator();
+
+		while (iterador.hasNext()) {
+			MenuDetalleDto menuDeta = iterador.next();
+
 			if (UtilMfDto.numeroDia(menuDeta.getFechaConsumo()) == Calendar.SUNDAY) {
 				mapParametros.put(Constantes.PARAM_MENU_DIA_1, menuDeta.getPlatoDto().getNombrePlato());
-			}
-			else if (UtilMfDto.numeroDia(menuDeta.getFechaConsumo()) == Calendar.MONDAY) {
+			} else if (UtilMfDto.numeroDia(menuDeta.getFechaConsumo()) == Calendar.MONDAY) {
 				mapParametros.put(Constantes.PARAM_MENU_DIA_2, menuDeta.getPlatoDto().getNombrePlato());
-			}
-			else if (UtilMfDto.numeroDia(menuDeta.getFechaConsumo()) == Calendar.TUESDAY) {
+			} else if (UtilMfDto.numeroDia(menuDeta.getFechaConsumo()) == Calendar.TUESDAY) {
 				mapParametros.put(Constantes.PARAM_MENU_DIA_3, menuDeta.getPlatoDto().getNombrePlato());
-			}
-			else if (UtilMfDto.numeroDia(menuDeta.getFechaConsumo()) == Calendar.WEDNESDAY) {
+			} else if (UtilMfDto.numeroDia(menuDeta.getFechaConsumo()) == Calendar.WEDNESDAY) {
 				mapParametros.put(Constantes.PARAM_MENU_DIA_4, menuDeta.getPlatoDto().getNombrePlato());
-			}
-			else if (UtilMfDto.numeroDia(menuDeta.getFechaConsumo()) == Calendar.THURSDAY) {
+			} else if (UtilMfDto.numeroDia(menuDeta.getFechaConsumo()) == Calendar.THURSDAY) {
 				mapParametros.put(Constantes.PARAM_MENU_DIA_5, menuDeta.getPlatoDto().getNombrePlato());
-			}
-			else if (UtilMfDto.numeroDia(menuDeta.getFechaConsumo()) == Calendar.FRIDAY) {
+			} else if (UtilMfDto.numeroDia(menuDeta.getFechaConsumo()) == Calendar.FRIDAY) {
 				mapParametros.put(Constantes.PARAM_MENU_DIA_6, menuDeta.getPlatoDto().getNombrePlato());
-			}
-			else if (UtilMfDto.numeroDia(menuDeta.getFechaConsumo()) == Calendar.SATURDAY) {
+			} else if (UtilMfDto.numeroDia(menuDeta.getFechaConsumo()) == Calendar.SATURDAY) {
 				mapParametros.put(Constantes.PARAM_MENU_DIA_7, menuDeta.getPlatoDto().getNombrePlato());
 			}
 		}
-		
-		
+
 		return mapParametros;
 	}
 
