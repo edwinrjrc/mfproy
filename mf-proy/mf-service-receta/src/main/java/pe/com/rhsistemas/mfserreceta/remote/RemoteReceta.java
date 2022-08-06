@@ -3,8 +3,6 @@
  */
 package pe.com.rhsistemas.mfserreceta.remote;
 
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -49,6 +47,7 @@ public class RemoteReceta {
 	@Autowired
 	private RestTemplate restTemplate;
 	
+	@SuppressWarnings("rawtypes")
 	public void consultaRecetaPlato(RecetaComentarioDto recetaComentario) throws MfServiceRecetaException{
 		List<RecetaDto> listaReceta = null;
 		try {
@@ -78,20 +77,6 @@ public class RemoteReceta {
 			log.error(e.getMessage(),e);
 			throw new MfServiceRecetaException(e);
 		}
-	}
-	
-	
-	
-	private URI obtenerUri(String cadenaUrl) throws MfServiceRecetaException {
-		URI url = null;
-		try {
-			url = new URI(cadenaUrl);
-
-		} catch (URISyntaxException e) {
-			log.error(e.getMessage(), e);
-			throw new MfServiceRecetaException(e);
-		}
-		return url;
 	}
 	
 	private HttpHeaders generarHttpHeaders() {

@@ -8,6 +8,7 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,10 +16,16 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import pe.com.rhsistemas.mf.cross.dto.MenuGeneradoDto;
+import pe.com.rhsistemas.mf.cross.compartido.Constantes;
 import pe.com.rhsistemas.mf.cross.dto.PersonaJuridicaDto;
 import pe.com.rhsistemas.mf.cross.dto.PersonaNaturalDto;
 import pe.com.rhsistemas.mf.cross.util.UtilMfDto;
+import pe.com.rhsistemas.mfjpapersonas.dao.PersonaJuridicaRepository;
+import pe.com.rhsistemas.mfjpapersonas.dao.PersonaNaturalRepository;
+import pe.com.rhsistemas.mfjpapersonas.dao.PersonaRepository;
+import pe.com.rhsistemas.mfjpapersonas.entity.Persona;
+import pe.com.rhsistemas.mfjpapersonas.entity.PersonaNatural;
+import pe.com.rhsistemas.mfjpapersonas.util.Utilmfjpa;
 
 /**
  * @author Edwin
@@ -29,22 +36,35 @@ import pe.com.rhsistemas.mf.cross.util.UtilMfDto;
 public class PersonasController {
 
 	private static final Logger log = LoggerFactory.getLogger(PersonasController.class);
-	
+
+	@Autowired
+	private PersonaRepository personaRepository;
+	@Autowired
+	private PersonaJuridicaRepository personaJuridicaRepository;
+	@Autowired
+	private PersonaNaturalRepository personaNaturalRepository;
+
 	@PostMapping(value = "/personaNatural")
-	public ResponseEntity<Map<String, Object>> registrarMenu(@RequestBody PersonaNaturalDto personaNaturalDto) {
+	public ResponseEntity<Map<String, Object>> registrarPersonaNatural(
+			@RequestBody PersonaNaturalDto personaNaturalDto) {
 		ResponseEntity<Map<String, Object>> salida = null;
 		Map<String, Object> mapeo = null;
 		HttpStatus status = null;
 
-		log.debug("Parametros recibidos");
-		UtilMfDto.pintaLog(personaNaturalDto, "personaNaturalDto");
-
 		try {
+			log.debug("Parametros recibidos");
+			UtilMfDto.pintaLog(personaNaturalDto, "personaNaturalDto");
+			
+			Persona personaEntity = Utilmfjpa.parsePersonaDto(personaNaturalDto);
+			personaEntity.setPersonaNatural(Utilmfjpa.parsePersonaNaturalDto(personaNaturalDto));
+			
+			Persona salidaPersona = personaRepository.saveAndFlush(personaEntity);
 
 			status = HttpStatus.CREATED;
 			mapeo = new HashMap<String, Object>();
 			mapeo.put("error", false);
 			mapeo.put("mensaje", "Operacion Completada");
+			mapeo.put(Constantes.VALOR_DATA_MAP, Utilmfjpa.parsePersonaNatural(salidaPersona));
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
@@ -56,17 +76,21 @@ public class PersonasController {
 
 		return salida;
 	}
-	
+
 	@PostMapping(value = "/personaJuridica")
-	public ResponseEntity<Map<String, Object>> registrarMenu(@RequestBody PersonaJuridicaDto personaJuridicaDto) {
+	public ResponseEntity<Map<String, Object>> registrarPersonaJuridica(
+			@RequestBody PersonaJuridicaDto personaJuridicaDto) {
 		ResponseEntity<Map<String, Object>> salida = null;
 		Map<String, Object> mapeo = null;
 		HttpStatus status = null;
 
-		log.debug("Parametros recibidos");
-		UtilMfDto.pintaLog(personaJuridicaDto, "personaJuridicaDto");
-
 		try {
+			log.debug("Parametros recibidos");
+			UtilMfDto.pintaLog(personaJuridicaDto, "personaJuridicaDto");
+
+			//personaRepository.save(Utilmfjpa.parsePersonaDto(personaJuridicaDto));
+
+			personaJuridicaRepository.save(Utilmfjpa.parsePersonaJuridicaDto(personaJuridicaDto));
 
 			status = HttpStatus.CREATED;
 			mapeo = new HashMap<String, Object>();

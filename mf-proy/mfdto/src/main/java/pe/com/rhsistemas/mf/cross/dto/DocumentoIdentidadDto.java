@@ -25,6 +25,9 @@ public class DocumentoIdentidadDto extends BaseDto {
 	 * @return the tipoDocumento
 	 */
 	public BaseValor getTipoDocumento() {
+		if (tipoDocumento == null) {
+			tipoDocumento = new BaseValor();
+		}
 		return tipoDocumento;
 	}
 	/**

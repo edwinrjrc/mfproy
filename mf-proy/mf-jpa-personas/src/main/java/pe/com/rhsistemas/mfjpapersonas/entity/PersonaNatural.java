@@ -7,6 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.MapsId;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -62,7 +63,8 @@ public class PersonaNatural implements Serializable {
 
 	//bi-directional one-to-one association to Persona
 	@OneToOne
-	@JoinColumn(name="id_persona", nullable=false, insertable=false, updatable=false)
+	@JoinColumn(name="id_persona", nullable=false, insertable=true, updatable=false)
+	@MapsId
 	private Persona persona;
 
 	public PersonaNatural() {

@@ -126,8 +126,8 @@ public class MenuLogicaServiceImpl implements MenuLogicaService {
 		Date fechaFin = cal.getTime();
 
 		menuGeneradoDto.setFechaGenerado(fechaHoy);
-		menuGeneradoDto.setFechaRegistro(fechaHoy);
-		menuGeneradoDto.setFechaModificacion(fechaHoy);
+		menuGeneradoDto.setFechaRegistro(UtilMfDto.parseDateASqlTimestamp(fechaHoy));
+		menuGeneradoDto.setFechaModificacion(UtilMfDto.parseDateASqlTimestamp(fechaHoy));
 		menuGeneradoDto.setNumeroDias(7 * cantidadSemanas);
 		menuGeneradoDto.setFechaDesde(fechaInicio);
 		menuGeneradoDto.setFechaHasta(fechaFin);
@@ -249,14 +249,14 @@ public class MenuLogicaServiceImpl implements MenuLogicaService {
 					indiceTiposEliminar = null;
 
 					menuDetalleDto = new MenuDetalleDto();
-					menuDetalleDto.setFechaRegistro(fechaHoy);
+					menuDetalleDto.setFechaRegistro(UtilMfDto.parseDateASqlTimestamp(fechaHoy));
 					String feConsumo = UtilMfDto.parseDateAString(calendario.getTime(),null);
 					feConsumo = feConsumo + " 01:00:00 PM";
 					menuDetalleDto.setFechaConsumo(UtilMfDto.parseStringADate(feConsumo, "dd/MM/yyyy hh:mm:ss a",null));
 					menuDetalleDto.getPlatoDto().setId(idPlatoElegido);
 					menuDetalleDto.setIdTipoPlato(mapeoTipoPlato.get(diaSemana).intValue());
 					menuDetalleDto.setIdUsuarioRegistro(idUsuario);
-					menuDetalleDto.setFechaModificacion(fechaHoy);
+					menuDetalleDto.setFechaModificacion(UtilMfDto.parseDateASqlTimestamp(fechaHoy));
 					menuDetalleDto.setIdUsuarioModificacion(idUsuario);
 					log.info("fechaConsumo ::"+menuDetalleDto.getFechaConsumo().toString());
 					listaMenuDetalle.add(menuDetalleDto);

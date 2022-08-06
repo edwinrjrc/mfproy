@@ -5,10 +5,8 @@ package pe.com.rhsistemas.mfserviceingrediente.service.impl;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -16,8 +14,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
@@ -55,7 +51,7 @@ import pe.com.rhsistemas.mfserviceingrediente.service.remote.RemoteServiceUnidad
 @Service
 public class IngredienteLogicaServiceImpl implements IngredienteLogicaService {
 
-	private static final Logger log = LoggerFactory.getLogger(IngredienteLogicaServiceImpl.class);
+	//private static final Logger log = LoggerFactory.getLogger(IngredienteLogicaServiceImpl.class);
 
 	@Autowired
 	private RemoteServiceIngrediente remoteServiceIngrediente;

@@ -4,7 +4,7 @@
 package pe.com.rhsistemas.mf.cross.dto;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.sql.Timestamp;
 
 /**
  * @author Edwin
@@ -21,7 +21,7 @@ public abstract class BaseDto implements Serializable{
 	/**
 	 * Fecha que se realizo el registro
 	 */
-	private Date fechaRegistro;
+	private Timestamp fechaRegistro;
 	/**
 	 * Identificador de usuario que realizo la modificacion
 	 */
@@ -29,7 +29,7 @@ public abstract class BaseDto implements Serializable{
 	/**
 	 * Fecha que se realizo la modificacion
 	 */
-	private Date fechaModificacion;
+	private Timestamp fechaModificacion;
 	
 	
 	/**
@@ -47,13 +47,13 @@ public abstract class BaseDto implements Serializable{
 	/**
 	 * @return the fechaRegistro
 	 */
-	public Date getFechaRegistro() {
+	public Timestamp getFechaRegistro() {
 		return fechaRegistro;
 	}
 	/**
 	 * @param fechaRegistro the fechaRegistro to set
 	 */
-	public void setFechaRegistro(Date fechaRegistro) {
+	public void setFechaRegistro(Timestamp fechaRegistro) {
 		this.fechaRegistro = fechaRegistro;
 	}
 	/**
@@ -71,16 +71,14 @@ public abstract class BaseDto implements Serializable{
 	/**
 	 * @return the fechaModificacion
 	 */
-	public Date getFechaModificacion() {
+	public Timestamp getFechaModificacion() {
 		return fechaModificacion;
 	}
 	/**
 	 * @param fechaModificacion the fechaModificacion to set
 	 */
-	public void setFechaModificacion(Date fechaModificacion) {
+	public void setFechaModificacion(Timestamp fechaModificacion) {
 		this.fechaModificacion = fechaModificacion;
 	}
-	
-	
 
 }

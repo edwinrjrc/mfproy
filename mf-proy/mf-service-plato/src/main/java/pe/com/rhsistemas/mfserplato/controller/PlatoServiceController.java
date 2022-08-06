@@ -3,7 +3,6 @@
  */
 package pe.com.rhsistemas.mfserplato.controller;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -55,8 +54,8 @@ public class PlatoServiceController {
 			UtilMfDto.pintaLog(platoFavoritoPostDto, "platoFavoritoPostDto");
 
 			PlatoFavoritoDto platoFavoritoDto = new PlatoFavoritoDto();
-			platoFavoritoDto.setFechaModificacion(new Date());
-			platoFavoritoDto.setFechaRegistro(new Date());
+			platoFavoritoDto.setFechaModificacion(UtilMfDto.hoyTimestamp());
+			platoFavoritoDto.setFechaRegistro(UtilMfDto.hoyTimestamp());
 			platoFavoritoDto.setIdPersona(UtilMfDto.parseIntALong(platoFavoritoPostDto.getIdPersona()));
 			platoFavoritoDto.setIdPlato(platoFavoritoPostDto.getIdPlato());
 			platoFavoritoDto.setIdUsuarioModificacion(platoFavoritoPostDto.getIdPersona());

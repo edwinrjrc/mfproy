@@ -5,6 +5,7 @@ C:\git\mfproy\mf-proy\mfdto\src\main\java\pe\com\rhsistemas\mf\cross\dto\PlatoFa
 C:\git\mfproy\mf-proy\mfdto\src\main\java\pe\com\rhsistemas\mf\cross\compartido\Constantes.java
 C:\git\mfproy\mf-proy\mfdto\src\main\java\pe\com\rhsistemas\mf\cross\dto\PersonaDto.java
 C:\git\mfproy\mf-proy\mfdto\src\main\java\pe\com\rhsistemas\mf\cross\dto\TipoPlatoDto.java
+C:\git\mfproy\mf-proy\mfdto\src\main\java\pe\com\rhsistemas\mf\post\dto\UsuarioBeanDto.java
 C:\git\mfproy\mf-proy\mfdto\src\main\java\pe\com\rhsistemas\mf\post\dto\CambiarMenuDto.java
 C:\git\mfproy\mf-proy\mfdto\src\main\java\pe\com\rhsistemas\mf\post\dto\RecetaModificadaDto.java
 C:\git\mfproy\mf-proy\mfdto\src\main\java\pe\com\rhsistemas\mf\post\dto\ListaPlatoDto.java
@@ -13,10 +14,12 @@ C:\git\mfproy\mf-proy\mfdto\src\main\java\pe\com\rhsistemas\mf\cross\dto\Usuario
 C:\git\mfproy\mf-proy\mfdto\src\main\java\pe\com\rhsistemas\mf\cross\dto\PasoPreparacionDto.java
 C:\git\mfproy\mf-proy\mfdto\src\main\java\pe\com\rhsistemas\mf\cross\util\UtilMfDto.java
 C:\git\mfproy\mf-proy\mfdto\src\main\java\pe\com\rhsistemas\mf\cross\dto\MenuDetalleDto.java
+C:\git\mfproy\mf-proy\mfdto\src\main\java\pe\com\rhsistemas\mf\post\dto\DatosCorreo.java
 C:\git\mfproy\mf-proy\mfdto\src\main\java\pe\com\rhsistemas\mf\cross\dto\PersonaJuridicaDto.java
 C:\git\mfproy\mf-proy\mfdto\src\main\java\pe\com\rhsistemas\mf\cross\dto\PlatoIngredienteDto.java
 C:\git\mfproy\mf-proy\mfdto\src\main\java\pe\com\rhsistemas\mf\cross\dto\IngredienteDto.java
 C:\git\mfproy\mf-proy\mfdto\src\main\java\pe\com\rhsistemas\mf\cross\dto\PersonaNaturalDto.java
+C:\git\mfproy\mf-proy\mfdto\src\main\java\pe\com\rhsistemas\mf\cross\util\UtilCorreo.java
 C:\git\mfproy\mf-proy\mfdto\src\main\java\pe\com\rhsistemas\mf\cross\exception\UtilMfDtoException.java
 C:\git\mfproy\mf-proy\mfdto\src\main\java\pe\com\rhsistemas\mf\cross\dto\ValorNutricionalDto.java
 C:\git\mfproy\mf-proy\mfdto\src\main\java\pe\com\rhsistemas\mf\post\dto\PlatoFavoritoPkDto.java

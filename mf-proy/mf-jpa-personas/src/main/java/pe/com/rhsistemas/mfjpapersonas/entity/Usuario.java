@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -64,7 +65,7 @@ public class Usuario implements Serializable {
 	private Persona persona;
 
 	//bi-directional many-to-one association to UsuariosRole
-	@OneToMany(mappedBy="usuario")
+	@OneToMany(mappedBy="usuario", cascade = CascadeType.PERSIST)
 	private List<UsuariosRole> usuariosRoles;
 
 	public Usuario() {

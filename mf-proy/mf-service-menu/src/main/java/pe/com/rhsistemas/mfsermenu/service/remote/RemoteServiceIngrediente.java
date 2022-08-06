@@ -3,15 +3,7 @@
  */
 package pe.com.rhsistemas.mfsermenu.service.remote;
 
-import java.util.Arrays;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 /**
  * @author Edwin
@@ -20,7 +12,7 @@ import org.springframework.web.client.RestTemplate;
 @Service
 public class RemoteServiceIngrediente {
 	
-	private static final Logger log = LoggerFactory.getLogger(RemoteServicePlato.class);
+	/*private static final Logger log = LoggerFactory.getLogger(RemoteServicePlato.class);
 	
 	@Autowired
 	private RestTemplate restTemplate;
@@ -34,5 +26,5 @@ public class RemoteServiceIngrediente {
 	    headers.setContentType(MediaType.APPLICATION_JSON);
 	    
 	    return headers;
-	}
+	}*/
 }

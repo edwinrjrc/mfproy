@@ -19,7 +19,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 
 /**
  * @author Edwin
@@ -29,8 +28,6 @@ import io.jsonwebtoken.SignatureAlgorithm;
 public class AutorizacionFilter extends OncePerRequestFilter {
 	
 	private static final Logger log = LoggerFactory.getLogger(AutorizacionFilter.class);
-	
-	private SignatureAlgorithm SIGNATURE_ALGORITHM = SignatureAlgorithm.HS512;
 	
     public String SECRET = "mysecret";
 

@@ -17,4 +17,5 @@ public class AutenticacionException extends AuthenticationException {
 	public AutenticacionException(String msg, HttpStatus status) {
 		super(msg);
 	}
+	
 }

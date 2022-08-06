@@ -14,6 +14,9 @@ public class RolDto extends BaseDto {
 	Integer idrol;
 	String nombre;
 	
+	public RolDto() {
+		// TODO Auto-generated constructor stub
+	}
 	
 	/**
 	 * @return the idrol

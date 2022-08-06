@@ -43,6 +43,7 @@ public class RecetaController {
 	@Autowired
 	private RecetaService recetaService;
 
+	@SuppressWarnings("unchecked")
 	@CrossOrigin(origins = "http://localhost:4200")
 	@PutMapping(value = "/receta")
 	public ResponseEntity<Map<String, Object>> guardarModificacionReceta(
@@ -56,9 +57,7 @@ public class RecetaController {
 			log.info("Recibiendo parametros en guardarModificacionReceta");
 			UtilMfDto.pintaLog(preparacionModificada, "preparacionModificada");
 			
-			Object preparacion = preparacionModificada.get("preparacionModificada");
-			
-			List<Map<String,Object>> listaPreparacion = (List<Map<String,Object>>) preparacion;
+			List<Map<String,Object>> listaPreparacion = (List<Map<String,Object>>) preparacionModificada.get("preparacionModificada");
 
 			RecetaDto recetaDto = null;
 			List<RecetaDto> listaReceta = null;
@@ -104,8 +103,8 @@ public class RecetaController {
 			log.info("Recibiendo parametros en guardarComentarioReceta");
 			UtilMfDto.pintaLog(recetaComentarioDto, "recetaComentarioDto");
 			
-			recetaComentarioDto.setFechaRegistro(UtilMfDto.hoyDate());
-			recetaComentarioDto.setFechaModificacion(UtilMfDto.hoyDate());
+			recetaComentarioDto.setFechaRegistro(UtilMfDto.hoyTimestamp());
+			recetaComentarioDto.setFechaModificacion(UtilMfDto.hoyTimestamp());
 			
 			recetaService.guardarComentarioReceta(recetaComentarioDto);
 			
@@ -143,8 +142,8 @@ public class RecetaController {
 			RecetaComentarioPostDto recetaComentarioDto = new RecetaComentarioPostDto();
 			recetaComentarioDto.setIdComentarioPlato(idComentarioReceta);
 			recetaComentarioDto.setIdUsuarioRegistro(idUsuario);
-			recetaComentarioDto.setFechaRegistro(UtilMfDto.hoyDate());
-			recetaComentarioDto.setFechaModificacion(UtilMfDto.hoyDate());
+			recetaComentarioDto.setFechaRegistro(UtilMfDto.hoyTimestamp());
+			recetaComentarioDto.setFechaModificacion(UtilMfDto.hoyTimestamp());
 			
 			recetaService.eliminarComentarioReceta(recetaComentarioDto);
 			

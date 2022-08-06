@@ -3,8 +3,6 @@
  */
 package pe.com.rhsistemas.mfserviceingrediente.security.config;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -25,7 +23,7 @@ import pe.com.rhsistemas.mfserviceingrediente.security.AutorizacionFilter;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-	private static final Logger log = LoggerFactory.getLogger(SecurityConfig.class);
+	//private static final Logger log = LoggerFactory.getLogger(SecurityConfig.class);
 
 	public SecurityConfig() {
 		// TODO Auto-generated constructor stub

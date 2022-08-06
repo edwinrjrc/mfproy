@@ -210,4 +210,11 @@ public class UtilMfDto {
 		
 		return cal.get(Calendar.DAY_OF_WEEK);
 	}
+	
+	public static Object validaNulo(Object objeto1, Object objeto2) {
+		if (objeto1 == null) {
+			return objeto2;
+		}
+		return objeto1;
+	}
 }

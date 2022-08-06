@@ -3,8 +3,6 @@
  */
 package pe.com.rhsistemas.mfserplato.service.remote;
 
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -54,6 +52,7 @@ public class RemoteServiceReceta {
 	@Autowired
 	private RestTemplate restTemplate;
 	
+	@SuppressWarnings("rawtypes")
 	public List<PlatoIngredienteDto> listarIngredientesPlato(Integer idPlato) throws MFServicePlatoException{
 		List<PlatoIngredienteDto> listaIngredientesPlato = null;
 		try {
@@ -85,6 +84,7 @@ public class RemoteServiceReceta {
 		return listaIngredientesPlato;
 	}
 	
+	@SuppressWarnings("rawtypes")
 	public List<RecetaDto> consultaRecetaPlato(Integer idPlato) throws MFServicePlatoException{
 		List<RecetaDto> listaReceta = null;
 		try {
@@ -116,6 +116,7 @@ public class RemoteServiceReceta {
 		return listaReceta;
 	}
 	
+	@SuppressWarnings("rawtypes")
 	public List<RecetaComentarioDto> consultaComentariosReceta(Integer idPlato) throws MFServicePlatoException{
 		List<RecetaComentarioDto> listaComentario = null;
 		try {
@@ -145,18 +146,6 @@ public class RemoteServiceReceta {
 			throw new MFServicePlatoException(e);
 		}
 		return listaComentario;
-	}
-	
-	private URI obtenerUri(String cadenaUrl) throws MFServicePlatoException {
-		URI url = null;
-		try {
-			url = new URI(cadenaUrl);
-
-		} catch (URISyntaxException e) {
-			log.error(e.getMessage(), e);
-			throw new MFServicePlatoException(e);
-		}
-		return url;
 	}
 	
 	private HttpHeaders generarHttpHeaders() {
