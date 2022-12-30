@@ -9,6 +9,7 @@ import pe.com.rhsistemas.mf.cross.exception.UtilMfDtoException;
 import pe.com.rhsistemas.mf.cross.util.UtilMfDto;
 import pe.com.rhsistemas.mfjpareceta.entity.Receta;
 import pe.com.rhsistemas.mfjpareceta.entity.RecetaComentario;
+import pe.com.rhsistemas.mfjpareceta.entity.RecetaPK;
 
 /**
  * @author Edwin
@@ -63,6 +64,26 @@ public class Utilmfjpa {
 		dto.setIdUsuarioRegistro(entity.getIdUsuaCrea());
 		
 		return dto;
+	}
+	
+	public static Receta parseRecetaDto(RecetaDto dto) {
+		Receta entity = new Receta();
+		
+		entity.setDePasoRece(dto.getDescripcionReceta());
+		entity.setFeModificacion(dto.getFechaModificacion());
+		entity.setFeRegistro(dto.getFechaRegistro());
+		
+		RecetaPK recetaPk = new RecetaPK();
+		recetaPk.setIdPaso(dto.getIdPaso());
+		recetaPk.setIdPlato(dto.getIdPlato());
+		
+		entity.setId(recetaPk);
+		entity.setIdUsuaCrea(dto.getIdUsuarioRegistro());
+		entity.setIdUsuaModi(dto.getIdUsuarioModificacion());
+		entity.setInPasoCocc("S".equals(dto.getIndicadorCoccion())?1:0);
+		entity.setNuMinuComp(dto.getMinutosCompletar().intValue());
+		
+		return entity;
 	}
 	
 }

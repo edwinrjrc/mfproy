@@ -9,6 +9,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.StringTokenizer;
 
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -20,6 +21,7 @@ import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import pe.com.rhsistemas.mf.cross.dto.ConfiguracionCuentaDto;
 import pe.com.rhsistemas.mf.cross.dto.MenuDetalleDto;
 import pe.com.rhsistemas.mf.cross.dto.MenuGeneradoDto;
 import pe.com.rhsistemas.mf.cross.dto.PlatoDto;
@@ -30,6 +32,7 @@ import pe.com.rhsistemas.mf.cross.exception.UtilMfDtoException;
 import pe.com.rhsistemas.mf.cross.util.UtilMfDto;
 import pe.com.rhsistemas.mfsermenu.exception.MfServiceMenuException;
 import pe.com.rhsistemas.mfsermenu.service.MenuLogicaService;
+import pe.com.rhsistemas.mfsermenu.service.remote.RemoteServiceConfiguracionFamilia;
 import pe.com.rhsistemas.mfsermenu.service.remote.RemoteServiceMenu;
 import pe.com.rhsistemas.mfsermenu.service.remote.RemoteServicePlato;
 
@@ -46,6 +49,8 @@ public class MenuLogicaServiceImpl implements MenuLogicaService {
 	private RemoteServicePlato remoteServicePlato;
 	@Autowired
 	private RemoteServiceMenu remoteServiceMenu;
+	@Autowired
+	private RemoteServiceConfiguracionFamilia remoteServiceConfiguracionFamilia;
 	
 	List<Integer> tipoPlatos = null;
 
@@ -71,6 +76,8 @@ public class MenuLogicaServiceImpl implements MenuLogicaService {
 		menuGeneradoDto.setIdUsuarioModificacion(idUsuario);
 
 		Date fechaCorte = null;
+		
+		List<Date> diasCocinar = new ArrayList<>();
 
 		Calendar cal = Calendar.getInstance();
 		cal.add(Calendar.MONTH, -3);
@@ -89,8 +96,7 @@ public class MenuLogicaServiceImpl implements MenuLogicaService {
 		cal.setTime(fechaHasta);
 		cal.add(Calendar.DATE, -1);
 
-		List<PlatoDto> listaPlatosNoConsumidos = remoteServicePlato.platosNoConsumidos(idPersona, fechaCorte,
-				cal.getTime());
+		List<PlatoDto> listaPlatosNoConsumidos = remoteServicePlato.platosNoConsumidos(idPersona, fechaCorte,cal.getTime());
 		
 		List<PlatoTipoPlatoDto> listaTiposPlato = remoteServicePlato.consultarTipoPlatoxPlato(idPersona,fechaCorte,cal.getTime());
 		
@@ -98,37 +104,67 @@ public class MenuLogicaServiceImpl implements MenuLogicaService {
 
 		Date fechaHoy = new Date();
 		cal.setTime(fechaHoy);
-
+		
+		int diaHoy = cal.get(Calendar.DAY_OF_WEEK);
+		int diaHoy2 = diaHoy;
+		while (diaHoy2 <= 6) {
+			cal.add(Calendar.DATE, 1);
+			diasCocinar.add(cal.getTime());
+			diaHoy2++;
+		}
 		Date fechaInicio = null;
-
-		if (cal.get(Calendar.DAY_OF_WEEK) > Calendar.SUNDAY && cal.get(Calendar.DAY_OF_WEEK) < Calendar.SATURDAY) {
-			fechaCorte = UtilMfDto.parseStringADate(UtilMfDto.parseDateAString(fechaHoy, "dd/MM/yyyy") + " 11:00:00 am",
-					"dd/MM/yyyy HH:mm:ss aaa",null);
-			fechaInicio = cal.getTime();
-			if (fechaHoy.after(fechaCorte)) {
-				cal.add(Calendar.DATE, 1);
+		
+		ConfiguracionCuentaDto configuracion = remoteServiceConfiguracionFamilia.consultarConfiguracionCuenta(idPersona);
+		String[] diasCocina = null;
+		
+		List<Date> diasCocinarFinal = new ArrayList<>();
+		
+		if (configuracion != null) {
+			diasCocina = StringUtils.split(configuracion.getDiasCocinaSemana(), ",");
+			Calendar calCompara = Calendar.getInstance();
+			for (String diaString : diasCocina) {
+				for (int i=0; i<diasCocinar.size(); i++) {
+					calCompara.setTime(diasCocinar.get(i));
+					if (calCompara.get(Calendar.DAY_OF_WEEK) == UtilMfDto.parseStringAInteger(diaString).intValue() ) {
+						diasCocinarFinal.add(diasCocinar.get(i));
+					}
+				}
+			}
+		}
+		else {
+			diasCocinarFinal = diasCocinar;
+		}
+		/*else {
+			if (cal.get(Calendar.DAY_OF_WEEK) > Calendar.SUNDAY && cal.get(Calendar.DAY_OF_WEEK) < Calendar.SATURDAY) {
+				fechaCorte = UtilMfDto.parseStringADate(UtilMfDto.parseDateAString(fechaHoy, "dd/MM/yyyy") + " 11:00:00 am",
+						"dd/MM/yyyy HH:mm:ss aaa",null);
+				fechaInicio = cal.getTime();
+				if (fechaHoy.after(fechaCorte)) {
+					cal.add(Calendar.DATE, 1);
+					fechaInicio = cal.getTime();
+				}
+			} else {
+				cal.setTime(fechaHoy);
+				if (cal.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
+					cal.add(Calendar.DATE, 1);
+				} else if (cal.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY) {
+					cal.add(Calendar.DATE, 2);
+				}
 				fechaInicio = cal.getTime();
 			}
-		} else {
-			cal.setTime(fechaHoy);
-			if (cal.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
-				cal.add(Calendar.DATE, 1);
-			} else if (cal.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY) {
-				cal.add(Calendar.DATE, 2);
-			}
-			fechaInicio = cal.getTime();
-		}
+		}*/
 
 		fechaInicio = cal.getTime();
-
 		cal.add(Calendar.DATE, 7 * cantidadSemanas - cal.get(Calendar.DAY_OF_WEEK));
-
 		Date fechaFin = cal.getTime();
-
+		
+		int numeroDias = 0;
+		numeroDias = diasCocina.length;
+		
 		menuGeneradoDto.setFechaGenerado(fechaHoy);
 		menuGeneradoDto.setFechaRegistro(UtilMfDto.parseDateASqlTimestamp(fechaHoy));
 		menuGeneradoDto.setFechaModificacion(UtilMfDto.parseDateASqlTimestamp(fechaHoy));
-		menuGeneradoDto.setNumeroDias(7 * cantidadSemanas);
+		menuGeneradoDto.setNumeroDias(numeroDias * cantidadSemanas);
 		menuGeneradoDto.setFechaDesde(fechaInicio);
 		menuGeneradoDto.setFechaHasta(fechaFin);
 
@@ -147,12 +183,12 @@ public class MenuLogicaServiceImpl implements MenuLogicaService {
 		log.debug("platosTotal::" + listaPlatosNoConsumidos.size());
 
 		menuGeneradoDto
-				.setListaPlatos(generarDetalleMenuDto(fechaInicio, fechaFin, idUsuario, null, listaPlatosNoConsumidos, listaTiposPlato));
+				.setListaPlatos(generarDetalleMenuDto(diasCocinarFinal, idUsuario, null, listaPlatosNoConsumidos, listaTiposPlato));
 
 		this.remoteServiceMenu.grabarMenuGenerado(menuGeneradoDto);
 	}
 
-	private List<MenuDetalleDto> generarDetalleMenuDto(Date fechaInicio, Date fechaFin, int idUsuario, Integer[] tiposConsumidos,
+	private List<MenuDetalleDto> generarDetalleMenuDto(List<Date> diasCocinar, int idUsuario, Integer[] tiposConsumidos,
 			List<PlatoDto> platosTotal, List<PlatoTipoPlatoDto> listaTiposPlatos) throws MfServiceMenuException, UtilMfDtoException {
 		inicializarTiposPlatos();
 		
@@ -160,109 +196,72 @@ public class MenuLogicaServiceImpl implements MenuLogicaService {
 		
 		// Seleccion de tipos de plato por dia
 		List<Integer> listaEscogidos = new ArrayList<>();
-		
 		Map<Integer, Integer> mapeoTipoPlato = new HashMap<Integer, Integer>();
-		mapeoTipoPlato.put(Calendar.SUNDAY, 0);
-		
-		int a = aleatorioTipos(listaEscogidos);
-		listaEscogidos.add(a);
-		
-		mapeoTipoPlato.put(Calendar.MONDAY, a);
-		
-		a = aleatorioTipos(listaEscogidos);
-		listaEscogidos.add(a);
-		
-		mapeoTipoPlato.put(Calendar.TUESDAY, a);
-		
-		a = aleatorioTipos(listaEscogidos);
-		listaEscogidos.add(a);
-		
-		mapeoTipoPlato.put(Calendar.WEDNESDAY, a);
-		
-		a = aleatorioTipos(listaEscogidos);
-		listaEscogidos.add(a);
-		
-		mapeoTipoPlato.put(Calendar.THURSDAY, a);
-		
-		a = aleatorioTipos(listaEscogidos);
-		listaEscogidos.add(a);
-		
-		mapeoTipoPlato.put(Calendar.FRIDAY, a);
-		
-		a = aleatorioTipos(listaEscogidos);
-		listaEscogidos.add(a);
-		
-		mapeoTipoPlato.put(Calendar.SATURDAY, a);
-		
-		log.debug("mapeoTipoPlato ::"+mapeoTipoPlato.toString());
-
-		Calendar calendario = Calendar.getInstance();
+		Calendar ca = Calendar.getInstance();
 		MenuDetalleDto menuDetalleDto = null;
 		List<MenuDetalleDto> listaMenuDetalle = new ArrayList<>();
-		log.debug("fecha inicio ::" + UtilMfDto.parseDateAString(fechaInicio, null));
-		log.debug("fecha fin ::" + UtilMfDto.parseDateAString(fechaFin, null));
 		List<PlatoTipoPlatoDto> indiceTiposEliminar = null;
-		calendario.setTime(fechaInicio);
-		while (calendario.getTime().before(fechaFin) || calendario.getTime().equals(fechaFin)) {
-			int diaSemana = calendario.get(Calendar.DAY_OF_WEEK);
-
-			if (diaSemana != Calendar.SUNDAY) {
-				int idPlatoElegido = 0;
-				List<PlatoTipoPlatoDto> platosTipoDia = new ArrayList<>();
-				String b = "";
-				for (PlatoTipoPlatoDto ptpDto : listaTiposPlatos) {
-					b = b + ptpDto.getIdPlato() + ",";
-					if (ptpDto.getIdTipoPlato().intValue() == mapeoTipoPlato.get(diaSemana).intValue()) {
-						PlatoTipoPlatoDto dto = new PlatoTipoPlatoDto();
-						dto.setIdPlato(ptpDto.getIdPlato());
-						dto.setIdTipoPlato(ptpDto.getIdTipoPlato());
-						platosTipoDia.add(dto);
-					}
-				}
-				int cantidadPlatos1 = platosTipoDia.size();
-				if (cantidadPlatos1 != 0) {
-					int numeroElegido = UtilMfDto.numeroEnteroAleatorio(1, cantidadPlatos1);
-					idPlatoElegido = platosTipoDia.get((numeroElegido == 0 ? 1 : numeroElegido) - 1).getIdPlato();
-					
-					List<Integer> tiposPlatoElegido = new ArrayList<>();
-					for (PlatoTipoPlatoDto ptpDto : listaTiposPlatos) {
-						if (ptpDto.getIdPlato().intValue() == idPlatoElegido) {
-							tiposPlatoElegido.add(ptpDto.getIdTipoPlato());
-						}
-					}
-					
-					indiceTiposEliminar = new ArrayList<PlatoTipoPlatoDto>();
-					// Buscar los indices de los tipos de plato a eliminar
-					for (int i=0; i<listaTiposPlatos.size(); i++) {
-						PlatoTipoPlatoDto tipo = listaTiposPlatos.get(i);
-						for (Integer tipoElegido : tiposPlatoElegido) {
-							if (tipo.getIdTipoPlato().intValue() == tipoElegido.intValue()) {
-								indiceTiposEliminar.add(tipo);
-							}
-						}
-					}
-					
-					// Elimina los platos de acuerdo al indice
-					listaTiposPlatos.removeAll(indiceTiposEliminar);
-					
-					// Limpiamos la lista de indices de tipos de platos a eliminar
-					indiceTiposEliminar = null;
-
-					menuDetalleDto = new MenuDetalleDto();
-					menuDetalleDto.setFechaRegistro(UtilMfDto.parseDateASqlTimestamp(fechaHoy));
-					String feConsumo = UtilMfDto.parseDateAString(calendario.getTime(),null);
-					feConsumo = feConsumo + " 01:00:00 PM";
-					menuDetalleDto.setFechaConsumo(UtilMfDto.parseStringADate(feConsumo, "dd/MM/yyyy hh:mm:ss a",null));
-					menuDetalleDto.getPlatoDto().setId(idPlatoElegido);
-					menuDetalleDto.setIdTipoPlato(mapeoTipoPlato.get(diaSemana).intValue());
-					menuDetalleDto.setIdUsuarioRegistro(idUsuario);
-					menuDetalleDto.setFechaModificacion(UtilMfDto.parseDateASqlTimestamp(fechaHoy));
-					menuDetalleDto.setIdUsuarioModificacion(idUsuario);
-					log.info("fechaConsumo ::"+menuDetalleDto.getFechaConsumo().toString());
-					listaMenuDetalle.add(menuDetalleDto);
+		for (Date dateCocinar : diasCocinar) {
+			
+			ca.setTime(dateCocinar);
+			int a = aleatorioTipos(listaEscogidos);
+			listaEscogidos.add(a);
+			mapeoTipoPlato.put(ca.get(Calendar.DAY_OF_WEEK), a);
+			
+			int idPlatoElegido = 0;
+			List<PlatoTipoPlatoDto> platosTipoDia = new ArrayList<>();
+			String b = "";
+			for (PlatoTipoPlatoDto ptpDto : listaTiposPlatos) {
+				b = b + ptpDto.getIdPlato() + ",";
+				if (ptpDto.getIdTipoPlato().intValue() == mapeoTipoPlato.get(ca.get(Calendar.DAY_OF_WEEK)).intValue()) {
+					PlatoTipoPlatoDto dto = new PlatoTipoPlatoDto();
+					dto.setIdPlato(ptpDto.getIdPlato());
+					dto.setIdTipoPlato(ptpDto.getIdTipoPlato());
+					platosTipoDia.add(dto);
 				}
 			}
-			calendario.add(Calendar.DATE, 1);
+			int cantidadPlatos1 = platosTipoDia.size();
+			if (cantidadPlatos1 != 0) {
+				int numeroElegido = UtilMfDto.numeroEnteroAleatorio(1, cantidadPlatos1);
+				idPlatoElegido = platosTipoDia.get((numeroElegido == 0 ? 1 : numeroElegido) - 1).getIdPlato();
+				
+				List<Integer> tiposPlatoElegido = new ArrayList<>();
+				for (PlatoTipoPlatoDto ptpDto : listaTiposPlatos) {
+					if (ptpDto.getIdPlato().intValue() == idPlatoElegido) {
+						tiposPlatoElegido.add(ptpDto.getIdTipoPlato());
+					}
+				}
+				
+				indiceTiposEliminar = new ArrayList<PlatoTipoPlatoDto>();
+				// Buscar los indices de los tipos de plato a eliminar
+				for (int i=0; i<listaTiposPlatos.size(); i++) {
+					PlatoTipoPlatoDto tipo = listaTiposPlatos.get(i);
+					for (Integer tipoElegido : tiposPlatoElegido) {
+						if (tipo.getIdTipoPlato().intValue() == tipoElegido.intValue()) {
+							indiceTiposEliminar.add(tipo);
+						}
+					}
+				}
+				
+				// Elimina los platos de acuerdo al indice
+				listaTiposPlatos.removeAll(indiceTiposEliminar);
+				
+				// Limpiamos la lista de indices de tipos de platos a eliminar
+				indiceTiposEliminar = null;
+
+				menuDetalleDto = new MenuDetalleDto();
+				menuDetalleDto.setFechaRegistro(UtilMfDto.parseDateASqlTimestamp(fechaHoy));
+				String feConsumo = UtilMfDto.parseDateAString(dateCocinar,null);
+				feConsumo = feConsumo + " 01:00:00 PM";
+				menuDetalleDto.setFechaConsumo(UtilMfDto.parseStringADate(feConsumo, "dd/MM/yyyy hh:mm:ss a",null));
+				menuDetalleDto.getPlatoDto().setId(idPlatoElegido);
+				menuDetalleDto.setIdTipoPlato(mapeoTipoPlato.get(ca.get(Calendar.DAY_OF_WEEK)).intValue());
+				menuDetalleDto.setIdUsuarioRegistro(idUsuario);
+				menuDetalleDto.setFechaModificacion(UtilMfDto.parseDateASqlTimestamp(fechaHoy));
+				menuDetalleDto.setIdUsuarioModificacion(idUsuario);
+				log.info("fechaConsumo ::"+menuDetalleDto.getFechaConsumo().toString());
+				listaMenuDetalle.add(menuDetalleDto);
+			}
 		}
 
 		return listaMenuDetalle;
@@ -306,6 +305,7 @@ public class MenuLogicaServiceImpl implements MenuLogicaService {
 						
 						boolean favorito = false;
 						
+						menuDetalleDto.setIdGenerado(Long.valueOf(menuDto.getIdGenerado()));
 						menuDetalleDto.setPlatoDto(mapPlatos.get(menuDetalleDto.getPlatoDto().getId()));
 						if (UtilMfDto.listaNoVacia(lista)) {
 							favorito = false;
@@ -375,19 +375,23 @@ public class MenuLogicaServiceImpl implements MenuLogicaService {
 				cal.getTime(), menuDia.getIdTipoPlato());
 		
 		int numeroElegido = UtilMfDto.numeroEnteroAleatorio(1, listaPlatosNoConsumidos.size());
-		log.debug("Num Elegido ::" + numeroElegido);
 		Integer idPlatoElegido = listaPlatosNoConsumidos.get((numeroElegido == 0 ? 1 : numeroElegido) - 1).getId();
 		
 		menuDia.getPlatoDto().setId(idPlatoElegido);
 		menuDia.setIdGenerado(ultimoMenuGenerado.getIdGenerado());
 		
-		log.info("fecha consumo :: "+menuDia.getFechaConsumo());
-		
 		this.remoteServiceMenu.grabarMenuDetalleDia(menuDia);
+	}
+	
+	public void cambiarPlatoMenuDia(Long idMenu, Date fechaConsumo, Long idPlato) throws MfServiceMenuException {
+		MenuDetalleDto menuDetaDto = new MenuDetalleDto();
+		menuDetaDto.setFechaConsumo(fechaConsumo);
+		menuDetaDto.setIdGenerado(idMenu);
+		menuDetaDto.getPlatoDto().setId(idPlato.intValue());
+		this.remoteServiceMenu.cambiarPlatoMenuDia(menuDetaDto);
 	}
 
 	private Integer aleatorioTipos(List<Integer> listaEscogidos) {
-		log.debug("tamanio :: "+tipoPlatos.size());
 		for (Integer iplato2 : listaEscogidos) {
 			for (Integer iplato : tipoPlatos) {
 				if (iplato.intValue() == iplato2.intValue()) {

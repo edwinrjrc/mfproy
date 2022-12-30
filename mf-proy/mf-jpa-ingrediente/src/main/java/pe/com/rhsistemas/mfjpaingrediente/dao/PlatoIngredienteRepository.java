@@ -6,7 +6,9 @@ package pe.com.rhsistemas.mfjpaingrediente.dao;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.transaction.annotation.Transactional;
 
 import pe.com.rhsistemas.mfjpaingrediente.entity.PlatoIngrediente;
 import pe.com.rhsistemas.mfjpaingrediente.entity.PlatoIngredienteInter;
@@ -17,6 +19,7 @@ import pe.com.rhsistemas.mfjpaingrediente.entity.PlatoIngredientePK;
  * @author Edwin
  *
  */
+@Transactional
 public interface PlatoIngredienteRepository extends JpaRepository<PlatoIngrediente, PlatoIngredientePK> {
 
 	@Query(value = "Select pi from PlatoIngrediente pi where pi.id.idPlato = ?1")
@@ -33,4 +36,8 @@ public interface PlatoIngredienteRepository extends JpaRepository<PlatoIngredien
 			+ " where md.id.idGenerado = ?1 "
 			+ " GROUP BY pi2.id.idIngrediente, i.deIngrediente, um.idUnidMedi, um.deUnidMedi")
 	public List<PlatoIngredienteInter> cantidadIngredientePlatoIngrediente(Long idMenu);
+	
+	@Modifying
+	@Query(value = "delete from PlatoIngrediente pi where pi.id.idPlato = ?1")
+	public void eliminarIngredientesPlato(Integer idPlato);
 }

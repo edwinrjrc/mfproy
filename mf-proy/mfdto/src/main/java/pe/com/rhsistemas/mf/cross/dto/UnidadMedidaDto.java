@@ -3,6 +3,8 @@
  */
 package pe.com.rhsistemas.mf.cross.dto;
 
+import org.apache.commons.lang3.StringUtils;
+
 /**
  * @author Edwin
  *
@@ -14,6 +16,8 @@ public class UnidadMedidaDto extends BaseDto {
 	private int idUnidadMedida;
 	
 	private String descripcionUnidadMedida;
+	
+	private String descripcionMayuscula;
 
 	/**
 	 * @return the idUnidadMedida
@@ -42,6 +46,16 @@ public class UnidadMedidaDto extends BaseDto {
 	public void setDescripcionUnidadMedida(String descripcionUnidadMedida) {
 		this.descripcionUnidadMedida = descripcionUnidadMedida;
 	}
-	
 
+	public String getDescripcionMayuscula() {
+		return StringUtils.upperCase(getDescripcionUnidadMedida());
+	}
+
+	/**
+	 * @param descripcionMayuscula the descripcionMayuscula to set
+	 */
+	public void setDescripcionMayuscula(String descripcionMayuscula) {
+		this.descripcionMayuscula = descripcionMayuscula;
+	}
+	
 }

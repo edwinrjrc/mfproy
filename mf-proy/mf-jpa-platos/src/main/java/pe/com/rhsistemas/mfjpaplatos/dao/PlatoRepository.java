@@ -37,4 +37,7 @@ public interface PlatoRepository extends JpaRepository<Plato, Integer>{
 	
 	
 	List<Plato> findByOrderByNoPlatoAsc();
+	
+	List<Plato> findByDePlato(String dePlato);
+	
 }

@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -154,6 +155,35 @@ public class PlatoIngredienteController {
 			mapeo.put("error", false);
 			mapeo.put("mensaje", "Operacion Completada");
 			mapeo.put(Constantes.VALOR_DATA_MAP, listaIngredienteExport);
+			estadoHttp = HttpStatus.OK;
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			estadoHttp = HttpStatus.INTERNAL_SERVER_ERROR;
+			mapeo = new HashMap<String, Object>();
+			mapeo.put("error", true);
+			mapeo.put("mensaje", "Operacion no completada");
+		}
+		salida = new ResponseEntity<Map<String, Object>>(mapeo, estadoHttp);
+		
+		return salida;
+	}
+	
+	
+	@DeleteMapping(value = "/ingredientes", consumes = { MediaType.APPLICATION_JSON_VALUE}, produces = { MediaType.APPLICATION_JSON_VALUE})
+	public ResponseEntity<Map<String, Object>> eliminarIngredientesPlato(@RequestBody Integer idPlato) {
+		ResponseEntity<Map<String, Object>> salida = null;
+		HttpStatus estadoHttp = null;
+		Map<String, Object> mapeo = null;
+		
+		try {
+			log.info("Recibiendo parametros");
+			UtilMfDto.pintaLog(idPlato, "idPlato");
+			
+			this.platoIngredienteRepository.eliminarIngredientesPlato(idPlato);
+			
+			mapeo = new HashMap<String, Object>();
+			mapeo.put("error", false);
+			mapeo.put("mensaje", "Operacion Completada");
 			estadoHttp = HttpStatus.OK;
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);

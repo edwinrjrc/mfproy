@@ -39,4 +39,14 @@ public class Constantes {
 	
 	public static final String PARAM_MENU_DIA_7 = "p_menu_sabado";
 	
+	//////////////////////////////////////////////////////////////
+	
+	public static final String MSJE_DEFECTO_SERVICIO_NO_COMPLETADO = "Operacion no completada";
+	
+	public static final String MSJE_DEFECTO_SERVICIO_SI_COMPLETADO = "Operacion completada";
+	
+	public static final String XLS_EXTENSION = "xls";
+	
+	public static final String XLSX_EXTENSION = "xlsx";
+	
 }

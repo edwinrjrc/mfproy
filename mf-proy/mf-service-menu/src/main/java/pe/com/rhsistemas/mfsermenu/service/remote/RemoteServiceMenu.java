@@ -24,6 +24,8 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RequestCallback;
+import org.springframework.web.client.ResponseExtractor;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
@@ -48,6 +50,8 @@ public class RemoteServiceMenu {
 	private static final String URL_SERVICE = "http://mf-jpa-menu/MenuRJPAService/menuGenerado";
 
 	private static final String URL_SERVICE_2 = "http://mf-jpa-menu/MenuDetalleRJPAService/menuDetalle";
+	
+	private static final String URL_SERVICE_3 = "http://mf-jpa-menu/MenuDetalleRJPAService/platoMenuDetalle";
 
 	@Autowired
 	private RestTemplate restTemplate;
@@ -157,6 +161,22 @@ public class RemoteServiceMenu {
 			
 		}
 
+		return menuDetalle;
+	}
+	
+	@SuppressWarnings("rawtypes")
+	public Map<Integer,MenuDetalleDto> cambiarPlatoMenuDia(MenuDetalleDto menudetalleDto) throws MfServiceMenuException{
+		HttpMethod metodoServicio = HttpMethod.PUT;
+		Map<Integer,MenuDetalleDto> menuDetalle = null;
+		
+		Class<Map> responseType = Map.class;
+		
+		RequestCallback callBack = restTemplate.httpEntityCallback(menudetalleDto, responseType);
+		
+		ResponseExtractor<ResponseEntity<Object>> responseExtractor = restTemplate.responseEntityExtractor(responseType);
+		
+		ResponseEntity<Object> respuesta = restTemplate.execute(obtenerUri(URL_SERVICE_3), metodoServicio, callBack, responseExtractor);
+		
 		return menuDetalle;
 	}
 

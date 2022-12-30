@@ -20,9 +20,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import pe.com.rhsistemas.mf.auth.entity.Usuario;
+import pe.com.rhsistemas.mf.auth.exception.HttpClienteStatusConflict;
 import pe.com.rhsistemas.mf.auth.exception.MfServiceSecurityException;
 import pe.com.rhsistemas.mf.auth.service.PersonaService;
 import pe.com.rhsistemas.mf.auth.service.UserService;
+import pe.com.rhsistemas.mf.cross.compartido.Constantes;
 import pe.com.rhsistemas.mf.cross.exception.UtilMfDtoException;
 import pe.com.rhsistemas.mf.cross.util.UtilMfDto;
 import pe.com.rhsistemas.mf.post.dto.UsuarioBeanDto;
@@ -81,19 +83,35 @@ public class UserController {
 			log.error(e.getMessage(),e);
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 			mapeo = new HashMap<String, Object>();
-			mapeo.put("mensaje", "Operacion no completada");
+			mapeo.put("mensaje", Constantes.MSJE_DEFECTO_SERVICIO_NO_COMPLETADO);
 			mapeo.put("error", true);
+		} catch (HttpClienteStatusConflict e) {
+			log.error("HttpConflicto");
+			log.error(e.getMessage(),e);
+			try {
+				Map<?, ?> mapeoError = UtilMfDto.parseStringMap(e.getCuerpoMensaje());
+				status = HttpStatus.CONFLICT;
+				mapeo = new HashMap<String, Object>();
+				mapeo.put("mensaje", mapeoError.get("mensaje").toString());
+				mapeo.put("error", true);
+			} catch (UtilMfDtoException e1) {
+				log.error(e.getMessage(),e);
+				status = HttpStatus.INTERNAL_SERVER_ERROR;
+				mapeo = new HashMap<String, Object>();
+				mapeo.put("mensaje", Constantes.MSJE_DEFECTO_SERVICIO_NO_COMPLETADO);
+				mapeo.put("error", true);
+			}
 		} catch (MfServiceSecurityException e) {
 			log.error(e.getMessage(),e);
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 			mapeo = new HashMap<String, Object>();
-			mapeo.put("mensaje", "Operacion no completada");
+			mapeo.put("mensaje", Constantes.MSJE_DEFECTO_SERVICIO_NO_COMPLETADO);
 			mapeo.put("error", true);
 		} catch(Exception e) {
 			log.error(e.getMessage(),e);
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 			mapeo = new HashMap<String, Object>();
-			mapeo.put("mensaje", "Operacion no completada");
+			mapeo.put("mensaje", Constantes.MSJE_DEFECTO_SERVICIO_NO_COMPLETADO);
 			mapeo.put("error", true);
 		}
     	salida = new ResponseEntity<Map<String, Object>>(mapeo, status);

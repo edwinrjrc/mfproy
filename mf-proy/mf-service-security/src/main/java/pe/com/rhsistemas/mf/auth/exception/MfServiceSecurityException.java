@@ -8,6 +8,8 @@ package pe.com.rhsistemas.mf.auth.exception;
  *
  */
 public class MfServiceSecurityException extends Exception {
+	
+	private String cuerpoMensaje;
 
 	private static final long serialVersionUID = 1462134173204377986L;
 
@@ -21,16 +23,18 @@ public class MfServiceSecurityException extends Exception {
 	/**
 	 * @param message
 	 */
-	public MfServiceSecurityException(String message) {
+	public MfServiceSecurityException(String message, String cuerpoMensaje) {
 		super(message);
+		this.cuerpoMensaje = cuerpoMensaje;
 		// TODO Auto-generated constructor stub
 	}
 
 	/**
 	 * @param cause
 	 */
-	public MfServiceSecurityException(Throwable cause) {
+	public MfServiceSecurityException(Throwable cause, String cuerpoMensaje) {
 		super(cause);
+		this.cuerpoMensaje = cuerpoMensaje;
 		// TODO Auto-generated constructor stub
 	}
 
@@ -38,8 +42,9 @@ public class MfServiceSecurityException extends Exception {
 	 * @param message
 	 * @param cause
 	 */
-	public MfServiceSecurityException(String message, Throwable cause) {
+	public MfServiceSecurityException(String message, Throwable cause, String cuerpoMensaje) {
 		super(message, cause);
+		this.cuerpoMensaje = cuerpoMensaje;
 		// TODO Auto-generated constructor stub
 	}
 
@@ -53,6 +58,13 @@ public class MfServiceSecurityException extends Exception {
 			boolean writableStackTrace) {
 		super(message, cause, enableSuppression, writableStackTrace);
 		// TODO Auto-generated constructor stub
+	}
+
+	/**
+	 * @return the cuerpoMensaje
+	 */
+	public String getCuerpoMensaje() {
+		return cuerpoMensaje;
 	}
 
 }

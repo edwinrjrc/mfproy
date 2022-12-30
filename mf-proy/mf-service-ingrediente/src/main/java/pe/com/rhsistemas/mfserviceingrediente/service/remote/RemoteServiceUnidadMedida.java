@@ -42,7 +42,7 @@ public class RemoteServiceUnidadMedida {
 
 	private static final Logger log = LoggerFactory.getLogger(RemoteServiceUnidadMedida.class);
 
-	private static final String URL_SERVICE_1 = "http://mf-jpa-ingrediente/UnidadMedidaRJPAService/UnidadesMedida";
+	private static final String URL_SERVICE_1 = "http://mf-jpa-ingrediente/UnidadMedidaRJPAService/unidadesMedida";
 	
 	@Autowired
 	private RestTemplate restTemplate;

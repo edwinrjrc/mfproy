@@ -63,6 +63,8 @@ public class RemoteServicePlato {
 	
 	private static final String URL_SERVICE_6 = "http://mf-jpa-platos/PlatoFavoritoRJPAService/platoFavorito";
 	
+	private static final String URL_SERVICE_7 = "http://mf-jpa-platos/PlatoFavoritoRJPAService/platoNombre";
+	
 	@Autowired
 	private RestTemplate restTemplate;
 

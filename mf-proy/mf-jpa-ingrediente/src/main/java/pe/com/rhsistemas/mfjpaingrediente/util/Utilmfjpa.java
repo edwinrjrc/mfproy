@@ -171,7 +171,10 @@ public class Utilmfjpa {
 			entity.setIdUsuaCrea(dto.getIdUsuarioRegistro());
 			entity.setIdUsuaModi(dto.getIdUsuarioModificacion());
 			entity.setNuCantidad(Double.valueOf(dto.getCantidad()).floatValue());
-			entity.setTiIngrediente(dto.getTipoIngrediente().getCodigo());
+			entity.setNuOrden(dto.getNumeroOrden());
+			if (dto.getTipoIngrediente() != null && StringUtils.isNotBlank(dto.getTipoIngrediente().getCodigo()) ) {
+				entity.setTiIngrediente(dto.getTipoIngrediente().getCodigo());
+			}
 		}
 		
 		return entity;
@@ -247,6 +250,7 @@ public class Utilmfjpa {
 		dto.setIdUsuarioRegistro(entity.getIdUsuaCrea());
 		dto.setFechaModificacion(entity.getFeModificacion());
 		dto.setFechaRegistro(entity.getFeRegistro());
+		dto.setNumeroOrden(entity.getNuOrden());
 		
 		return dto;
 	}

@@ -4,6 +4,7 @@
 package pe.com.rhsistemas.mfjpapersonas.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -52,14 +53,24 @@ public class UsuariosController {
 			
 			Usuario usuarioEntity = Utilmfjpa.paseUsuario(usuarioDto);
 			
-			usuarioRoleRepository.saveAll(usuarioEntity.getUsuariosRoles());
+			List<Usuario> listadoResultado = usuarioRepository.findByTxLogin(usuarioDto.getLogin());
 			
-			usuarioRepository.save(Utilmfjpa.paseUsuario(usuarioDto));
+			if (!UtilMfDto.listaNoVacia(listadoResultado)) {
+				usuarioRoleRepository.saveAll(usuarioEntity.getUsuariosRoles());
+				usuarioRepository.save(Utilmfjpa.paseUsuario(usuarioDto));
 
-			status = HttpStatus.CREATED;
-			mapeo = new HashMap<String, Object>();
-			mapeo.put("error", false);
-			mapeo.put("mensaje", "Operacion Completada");
+				status = HttpStatus.CREATED;
+				mapeo = new HashMap<String, Object>();
+				mapeo.put("error", false);
+				mapeo.put("mensaje", "Operacion Completada");
+			}
+			else {
+				status = HttpStatus.CONFLICT;
+				mapeo = new HashMap<String, Object>();
+				mapeo.put("error", true);
+				mapeo.put("mensaje", "Usuario ya registrado");
+			}
+			
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
 			status = HttpStatus.INTERNAL_SERVER_ERROR;

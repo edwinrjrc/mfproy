@@ -32,6 +32,7 @@ import pe.com.rhsistemas.mf.cross.compartido.Constantes;
 import pe.com.rhsistemas.mf.cross.dto.PlatoIngredienteDto;
 import pe.com.rhsistemas.mf.cross.dto.RecetaComentarioDto;
 import pe.com.rhsistemas.mf.cross.dto.RecetaDto;
+import pe.com.rhsistemas.mf.cross.util.UtilMfDto;
 import pe.com.rhsistemas.mfserplato.exception.MFServicePlatoException;
 
 /**
@@ -133,10 +134,12 @@ public class RemoteServiceReceta {
 			ObjectMapper mapper = obtenerMapper();
 			
 		    List<?> datosLista = (List<?>) respuesta.getBody().get(Constantes.VALOR_DATA_MAP);
-		    listaComentario = new ArrayList<>();
-		    for (Object objeto : datosLista) {
-		    	listaComentario.add(mapper.convertValue((LinkedHashMap<?,?>) objeto, RecetaComentarioDto.class));
-			}
+		    if (UtilMfDto.listaNoVacia(datosLista)) {
+		    	listaComentario = new ArrayList<>();
+			    for (Object objeto : datosLista) {
+			    	listaComentario.add(mapper.convertValue((LinkedHashMap<?,?>) objeto, RecetaComentarioDto.class));
+				}
+		    }
 			
 		} catch (RestClientException e) {
 			log.error(e.getMessage(),e);

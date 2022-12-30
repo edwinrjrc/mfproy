@@ -36,7 +36,7 @@ public class UnidadMedidaController {
 	@Autowired
 	private UnidadMedidaRepository unidadMedidaRepository;
 
-	@GetMapping(value = "/UnidadesMedida")
+	@GetMapping(value = "/unidadesMedida")
 	public ResponseEntity<Map<String, Object>> listarUnidadesMedida() {
 		ResponseEntity<Map<String, Object>> salida = null;
 		Map<String, Object> mapeo = null;

@@ -269,4 +269,34 @@ public class PlatoController {
 		return salida;
 	}
 	
+	@GetMapping(value = "/platoNombre", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Map<String, Object>> consultarPlatoNombre(@RequestParam(name = "nombrePlato", required = true) String nombrePlato) {
+		ResponseEntity<Map<String, Object>> salida = null;
+		Map<String, Object> mapeo = null;
+		HttpStatus status = null;
+		
+		try {
+			PlatoDto platoDto = null;
+			status = HttpStatus.NO_CONTENT;
+			List<Plato> listaPlatos = platoRepository.findByDePlato(nombrePlato);
+			if (UtilMfDto.listaNoVacia(listaPlatos)) {
+				platoDto = Utilmfjpa.parsePlatoEntity(listaPlatos.get(0));
+			}
+			
+			status = HttpStatus.OK;
+			mapeo = new HashMap<String, Object>();
+			mapeo.put("error", false);
+			mapeo.put("mensaje", "Operacion Completada");
+			mapeo.put(Constantes.VALOR_DATA_MAP, platoDto);
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+			mapeo = new HashMap<String, Object>();
+			mapeo.put("error", true);
+			mapeo.put("mensaje", "Operacion no completada");
+		}
+		salida = new ResponseEntity<Map<String, Object>>(mapeo, status);
+		return salida;
+	}
+	
 }

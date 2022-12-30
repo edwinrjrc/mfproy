@@ -20,6 +20,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
@@ -27,9 +28,9 @@ import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser.Feature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import pe.com.rhsistemas.mf.auth.exception.HttpClienteStatusConflict;
 import pe.com.rhsistemas.mf.auth.exception.MfServiceSecurityException;
 import pe.com.rhsistemas.mf.cross.compartido.Constantes;
-import pe.com.rhsistemas.mf.cross.dto.PersonaDto;
 import pe.com.rhsistemas.mf.cross.dto.PersonaNaturalDto;
 import pe.com.rhsistemas.mf.cross.dto.UsuarioDto;
 import pe.com.rhsistemas.mf.cross.util.UtilMfDto;
@@ -75,7 +76,7 @@ public class RemoteServicePersona {
 
 		} catch (RestClientException e) {
 			log.error(e.getMessage(), e);
-			throw new MfServiceSecurityException(e);
+			throw new MfServiceSecurityException(e,null);
 		}
 		return personaDto;
 	}
@@ -93,10 +94,11 @@ public class RemoteServicePersona {
 			ResponseEntity<Map> respuesta = restTemplate.exchange(obtenerUri(url), metodoServicio, requestEntity, responseType);
 
 			log.info(respuesta.toString());
-
+		} catch (HttpClientErrorException.Conflict e) {
+			log.error(e.getMessage());
+			throw new HttpClienteStatusConflict(e,e.getResponseBodyAsString());
 		} catch (RestClientException e) {
-			log.error(e.getMessage(), e);
-			throw new MfServiceSecurityException(e);
+			throw new MfServiceSecurityException(e,null);
 		}
 		return new UsuarioDto();
 	}
@@ -108,7 +110,7 @@ public class RemoteServicePersona {
 
 		} catch (URISyntaxException e) {
 			log.error(e.getMessage(), e);
-			throw new MfServiceSecurityException(e);
+			throw new MfServiceSecurityException(e,null);
 		}
 		return url;
 	}

@@ -16,12 +16,16 @@ public class PlatoIngredienteDto extends BaseDto {
 	private Float cantidad;
 	private BaseValor tipoIngrediente;
 	private Integer idPlato;
+	private Integer numeroOrden;
 	
 	
 	/**
 	 * @return the ingrediente
 	 */
 	public IngredienteDto getIngrediente() {
+		if (ingrediente == null ) {
+			ingrediente = new IngredienteDto();
+		}
 		return ingrediente;
 	}
 	/**
@@ -34,6 +38,9 @@ public class PlatoIngredienteDto extends BaseDto {
 	 * @return the unidadMedida
 	 */
 	public BaseValor getUnidadMedida() {
+		if (unidadMedida == null) {
+			unidadMedida = new BaseValor();
+		}
 		return unidadMedida;
 	}
 	/**
@@ -58,6 +65,9 @@ public class PlatoIngredienteDto extends BaseDto {
 	 * @return the tipoIngrediente
 	 */
 	public BaseValor getTipoIngrediente() {
+		if (tipoIngrediente == null) {
+			tipoIngrediente = new BaseValor();
+		}
 		return tipoIngrediente;
 	}
 	/**
@@ -78,7 +88,17 @@ public class PlatoIngredienteDto extends BaseDto {
 	public void setIdPlato(Integer idPlato) {
 		this.idPlato = idPlato;
 	}
-	
-	
+	/**
+	 * @return the numeroOrden
+	 */
+	public Integer getNumeroOrden() {
+		return numeroOrden;
+	}
+	/**
+	 * @param numeroOrden the numeroOrden to set
+	 */
+	public void setNumeroOrden(Integer numeroOrden) {
+		this.numeroOrden = numeroOrden;
+	}
 	
 }

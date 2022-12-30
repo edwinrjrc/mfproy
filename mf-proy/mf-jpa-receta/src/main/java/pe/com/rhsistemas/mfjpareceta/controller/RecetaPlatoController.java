@@ -5,6 +5,7 @@ package pe.com.rhsistemas.mfjpareceta.controller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -182,6 +183,67 @@ public class RecetaPlatoController {
 			status = HttpStatus.NO_CONTENT;
 			
 			recetaComentarioRepository.delete(Utilmfjpa.parseRecetaComentarioDto(recetaComentarioDto));
+			
+			status = HttpStatus.OK;
+			mapeo = new HashMap<String, Object>();
+			mapeo.put("error", false);
+			mapeo.put("mensaje", "Operacion Completada");
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+			mapeo = new HashMap<String, Object>();
+			mapeo.put("error", true);
+			mapeo.put("mensaje", "Operacion no completada");
+		}
+		salida = new ResponseEntity<Map<String, Object>>(mapeo, status);
+		return salida;
+	}
+	
+	@PostMapping(value = "/recetaPreparacion", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Map<String, Object>> guardarComentario(@RequestBody List<RecetaDto> listaPreparacion) {
+		ResponseEntity<Map<String, Object>> salida = null;
+		Map<String, Object> mapeo = null;
+		HttpStatus status = null;
+		
+		try {
+			log.info("Parametros recibidos");
+			UtilMfDto.pintaLog(listaPreparacion, "listaPreparacion");
+			status = HttpStatus.NO_CONTENT;
+			
+			List<Receta> listaPreparacionEntity = new ArrayList<>();
+			Iterator<RecetaDto> iteradorPreparacionDto = listaPreparacion.iterator();
+			while (iteradorPreparacionDto.hasNext()) {
+				listaPreparacionEntity.add(Utilmfjpa.parseRecetaDto(iteradorPreparacionDto.next()));
+			}
+			this.recetaRepository.saveAll(listaPreparacionEntity);
+			
+			status = HttpStatus.CREATED;
+			mapeo = new HashMap<String, Object>();
+			mapeo.put("error", false);
+			mapeo.put("mensaje", "Operacion Completada");
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+			mapeo = new HashMap<String, Object>();
+			mapeo.put("error", true);
+			mapeo.put("mensaje", "Operacion no completada");
+		}
+		salida = new ResponseEntity<Map<String, Object>>(mapeo, status);
+		return salida;
+	}
+	
+	@DeleteMapping(value = "/recetaPreparacion", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Map<String, Object>> eliminarRecetaPreparacion(@RequestBody Integer idPlato) {
+		ResponseEntity<Map<String, Object>> salida = null;
+		Map<String, Object> mapeo = null;
+		HttpStatus status = null;
+		
+		try {
+			log.info("Parametros recibidos /recetaPreparacion");
+			UtilMfDto.pintaLog(idPlato, "idPlato");
+			status = HttpStatus.NO_CONTENT;
+			
+			this.recetaRepository.deleteByPlato(idPlato);
 			
 			status = HttpStatus.OK;
 			mapeo = new HashMap<String, Object>();

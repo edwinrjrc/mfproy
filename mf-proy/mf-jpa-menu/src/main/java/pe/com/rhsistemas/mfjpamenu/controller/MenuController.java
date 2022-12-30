@@ -221,7 +221,6 @@ public class MenuController {
 					menuDetalleDto.getPlatoDto().setIdUsuarioModificacion(menuDetalleDto.getIdUsuarioModificacion());
 					menuDetalleDto.getPlatoDto().setIdEstado(platoOptional.get().getIdEstaPlat());
 					menuDetalleDto.getPlatoDto().setAcompaniamiento("S".equalsIgnoreCase(platoOptional.get().getInAcompaniamiento()));
-					log.info(platoOptional.get().getTipoCocina().toString());
 					menuDetalleDto.getPlatoDto().getTipoCocina().setCodigo(platoOptional.get().getTipoCocina().getIdTipoCoci().toString());
 					menuDetalleDto.getPlatoDto().getTipoCocina().setNombre(platoOptional.get().getTipoCocina().getDeTipoCoci());
 					menuDetalleDto.getPlatoDto().getTipoCocina().setValor(platoOptional.get().getTipoCocina().getDeTipoCoci());

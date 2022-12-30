@@ -29,7 +29,10 @@ import com.fasterxml.jackson.core.JsonParser.Feature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import pe.com.rhsistemas.mf.cross.compartido.Constantes;
+import pe.com.rhsistemas.mf.cross.dto.IngredientesPlatoCargaDto;
+import pe.com.rhsistemas.mf.cross.dto.PlatoIngredienteDto;
 import pe.com.rhsistemas.mf.cross.dto.RecetaComentarioDto;
+import pe.com.rhsistemas.mf.cross.dto.RecetaDto;
 import pe.com.rhsistemas.mf.post.dto.RecetaComentarioPostDto;
 import pe.com.rhsistemas.mfserreceta.exception.MfServiceRecetaException;
 
@@ -47,6 +50,10 @@ public class RemoteServiceReceta {
 	private static final String URL_SERVICE_2 = "http://mf-jpa-receta/RecetaPlatoRJPAService/recetaComentario";
 
 	private static final String URL_SERVICE_3 = "http://mf-jpa-receta/RecetaPlatoRJPAService/recetaComentario";
+	
+	private static final String URL_SERVICE_4 = "http://mf-jpa-ingrediente/PlatoIngredienteRJPAService/ingredientes";
+	
+	private static final String URL_SERVICE_5 = "http://mf-jpa-receta/RecetaPlatoRJPAService/recetaPreparacion";
 
 	@Autowired
 	private RestTemplate restTemplate;
@@ -133,6 +140,91 @@ public class RemoteServiceReceta {
 			throw new MfServiceRecetaException(e);
 		}
 		return listaComentario;
+	}
+	
+	public void guardarIngredientesPlato(List<PlatoIngredienteDto> listaIngredientesCarga) throws MfServiceRecetaException {
+		List<RecetaComentarioDto> listaComentario = null;
+		try {
+			HttpMethod metodoServicio = HttpMethod.POST;
+
+			HttpEntity<Map<String, Object>> requestEntity = new HttpEntity(listaIngredientesCarga,generarHttpHeaders());
+			Class<Map> responseType = Map.class;
+
+			UriComponentsBuilder builderURI = UriComponentsBuilder.fromHttpUrl(URL_SERVICE_4);
+
+			ResponseEntity<Map> respuesta = restTemplate.exchange(builderURI.toUriString(), metodoServicio,
+					requestEntity, responseType);
+
+		} catch (RestClientException e) {
+			log.error(e.getMessage(), e);
+			throw new MfServiceRecetaException(e);
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			throw new MfServiceRecetaException(e);
+		}
+	}
+	
+	public void eliminarIngredientesPlato(Integer idPlato) throws MfServiceRecetaException {
+		try {
+			HttpMethod metodoServicio = HttpMethod.DELETE;
+
+			HttpEntity<Map<String, Object>> requestEntity = new HttpEntity(idPlato,generarHttpHeaders());
+			Class<Map> responseType = Map.class;
+
+			UriComponentsBuilder builderURI = UriComponentsBuilder.fromHttpUrl(URL_SERVICE_4);
+
+			ResponseEntity<Map> respuesta = restTemplate.exchange(builderURI.toUriString(), metodoServicio,
+					requestEntity, responseType);
+
+		} catch (RestClientException e) {
+			log.error(e.getMessage(), e);
+			throw new MfServiceRecetaException(e);
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			throw new MfServiceRecetaException(e);
+		}
+	}
+	
+	public void guardarPreparacionPlato(List<RecetaDto> listaPreparacionPlato) throws MfServiceRecetaException {
+		try {
+			HttpMethod metodoServicio = HttpMethod.POST;
+
+			HttpEntity<Map<String, Object>> requestEntity = new HttpEntity(listaPreparacionPlato,generarHttpHeaders());
+			Class<Map> responseType = Map.class;
+
+			UriComponentsBuilder builderURI = UriComponentsBuilder.fromHttpUrl(URL_SERVICE_5);
+
+			ResponseEntity<Map> respuesta = restTemplate.exchange(builderURI.toUriString(), metodoServicio,
+					requestEntity, responseType);
+
+		} catch (RestClientException e) {
+			log.error(e.getMessage(), e);
+			throw new MfServiceRecetaException(e);
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			throw new MfServiceRecetaException(e);
+		}
+	}
+	
+	public void eliminarPreparacionPlato(Integer idPlato) throws MfServiceRecetaException {
+		try {
+			HttpMethod metodoServicio = HttpMethod.DELETE;
+
+			HttpEntity<Map<String, Object>> requestEntity = new HttpEntity(idPlato,generarHttpHeaders());
+			Class<Map> responseType = Map.class;
+
+			UriComponentsBuilder builderURI = UriComponentsBuilder.fromHttpUrl(URL_SERVICE_5);
+
+			ResponseEntity<Map> respuesta = restTemplate.exchange(builderURI.toUriString(), metodoServicio,
+					requestEntity, responseType);
+
+		} catch (RestClientException e) {
+			log.error(e.getMessage(), e);
+			throw new MfServiceRecetaException(e);
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			throw new MfServiceRecetaException(e);
+		}
 	}
 
 	private HttpHeaders generarHttpHeaders() {

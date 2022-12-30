@@ -38,6 +38,9 @@ public class ConfiguracionFamilia implements Serializable {
 	@OneToOne
 	@JoinColumn(name="id_persona", nullable=false, insertable=false, updatable=false)
 	private Persona persona;
+	
+	@Column(name="tx_dias_coci", length=20)
+	private String txDiasCoci;
 
 	public ConfiguracionFamilia() {
 	}
@@ -80,6 +83,14 @@ public class ConfiguracionFamilia implements Serializable {
 
 	public void setPersona(Persona persona) {
 		this.persona = persona;
+	}
+	
+	public String getTxDiasCoci() {
+		return this.txDiasCoci;
+	}
+
+	public void setTxDiasCoci(String txDiasCoci) {
+		this.txDiasCoci = txDiasCoci;
 	}
 
 }

@@ -9,6 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.TimeZone;
 
 import org.apache.commons.lang3.StringUtils;
@@ -16,6 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import pe.com.rhsistemas.mf.cross.exception.UtilMfDtoException;
@@ -63,7 +65,6 @@ public class UtilMfDto {
 			if (StringUtils.isBlank(cadenaFecha)) {
 				throw new UtilMfDtoException("La fecha a convertir esta en blanco o es nula");
 			}
-			log.info(patron);
 			SimpleDateFormat sdf = new SimpleDateFormat((StringUtils.isBlank(patron)?PATRON_SDF_DEFECTO:patron));
 			sdf.setTimeZone(TimeZone.getDefault());
 			if (timeZone != null) {
@@ -166,6 +167,18 @@ public class UtilMfDto {
 			ObjectMapper Obj = new ObjectMapper();
 			
 			return Obj.writeValueAsString(objeto);
+		} catch (JsonProcessingException e) {
+			throw new UtilMfDtoException(e);
+		}
+	}
+	
+	public static Map parseStringMap(String texto) throws UtilMfDtoException{
+		try {
+			ObjectMapper Obj = new ObjectMapper();
+			
+			return Obj.readValue(texto, Map.class);
+		} catch (JsonMappingException e) {
+			throw new UtilMfDtoException(e);
 		} catch (JsonProcessingException e) {
 			throw new UtilMfDtoException(e);
 		}
