@@ -17,14 +17,17 @@ C:\git\mfproy\mf-proy\mfdto\src\main\java\pe\com\rhsistemas\mf\cross\dto\Usuario
 C:\git\mfproy\mf-proy\mfdto\src\main\java\pe\com\rhsistemas\mf\cross\dto\PasoPreparacionDto.java
 C:\git\mfproy\mf-proy\mfdto\src\main\java\pe\com\rhsistemas\mf\cross\util\UtilMfDto.java
 C:\git\mfproy\mf-proy\mfdto\src\main\java\pe\com\rhsistemas\mf\post\dto\CambiarPlatoMenuDiaDto.java
+C:\git\mfproy\mf-proy\mfdto\src\main\java\pe\com\rhsistemas\mf\post\dto\ActualizaCredencialDto.java
 C:\git\mfproy\mf-proy\mfdto\src\main\java\pe\com\rhsistemas\mf\cross\dto\MenuDetalleDto.java
 C:\git\mfproy\mf-proy\mfdto\src\main\java\pe\com\rhsistemas\mf\post\dto\DatosCorreo.java
 C:\git\mfproy\mf-proy\mfdto\src\main\java\pe\com\rhsistemas\mf\cross\dto\PersonaJuridicaDto.java
 C:\git\mfproy\mf-proy\mfdto\src\main\java\pe\com\rhsistemas\mf\cross\dto\PlatoIngredienteDto.java
+C:\git\mfproy\mf-proy\mfdto\src\main\java\pe\com\rhsistemas\mf\cross\dto\SolicitudRecuperaCredencialDto.java
 C:\git\mfproy\mf-proy\mfdto\src\main\java\pe\com\rhsistemas\mf\cross\dto\IngredienteDto.java
 C:\git\mfproy\mf-proy\mfdto\src\main\java\pe\com\rhsistemas\mf\cross\dto\PersonaNaturalDto.java
 C:\git\mfproy\mf-proy\mfdto\src\main\java\pe\com\rhsistemas\mf\cross\util\UtilCorreo.java
 C:\git\mfproy\mf-proy\mfdto\src\main\java\pe\com\rhsistemas\mf\cross\exception\UtilMfDtoException.java
+C:\git\mfproy\mf-proy\mfdto\src\main\java\pe\com\rhsistemas\mf\cross\dto\ValidaCodigoSeguridadDto.java
 C:\git\mfproy\mf-proy\mfdto\src\main\java\pe\com\rhsistemas\mf\cross\dto\ValorNutricionalDto.java
 C:\git\mfproy\mf-proy\mfdto\src\main\java\pe\com\rhsistemas\mf\post\dto\PlatoFavoritoPkDto.java
 C:\git\mfproy\mf-proy\mfdto\src\main\java\pe\com\rhsistemas\mf\cross\dto\RolDto.java
@@ -39,3 +42,4 @@ C:\git\mfproy\mf-proy\mfdto\src\main\java\pe\com\rhsistemas\mf\cross\dto\UnidadM
 C:\git\mfproy\mf-proy\mfdto\src\main\java\pe\com\rhsistemas\mf\cross\dto\BaseDto.java
 C:\git\mfproy\mf-proy\mfdto\src\main\java\pe\com\rhsistemas\mf\cross\dto\BaseValor.java
 C:\git\mfproy\mf-proy\mfdto\src\main\java\pe\com\rhsistemas\mf\cross\dto\PlatoIngredienteExportDto.java
+C:\git\mfproy\mf-proy\mfdto\src\main\java\pe\com\rhsistemas\mf\post\dto\ValidaCodigoBeanDto.java

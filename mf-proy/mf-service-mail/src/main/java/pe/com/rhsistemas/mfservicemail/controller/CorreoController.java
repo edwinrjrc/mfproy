@@ -11,7 +11,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,7 +34,7 @@ public class CorreoController {
 	@Autowired
 	private CorreoService correoService;
 	
-	@CrossOrigin(origins = "http://localhost:4200")
+	//@CrossOrigin(origins = "http://localhost:4200")
 	@PostMapping(value = "/correoSinAdjunto")
 	public ResponseEntity<Map<String, Object>> enviaCorreoSinAdjunto(@RequestBody DatosCorreo datosCorreo) {
 		ResponseEntity<Map<String, Object>> salida = null;

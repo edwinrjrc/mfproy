@@ -56,7 +56,7 @@ public class RemoteServiceIngrediente {
 			HttpEntity<Map<String, Object>> requestEntity = new HttpEntity<Map<String, Object>>(generarHttpHeaders());
 			Class<Map> responseType = Map.class;
 
-			ResponseEntity<Map> respuesta = restTemplate.exchange(obtenerUri(URL_SERVICE_1), metodoServicio,requestEntity, responseType);
+			ResponseEntity<Map> respuesta = restTemplate.exchange(obtenerUri(URL_SERVICE_1), metodoServicio, requestEntity, responseType);
 
 			ObjectMapper mapper = obtenerMapper();
 

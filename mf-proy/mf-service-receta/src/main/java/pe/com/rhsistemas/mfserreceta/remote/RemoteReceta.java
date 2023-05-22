@@ -53,7 +53,7 @@ public class RemoteReceta {
 		try {
 			HttpMethod metodoServicio = HttpMethod.GET;
 			
-			HttpEntity<Map<String, Object>> requestEntity = new HttpEntity<Map<String,Object>>(generarHttpHeaders());
+			HttpEntity<Map<String, Object>> requestEntity = new HttpEntity<Map<String,Object>>(obtenerHeaders());
 			Class<Map> responseType = Map.class;
 			
 			UriComponentsBuilder builderURI = UriComponentsBuilder.fromHttpUrl(URL_SERVICE_1);
@@ -79,7 +79,7 @@ public class RemoteReceta {
 		}
 	}
 	
-	private HttpHeaders generarHttpHeaders() {
+	private HttpHeaders obtenerHeaders() {
 		HttpHeaders headers = new HttpHeaders();
 	    headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
 	    headers.setContentType(MediaType.APPLICATION_JSON);

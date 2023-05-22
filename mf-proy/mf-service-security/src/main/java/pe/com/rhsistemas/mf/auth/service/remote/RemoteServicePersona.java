@@ -6,8 +6,10 @@ package pe.com.rhsistemas.mf.auth.service.remote;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
 
@@ -52,11 +54,16 @@ public class RemoteServicePersona {
 	
 	private static final String URL_SERVICE_1 = PATH_SERVICE + PATH_CONTROLLER_1 + "/personaNatural";
 
-	private static final String URL_SERVICE_2 = PATH_SERVICE + PATH_CONTROLLER_2+ "/usuario";
-
+	private static final String URL_SERVICE_2 = PATH_SERVICE + PATH_CONTROLLER_2 + "/usuario";
+	
+	private static final String URL_SERVICE_3 = PATH_SERVICE + PATH_CONTROLLER_2 + "/correoUsuario";
+	
+	private static final String URL_SERVICE_4 = PATH_SERVICE + PATH_CONTROLLER_2 + "/credencialNueva";
+	
 	@Autowired
 	private RestTemplate restTemplate;
 	
+	@SuppressWarnings("rawtypes")
 	public PersonaNaturalDto registrarPersonaNatural(PersonaNaturalDto personaNaturalDto) throws MfServiceSecurityException{
 		PersonaNaturalDto personaDto = null;
 		try {
@@ -81,6 +88,7 @@ public class RemoteServicePersona {
 		return personaDto;
 	}
 	
+	@SuppressWarnings("rawtypes")
 	public UsuarioDto registrarUsuario(UsuarioDto usuarioDto) throws MfServiceSecurityException{
 		try {
 			UtilMfDto.pintaLog(usuarioDto, "usuarioDto");
@@ -101,6 +109,85 @@ public class RemoteServicePersona {
 			throw new MfServiceSecurityException(e,null);
 		}
 		return new UsuarioDto();
+	}
+	
+	@SuppressWarnings("rawtypes")
+	public List<UsuarioDto> consultarCorreoUsuario(UsuarioDto usuarioDto) throws MfServiceSecurityException{
+		List<UsuarioDto> listaUsuario = null;
+		try {
+			//UtilMfDto.pintaLog(usuarioDto, "usuarioDto");
+			
+			HttpMethod metodoServicio = HttpMethod.GET;
+
+			HttpEntity<UsuarioDto> requestEntity = new HttpEntity<>(obtenerHeaders());
+
+			Class<Map> responseType = Map.class;
+			String url = URL_SERVICE_3 + "/" +usuarioDto.getLogin();
+			ResponseEntity<Map> respuesta = restTemplate.exchange(obtenerUri(url), metodoServicio, requestEntity, responseType);
+			
+			ObjectMapper mapper = obtenerMapper();
+			
+			List<?> datosLista = (List<?>) respuesta.getBody().get(Constantes.VALOR_DATA_MAP);
+			listaUsuario = new ArrayList<>();
+			for (Object objeto : datosLista) {
+				listaUsuario.add(mapper.convertValue((LinkedHashMap<?, ?>) objeto, UsuarioDto.class));
+			}
+
+		} catch (HttpClientErrorException.Conflict e) {
+			log.error(e.getMessage());
+			throw new HttpClienteStatusConflict(e,e.getResponseBodyAsString());
+		} catch (RestClientException e) {
+			throw new MfServiceSecurityException(e,null);
+		}
+		return listaUsuario;
+	}
+	
+	public PersonaNaturalDto consultarPersonaNatural(Long idPersona) throws MfServiceSecurityException{
+		PersonaNaturalDto personaDto = null;
+		try {
+			HttpMethod metodoServicio = HttpMethod.GET;
+
+			HttpEntity<Map<String, Object>> requestEntity = new HttpEntity<Map<String, Object>>(obtenerHeaders());
+
+			Class<Map> responseType = Map.class;
+			String url = URL_SERVICE_1+"/"+idPersona;
+			ResponseEntity<Map> respuesta = restTemplate.exchange(obtenerUri(url), metodoServicio, requestEntity, responseType);
+			
+			ObjectMapper mapper = obtenerMapper();
+			
+			LinkedHashMap<?,?> dato = (LinkedHashMap<?,?>) respuesta.getBody().get(Constantes.VALOR_DATA_MAP);
+			personaDto = mapper.convertValue(dato, PersonaNaturalDto.class);
+
+		} catch (RestClientException e) {
+			log.error(e.getMessage(), e);
+			throw new MfServiceSecurityException(e,null);
+		}
+		return personaDto;
+	}
+	
+	public UsuarioDto actualizaCredencialUsuario(UsuarioDto usuarioDto) throws MfServiceSecurityException{
+		try {
+			HttpMethod metodoServicio = HttpMethod.PUT;
+
+			log.info("Recibe parametros actualizaCredencial");
+			UtilMfDto.pintaLog(usuarioDto, "usuarioDto");
+			
+			HttpEntity<UsuarioDto> requestEntity = new HttpEntity<UsuarioDto>(usuarioDto,obtenerHeaders());
+
+			Class<Map> responseType = Map.class;
+			String url = URL_SERVICE_4;
+			ResponseEntity<Map> respuesta = restTemplate.exchange(obtenerUri(url), metodoServicio, requestEntity, responseType);
+			
+			ObjectMapper mapper = obtenerMapper();
+			
+			LinkedHashMap<?,?> dato = (LinkedHashMap<?,?>) respuesta.getBody().get(Constantes.VALOR_DATA_MAP);
+			usuarioDto = mapper.convertValue(dato, UsuarioDto.class);
+			
+		} catch (RestClientException e) {
+			log.error(e.getMessage(), e);
+			throw new MfServiceSecurityException(e,null);
+		}
+		return usuarioDto;
 	}
 	
 	private URI obtenerUri(String cadenaUrl) throws MfServiceSecurityException {

@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.7.6</version>
+		<version>2.5.4</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>pe.com.rhsistemas</groupId>
@@ -15,7 +15,7 @@
 	<description>Servicio jpa que interactura con la configuracion de las cuentas</description>
 	<properties>
 		<java.version>11</java.version>
-		<spring-cloud.version>2021.0.5</spring-cloud.version>
+		<spring-cloud.version>2020.0.6</spring-cloud.version>
 	</properties>
 	<dependencies>
 		<dependency>

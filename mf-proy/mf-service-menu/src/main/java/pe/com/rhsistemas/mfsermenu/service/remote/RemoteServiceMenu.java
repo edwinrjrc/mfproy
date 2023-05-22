@@ -45,7 +45,7 @@ import pe.com.rhsistemas.mfsermenu.exception.MfServiceMenuException;
 @Service
 public class RemoteServiceMenu {
 
-	private static final Logger log = LoggerFactory.getLogger(RemoteServicePlato.class);
+	private static final Logger log = LoggerFactory.getLogger(RemoteServiceMenu.class);
 
 	private static final String URL_SERVICE = "http://mf-jpa-menu/MenuRJPAService/menuGenerado";
 
@@ -67,8 +67,10 @@ public class RemoteServiceMenu {
 			map.put("idPersona", idPersona);
 
 			HttpEntity<Map<String, Object>> requestEntity = new HttpEntity<Map<String, Object>>(map, generarHttpHeaders());
+			
 			Class<Map> responseType = Map.class;
 			String url = URL_SERVICE + "/" + idPersona;
+			
 			ResponseEntity<Map> respuesta = restTemplate.exchange(obtenerUri(url), metodoServicio, requestEntity, responseType);
 
 			List<?> datosLista = (List<?>) respuesta.getBody().get(Constantes.VALOR_DATA_MAP);

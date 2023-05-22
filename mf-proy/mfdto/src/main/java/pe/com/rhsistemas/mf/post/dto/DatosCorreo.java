@@ -3,12 +3,17 @@
  */
 package pe.com.rhsistemas.mf.post.dto;
 
+import java.io.Serializable;
+
 /**
  * @author Edwin
  *
  */
-public class DatosCorreo {
-
+public class DatosCorreo implements Serializable{
+	
+	
+	private static final long serialVersionUID = -2552049760449252260L;
+	
 	private String asunto;
 	private String mensaje;
 	private byte[] adjunto;

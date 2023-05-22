@@ -3,6 +3,7 @@
  */
 package pe.com.rhsistemas.mfjpapersonas.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,11 +13,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import pe.com.rhsistemas.mf.cross.compartido.Constantes;
 import pe.com.rhsistemas.mf.cross.dto.UsuarioDto;
 import pe.com.rhsistemas.mf.cross.util.UtilMfDto;
 import pe.com.rhsistemas.mfjpapersonas.dao.UsuarioRepository;
@@ -48,7 +53,7 @@ public class UsuariosController {
 
 		try {
 			status = HttpStatus.NO_CONTENT;
-			log.debug("Parametros recibidos");
+			log.debug("Parametros recibidos registrarUsuario");
 			UtilMfDto.pintaLog(usuarioDto, "usuarioDto");
 			
 			Usuario usuarioEntity = Utilmfjpa.paseUsuario(usuarioDto);
@@ -79,7 +84,72 @@ public class UsuariosController {
 			mapeo.put("mensaje", "Operacion no completada");
 		}
 		salida = new ResponseEntity<Map<String, Object>>(mapeo, status);
-
+		return salida;
+	}
+	
+	@GetMapping(value = "/correoUsuario/{loginUsuario}")
+	public ResponseEntity<Map<String, Object>> consultarCorreoUsuario(@PathVariable(name = "loginUsuario", required = true) String loginUsuario) {
+		ResponseEntity<Map<String, Object>> salida = null;
+		Map<String, Object> mapeo = null;
+		HttpStatus status = null;
+		
+		try {
+			log.debug("Parametros recibidos consultarCorreoUsuario");
+			UtilMfDto.pintaLog(loginUsuario, "loginUsuario");
+			
+			List<Usuario> listaUsuarios = usuarioRepository.findByTxLogin(loginUsuario);
+			
+			List<UsuarioDto> listaUsuariosDto = null;
+			
+			listaUsuariosDto = new ArrayList<>();
+			if (UtilMfDto.listaNoVacia(listaUsuarios)) {
+				for (Usuario usuario : listaUsuarios) {
+					listaUsuariosDto.add(Utilmfjpa.paseUsuario(usuario));
+				}
+			}
+			status = HttpStatus.OK;
+			mapeo = new HashMap<String, Object>();
+			mapeo.put("error", false);
+			mapeo.put("mensaje", "Operacion Completada");
+			mapeo.put(Constantes.VALOR_DATA_MAP, listaUsuariosDto);
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+			mapeo = new HashMap<String, Object>();
+			mapeo.put("error", true);
+			mapeo.put("mensaje", "Operacion no completada");
+		}
+		
+		salida = new ResponseEntity<Map<String, Object>>(mapeo, status);
+		return salida;
+	}
+	
+	@PutMapping(value = "/credencialNueva")
+	public ResponseEntity<Map<String, Object>> actualizaCredencial(@RequestBody UsuarioDto usuarioDto) {
+		ResponseEntity<Map<String, Object>> salida = null;
+		Map<String, Object> mapeo = null;
+		HttpStatus status = null;
+		
+		try {
+			log.debug("Parametros recibidos actualizaCredencial");
+			UtilMfDto.pintaLog(usuarioDto, "usuarioDto");
+			
+			Usuario usuarioActualizado = usuarioRepository.save(Utilmfjpa.paseUsuario(usuarioDto));
+			
+			status = HttpStatus.OK;
+			mapeo = new HashMap<String, Object>();
+			mapeo.put("error", false);
+			mapeo.put("mensaje", "Operacion Completada");
+			mapeo.put(Constantes.VALOR_DATA_MAP, Utilmfjpa.paseUsuario(usuarioActualizado));
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+			mapeo = new HashMap<String, Object>();
+			mapeo.put("error", true);
+			mapeo.put("mensaje", "Operacion no completada");
+		}
+		
+		salida = new ResponseEntity<Map<String, Object>>(mapeo, status);
 		return salida;
 	}
 }

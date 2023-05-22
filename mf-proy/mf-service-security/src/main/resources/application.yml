@@ -15,3 +15,9 @@ server:
   port: 24234
   servlet:
     context-path: /mf-service-security
+
+#Eureka Configuration Properties  
+eureka: 
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka

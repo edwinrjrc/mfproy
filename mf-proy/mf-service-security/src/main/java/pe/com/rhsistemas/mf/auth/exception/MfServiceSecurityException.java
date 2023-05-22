@@ -28,6 +28,14 @@ public class MfServiceSecurityException extends Exception {
 		this.cuerpoMensaje = cuerpoMensaje;
 		// TODO Auto-generated constructor stub
 	}
+	
+	/**
+	 * @param cause
+	 */
+	public MfServiceSecurityException(Throwable cause) {
+		super(cause);
+		// TODO Auto-generated constructor stub
+	}
 
 	/**
 	 * @param cause

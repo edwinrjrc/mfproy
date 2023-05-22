@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import pe.com.rhsistemas.mf.auth.entity.Usuario;
@@ -25,9 +26,12 @@ import pe.com.rhsistemas.mf.auth.exception.MfServiceSecurityException;
 import pe.com.rhsistemas.mf.auth.service.PersonaService;
 import pe.com.rhsistemas.mf.auth.service.UserService;
 import pe.com.rhsistemas.mf.cross.compartido.Constantes;
+import pe.com.rhsistemas.mf.cross.dto.UsuarioDto;
 import pe.com.rhsistemas.mf.cross.exception.UtilMfDtoException;
 import pe.com.rhsistemas.mf.cross.util.UtilMfDto;
+import pe.com.rhsistemas.mf.post.dto.ActualizaCredencialDto;
 import pe.com.rhsistemas.mf.post.dto.UsuarioBeanDto;
+import pe.com.rhsistemas.mf.post.dto.ValidaCodigoBeanDto;
 
 @RestController
 @RequestMapping("/api")
@@ -40,7 +44,7 @@ public class UserController {
     
     @Autowired()
     private PersonaService personaService;
-
+    
     @Autowired
     public UserController(UserService userService) {
         this.userService = userService;
@@ -62,7 +66,6 @@ public class UserController {
 
     @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping("/users")
-    //@ResponseStatus(CREATED)
     public ResponseEntity<Map<String, Object>> createUser(@RequestBody UsuarioBeanDto usuarioBean) {
     	log.info("creacion de usuario");
     	Map<String, Object> mapeo = null;
@@ -118,18 +121,136 @@ public class UserController {
 
 		return salida;
     }
+    
+    @CrossOrigin(origins = "http://localhost:4200")
+    @PostMapping("/userCorreo")
+    public ResponseEntity<Map<String, Object>> enviarCorreoRecupera(@RequestBody String correoUsuario){
+    	log.info("creacion de usuario");
+    	Map<String, Object> mapeo = null;
+    	HttpStatus status = null;
+    	ResponseEntity<Map<String, Object>> salida = null;
+    	
+    	salida = new ResponseEntity<Map<String, Object>>(mapeo, status);
 
+		return salida;
+    }
+    
+    @CrossOrigin(origins = "http://localhost:4200")
+    @GetMapping("/userCorreo")
+    public ResponseEntity<Map<String, Object>> validaCorreoUsario(@RequestParam(name = "correoUsuario", required = true) String correoUsuario){
+    	log.info("creacion de usuario");
+    	Map<String, Object> mapeo = null;
+    	HttpStatus status = null;
+    	ResponseEntity<Map<String, Object>> salida = null;
+    	
+    	try {
+    		status = HttpStatus.NO_CONTENT;
+			log.info("Recibiendo parametros en validaCorreoUsario");
+			UtilMfDto.pintaLog(correoUsuario, "correoUsuario");
+			
+			personaService.recuperarContrasena(correoUsuario);
+			
+			mapeo = new HashMap<String, Object>();
+			mapeo.put("mensaje", Constantes.MSJE_DEFECTO_SERVICIO_SI_COMPLETADO);
+			mapeo.put("error", true);
+			status = HttpStatus.OK;
+			
+		} catch (MfServiceSecurityException e) {
+			log.error(e.getMessage(),e);
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+			mapeo = new HashMap<String, Object>();
+			mapeo.put("mensaje", Constantes.MSJE_DEFECTO_SERVICIO_NO_COMPLETADO);
+			mapeo.put("error", true);
+		}
+		status = HttpStatus.NO_CONTENT;
+    	salida = new ResponseEntity<Map<String, Object>>(mapeo, status);
+
+		return salida;
+    }
+    
+    @CrossOrigin(origins = "http://localhost:4200")
+    @PutMapping("/codigoSeguridad")
+    public ResponseEntity<Map<String, Object>> validaCodigoSeguridad(@RequestBody(required = true) ValidaCodigoBeanDto validaCodigoBeanDto){
+    	log.info("creacion de usuario");
+    	Map<String, Object> mapeo = null;
+    	HttpStatus status = null;
+    	ResponseEntity<Map<String, Object>> salida = null;
+    	
+    	try {
+    		status = HttpStatus.NO_CONTENT;
+			log.info("Recibiendo parametros en validaCorreoUsario");
+			UtilMfDto.pintaLog(validaCodigoBeanDto, "validaCodigoBeanDto");
+			
+			boolean resultado = personaService.validaCodigoSeguridad(validaCodigoBeanDto.getValidacionCodigoSeguridad());
+			
+			mapeo = new HashMap<String, Object>();
+			mapeo.put("mensaje", Constantes.MSJE_DEFECTO_SERVICIO_SI_COMPLETADO);
+			mapeo.put("error", false);
+			mapeo.put(Constantes.VALOR_DATA_MAP, resultado);
+			status = HttpStatus.OK;
+			
+			log.info(mapeo.toString());
+			
+		} catch (MfServiceSecurityException e) {
+			log.error(e.getMessage(),e);
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+			mapeo = new HashMap<String, Object>();
+			mapeo.put("mensaje", Constantes.MSJE_DEFECTO_SERVICIO_NO_COMPLETADO);
+			mapeo.put("error", true);
+		}
+    	salida = new ResponseEntity<Map<String, Object>>(mapeo, status);
+
+		return salida;
+    }
+    
+    
+    @CrossOrigin(origins = "http://localhost:4200")
     @PutMapping("/{id}")
     public Usuario updateUser(@PathVariable Long id, @RequestBody Usuario user) {
         //log.info("process=update-user, user_id={}", id);
         //user.setId(id);
         return userService.updateUser(user);
     }
+    
+    @CrossOrigin(origins = "http://localhost:4200")
+    @PutMapping("/credencialNueva")
+    public ResponseEntity<Map<String, Object>> actualizaCredencial(@RequestBody ActualizaCredencialDto actualizaCredencialDto) {
+    	log.info("Actualizacion de credencial de usuario");
+    	Map<String, Object> mapeo = null;
+    	HttpStatus status = null;
+    	ResponseEntity<Map<String, Object>> salida = null;
+    	
+    	try {
+    		status = HttpStatus.NO_CONTENT;
+			log.info("Recibiendo parametros en actualizaCredencial");
+			UtilMfDto.pintaLog(actualizaCredencialDto, "actualizaCredencialDto");
+			
+			UsuarioDto usuarioDto = new UsuarioDto();
+			usuarioDto.setLogin(actualizaCredencialDto.getCorreoUsuario());
+			usuarioDto.setPassword(actualizaCredencialDto.getCredencialNueva());
+			usuarioDto.setEmail(actualizaCredencialDto.getCorreoUsuario());
+			
+			personaService.actualizaCredencial(usuarioDto);
+			
+			mapeo = new HashMap<String, Object>();
+			mapeo.put("mensaje", Constantes.MSJE_DEFECTO_SERVICIO_SI_COMPLETADO);
+			mapeo.put("error", false);
+			mapeo.put(Constantes.VALOR_DATA_MAP, null);
+			status = HttpStatus.OK;
+			
+			log.info(mapeo.toString());
+			
+		} catch (MfServiceSecurityException e) {
+			log.error(e.getMessage(),e);
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+			mapeo = new HashMap<String, Object>();
+			mapeo.put("mensaje", Constantes.MSJE_DEFECTO_SERVICIO_NO_COMPLETADO);
+			mapeo.put("error", true);
+		}
+    	
+    	salida = new ResponseEntity<Map<String, Object>>(mapeo, status);
 
-    /*@DeleteMapping("/{id}")
-    public void deleteUser(@PathVariable Long id) {
-        //log.info("process=delete-user, user_id={}", id);
-        userService.deleteUser(id);
-    }*/
+		return salida;
+    }
 
 }

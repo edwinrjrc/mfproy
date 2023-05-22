@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: mf-service-mail
+ 
+#Tomcat Embedded Server Configuration
+server: 
+  port: 24430
+  
+  servlet:
+    context-path: /mf-service-mail
+ 
+#Eureka Configuration Properties  
+eureka: 
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka

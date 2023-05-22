@@ -1,24 +1,36 @@
+info:
+ component: mf-gateway
+
 spring:
   application:    name: mf-gateway
     
 server:  port: 7000
+
   
 zuul:  routes:    serv-jpa-platos:
-        path: //mf-jpa-platos/**/**
+        path: /mf-jpa-platos/**
         serviceId: mf-jpa-platos
     serv-jpa-menu:
-        path: //mf-jpa-menu/**/**
+        path: /mf-jpa-menu/**
         serviceId: mf-jpa-menu
     serv-jpa-ingrediente:
-        path: //mf-jpa-ingrediente/**/**
+        path: /mf-jpa-ingrediente/**
         serviceId: mf-jpa-ingrediente
     serv-jpa-receta:
-        path: //mf-jpa-receta/**/**
+        path: /mf-jpa-receta/**
         serviceId: mf-jpa-receta
+    serv-jpa-personas:
+        path: /mf-jpa-personas/**
+        serviceId: mf-jpa-personas
+    serv-neg-security:
+        path: /mf-service-security/**
+        serviceId: mf-service-security
+    serv-neg-demo:
+        path: /mf-service-demo/**
+        serviceId: mf-service-demo
  
 #Eureka Configuration Properties
 eureka: 
   client:
     serviceUrl:
       defaultZone: http://localhost:8761/eureka
-      
