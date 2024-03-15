@@ -62,7 +62,7 @@ public class RecetaPlatoController {
 		HttpStatus status = null;
 		
 		try {
-			log.info("Parametros recibidos");
+			log.debug("Parametros recibidos consultarPlatos "+this.getClass().getName());
 			UtilMfDto.pintaLog(idPlato, "idPlato");
 			status = HttpStatus.NO_CONTENT;
 			
@@ -99,11 +99,11 @@ public class RecetaPlatoController {
 		HttpStatus status = null;
 		
 		try {
-			log.info("Parametros recibidos");
+			log.debug("Parametros recibidos guardarComentario "+this.getClass().getName());
 			UtilMfDto.pintaLog(recetaComentarioDto, "recetaComentarioDto");
 			status = HttpStatus.NO_CONTENT;
 			
-			log.info("fecha registro ::"+recetaComentarioDto.getFechaRegistro());
+			log.debug("fecha registro ::"+recetaComentarioDto.getFechaRegistro());
 			
 			recetaComentarioRepository.save(Utilmfjpa.parseRecetaComentarioDto(recetaComentarioDto));
 			
@@ -129,7 +129,7 @@ public class RecetaPlatoController {
 		HttpStatus status = null;
 		
 		try {
-			log.info("Parametros recibidos");
+			log.debug("Parametros recibidos listarComentarios "+this.getClass().getName());
 			UtilMfDto.pintaLog(idPlato, "idPlato");
 			status = HttpStatus.NO_CONTENT;
 			
@@ -178,7 +178,7 @@ public class RecetaPlatoController {
 		HttpStatus status = null;
 		
 		try {
-			log.info("Parametros recibidos eliminarComentario");
+			log.debug("Parametros recibidos eliminarComentario "+this.getClass().getName());
 			UtilMfDto.pintaLog(recetaComentarioDto, "recetaComentarioDto");
 			status = HttpStatus.NO_CONTENT;
 			
@@ -206,7 +206,7 @@ public class RecetaPlatoController {
 		HttpStatus status = null;
 		
 		try {
-			log.info("Parametros recibidos");
+			log.debug("Parametros recibidos guardarComentario "+this.getClass().getName());
 			UtilMfDto.pintaLog(listaPreparacion, "listaPreparacion");
 			status = HttpStatus.NO_CONTENT;
 			
@@ -239,7 +239,7 @@ public class RecetaPlatoController {
 		HttpStatus status = null;
 		
 		try {
-			log.info("Parametros recibidos /recetaPreparacion");
+			log.debug("Parametros recibidos /recetaPreparacion "+this.getClass().getName());
 			UtilMfDto.pintaLog(idPlato, "idPlato");
 			status = HttpStatus.NO_CONTENT;
 			

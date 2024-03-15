@@ -49,7 +49,7 @@ public class ConfiguracionFamiliaController {
 			UtilMfDto.pintaLog(configuracionDto, "configuracionDto");
 
 			ConfiguracionFamilia entity = Utilmfjpa.parseConfiguracionCuentaDto(configuracionDto);
-			log.info(UtilMfDto.escribeObjetoEnLog(entity));
+			log.debug(UtilMfDto.escribeObjetoEnLog(entity));
 			configuracionCuentaDao.save(entity);
 
 			status = HttpStatus.CREATED;
@@ -75,18 +75,23 @@ public class ConfiguracionFamiliaController {
 		Map<String, Object> mapeo = null;
 		HttpStatus status = null;
 		try {
-			log.info("Parametros recibidos consultarConfiguracionFamilia");
+			log.debug("Parametros recibidos consultarConfiguracionFamilia");
 			UtilMfDto.pintaLog(idPersona, "idPersona");
 			
 			Optional<ConfiguracionFamilia> resultadoConsulta = configuracionCuentaDao.findById(Long.valueOf(idPersona.longValue()));
 			
-			ConfiguracionCuentaDto configuracionDto = Utilmfjpa.parseConfiguracionFamilia(resultadoConsulta.get());
-
+			UtilMfDto.pintaLog(UtilMfDto.escribeObjetoEnLog(resultadoConsulta),"objeto");
+			ConfiguracionCuentaDto configuracionDto = null;
+			
+			if (resultadoConsulta != null && !resultadoConsulta.isEmpty()) {
+				configuracionDto = Utilmfjpa.parseConfiguracionFamilia(resultadoConsulta.get());
+			}
 			status = HttpStatus.CREATED;
 			mapeo = new HashMap<String, Object>();
 			mapeo.put("error", false);
 			mapeo.put("mensaje", "Operacion Completada");
 			mapeo.put(Constantes.VALOR_DATA_MAP, configuracionDto);
+			
 
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);

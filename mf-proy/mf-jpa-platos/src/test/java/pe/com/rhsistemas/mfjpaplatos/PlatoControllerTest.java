@@ -62,7 +62,7 @@ public class PlatoControllerTest {
 				MockMvcRequestBuilders.get(apiRootPath + "/platos").contentType(MediaType.APPLICATION_JSON))
 				.andExpect(MockMvcResultMatchers.status().is(HttpStatus.OK.value())).andReturn().getResponse().getContentAsString();
 		
-		logger.info(resultado);
+		logger.debug(resultado);
 	}
 	
 	//@Test

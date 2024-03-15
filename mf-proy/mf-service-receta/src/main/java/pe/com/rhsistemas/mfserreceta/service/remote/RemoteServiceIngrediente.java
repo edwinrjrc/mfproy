@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -57,13 +58,17 @@ public class RemoteServiceIngrediente {
 			Class<Map> responseType = Map.class;
 
 			ResponseEntity<Map> respuesta = restTemplate.exchange(obtenerUri(URL_SERVICE_1), metodoServicio, requestEntity, responseType);
+			
+			HttpStatus codigoStatus = respuesta.getStatusCode();
+			
+			if (!HttpStatus.NO_CONTENT.equals(codigoStatus)) {
+				ObjectMapper mapper = obtenerMapper();
 
-			ObjectMapper mapper = obtenerMapper();
-
-			List<?> datosLista = (List<?>) respuesta.getBody().get(Constantes.VALOR_DATA_MAP);
-			listaIngredientes = new ArrayList<>();
-			for (Object objeto : datosLista) {
-				listaIngredientes.add(mapper.convertValue((LinkedHashMap<?, ?>) objeto, IngredienteDto.class));
+				List<?> datosLista = (List<?>) respuesta.getBody().get(Constantes.VALOR_DATA_MAP);
+				listaIngredientes = new ArrayList<>();
+				for (Object objeto : datosLista) {
+					listaIngredientes.add(mapper.convertValue((LinkedHashMap<?, ?>) objeto, IngredienteDto.class));
+				}
 			}
 
 		} catch (RestClientException e) {

@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -72,16 +73,20 @@ public class RemoteServiceMenu {
 			String url = URL_SERVICE + "/" + idPersona;
 			
 			ResponseEntity<Map> respuesta = restTemplate.exchange(obtenerUri(url), metodoServicio, requestEntity, responseType);
-
-			List<?> datosLista = (List<?>) respuesta.getBody().get(Constantes.VALOR_DATA_MAP);
 			
-			ObjectMapper mapper = obtenerMapper();
+			HttpStatus codigoStatus = respuesta.getStatusCode();
 			
-			listaMenus = new ArrayList<>();
-			
-			for (Object objeto : datosLista) {
-				LinkedHashMap<?, ?> map2 = (LinkedHashMap<?, ?>) objeto;
-				listaMenus.add(mapper.convertValue(map2, MenuGeneradoDto.class));
+			if (!HttpStatus.NO_CONTENT.equals(codigoStatus)) {
+				List<?> datosLista = (List<?>) respuesta.getBody().get(Constantes.VALOR_DATA_MAP);
+				
+				ObjectMapper mapper = obtenerMapper();
+				
+				listaMenus = new ArrayList<>();
+				
+				for (Object objeto : datosLista) {
+					LinkedHashMap<?, ?> map2 = (LinkedHashMap<?, ?>) objeto;
+					listaMenus.add(mapper.convertValue(map2, MenuGeneradoDto.class));
+				}
 			}
 
 		} catch (RestClientException e) {
@@ -113,6 +118,7 @@ public class RemoteServiceMenu {
 
 	@SuppressWarnings("rawtypes")
 	public List<MenuGeneradoDto> obtenerMenuGeneradoCabecera(Integer idPersona) throws MfServiceMenuException {
+		List<MenuGeneradoDto> listaMenu = null;
 		HttpMethod metodoServicio = HttpMethod.GET;
 
 		HttpEntity<Map<String, Object>> requestEntity = new HttpEntity<Map<String, Object>>(generarHttpHeaders());
@@ -120,16 +126,18 @@ public class RemoteServiceMenu {
 		String url = URL_SERVICE + "/" + idPersona;
 
 		ResponseEntity<Map> respuesta = restTemplate.exchange(obtenerUri(url), metodoServicio, requestEntity, responseType);
-
-		ObjectMapper mapper = obtenerMapper();
 		
-		List<?> datosLista = (List<?>) respuesta.getBody().get(Constantes.VALOR_DATA_MAP);
-
-		List<MenuGeneradoDto> listaMenu = new ArrayList<>();
-
-		for (Object objeto : datosLista) {
-			LinkedHashMap<?, ?> map = (LinkedHashMap<?, ?>) objeto;
-			listaMenu.add(mapper.convertValue(map, MenuGeneradoDto.class));
+		HttpStatus codigoStatus = respuesta.getStatusCode();
+		
+		if (!HttpStatus.NO_CONTENT.equals(codigoStatus)) {
+			ObjectMapper mapper = obtenerMapper();
+			
+			List<?> datosLista = (List<?>) respuesta.getBody().get(Constantes.VALOR_DATA_MAP);
+			listaMenu = new ArrayList<>();
+			for (Object objeto : datosLista) {
+				LinkedHashMap<?, ?> map = (LinkedHashMap<?, ?>) objeto;
+				listaMenu.add(mapper.convertValue(map, MenuGeneradoDto.class));
+			}
 		}
 
 		return listaMenu;
@@ -137,6 +145,7 @@ public class RemoteServiceMenu {
 
 	@SuppressWarnings("rawtypes")
 	public Map<Integer,MenuDetalleDto> obtenerMenuGeneradoDetalle(Integer idMenuGenerado) throws MfServiceMenuException {
+		Map<Integer,MenuDetalleDto> menuDetalle = null;
 		HttpMethod metodoServicio = HttpMethod.GET;
 
 		HttpEntity<Map<String, Object>> requestEntity = new HttpEntity<Map<String, Object>>(generarHttpHeaders());
@@ -145,28 +154,26 @@ public class RemoteServiceMenu {
 
 		ResponseEntity<Map> respuesta = restTemplate.exchange(obtenerUri(url), metodoServicio, requestEntity, responseType);
 		
-		ObjectMapper mapper = obtenerMapper();
-
-		List<?> datosLista = (List) respuesta.getBody().get(Constantes.VALOR_DATA_MAP);
-
-		Map<Integer,MenuDetalleDto> menuDetalle = new HashMap<Integer,MenuDetalleDto>();
+		HttpStatus codigoStatus = respuesta.getStatusCode();
 		
-		Calendar cal = Calendar.getInstance();
+		if (!HttpStatus.NO_CONTENT.equals(codigoStatus)) {
+			ObjectMapper mapper = obtenerMapper();
 
-		for (Object objeto : datosLista) {
-			LinkedHashMap map = (LinkedHashMap) objeto;
-			MenuDetalleDto objetoDetalle = mapper.convertValue(map, MenuDetalleDto.class);
-			
-			cal.setTime(objetoDetalle.getFechaConsumo());
-			
-			menuDetalle.put(cal.get(Calendar.DAY_OF_WEEK), objetoDetalle);
-			
+			List<?> datosLista = (List) respuesta.getBody().get(Constantes.VALOR_DATA_MAP);
+			menuDetalle = new HashMap<Integer,MenuDetalleDto>();
+			Calendar cal = Calendar.getInstance();
+			for (Object objeto : datosLista) {
+				LinkedHashMap map = (LinkedHashMap) objeto;
+				MenuDetalleDto objetoDetalle = mapper.convertValue(map, MenuDetalleDto.class);
+				cal.setTime(objetoDetalle.getFechaConsumo());
+				menuDetalle.put(cal.get(Calendar.DAY_OF_WEEK), objetoDetalle);
+			}
 		}
-
+		
 		return menuDetalle;
 	}
 	
-	@SuppressWarnings("rawtypes")
+	@SuppressWarnings({ "rawtypes", "unused" })
 	public Map<Integer,MenuDetalleDto> cambiarPlatoMenuDia(MenuDetalleDto menudetalleDto) throws MfServiceMenuException{
 		HttpMethod metodoServicio = HttpMethod.PUT;
 		Map<Integer,MenuDetalleDto> menuDetalle = null;

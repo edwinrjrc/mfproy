@@ -38,7 +38,7 @@ public class UtilMfDto {
 	public static void pintaLog(Object bean, String prefijo) {
 		ObjectMapper converter = new ObjectMapper();
 		try {
-			log.info(prefijo+" : "+converter.writeValueAsString(bean));
+			log.debug(prefijo+" : "+converter.writeValueAsString(bean));
 		} catch (JsonProcessingException e) {
 			log.error(e.getMessage(), e);
 		}
@@ -52,9 +52,7 @@ public class UtilMfDto {
 	
 	public static int numeroEnteroAleatorio(int min, int max) {
 		double ra = Math.random();
-		
 		Double r = Math.floor(ra * (max - min + 1) + min);
-		
 		int rpta = r.intValue();
 		
 		return rpta;
@@ -92,7 +90,6 @@ public class UtilMfDto {
 	}
 	
 	public static boolean listaNoVacia(List<?> lista) {
-		
 		boolean resultado = (lista != null && !lista.isEmpty());
 		
 		return resultado;
@@ -172,7 +169,7 @@ public class UtilMfDto {
 		}
 	}
 	
-	public static Map parseStringMap(String texto) throws UtilMfDtoException{
+	public static Map<?, ?> parseStringMap(String texto) throws UtilMfDtoException{
 		try {
 			ObjectMapper Obj = new ObjectMapper();
 			

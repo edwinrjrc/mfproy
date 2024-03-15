@@ -58,7 +58,7 @@ public class AuthenticationController {
 	public ResponseEntity<Map<String, Object>> createAuthenticationToken(
 			@RequestBody AuthenticationRequest authenticationRequest) throws AutenticacionException {
 		ResponseEntity<Map<String, Object>> salida = null;
-		log.info("Recibiendo parametros");
+		log.debug("Recibiendo parametros");
 		UtilMfDto.pintaLog(authenticationRequest, "authenticationRequest");
 		Map<String, Object> mapeo = null;
 		UserTokenState userToken = null;

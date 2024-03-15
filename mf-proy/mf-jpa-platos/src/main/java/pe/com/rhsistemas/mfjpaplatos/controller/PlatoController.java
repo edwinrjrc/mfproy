@@ -55,6 +55,9 @@ public class PlatoController {
 		HttpStatus status = null;
 		
 		try {
+			logger.info("recibiendo parametros registrarPlato "+this.getClass().getName());
+			UtilMfDto.pintaLog(platoDto, "platoDto");
+			
 			platoRepository.save(Utilmfjpa.parsePlatoDto(platoDto));
 
 			status = HttpStatus.CREATED;
@@ -78,7 +81,10 @@ public class PlatoController {
 		ResponseEntity<Map<String, Object>> salida = null;
 		Map<String, Object> mapeo = null;
 		HttpStatus status = null;
+		
 		try {
+			logger.info("recibiendo parametros registraIngredientesPlato "+this.getClass().getName());
+			UtilMfDto.pintaLog(platoDto, "platoDto");
 			platoRepository.save(Utilmfjpa.parsePlatoDto(platoDto));
 
 			status = HttpStatus.CREATED;
@@ -101,7 +107,10 @@ public class PlatoController {
 		ResponseEntity<Map<String, Object>> salida = null;
 		Map<String, Object> mapeo = null;
 		HttpStatus status = null;
+		
 		try {
+			logger.info("recibiendo parametros consultarPlatos "+this.getClass().getName());
+			
 			List<Plato> platos = platoRepository.findByOrderByNoPlatoAsc();
 			List<PlatoDto> platosDto = new ArrayList<>();
 			
@@ -136,7 +145,7 @@ public class PlatoController {
 		Map<String, Object> mapeo = null;
 		HttpStatus status = null;
 		try {
-			logger.info("recibiendo parametros");
+			logger.info("recibiendo parametros platosNoConsumidos "+this.getClass().getName());
 			UtilMfDto.pintaLog(idPersona, "idPersona");
 			UtilMfDto.pintaLog(fechaCorteDesde, "fechaCorteDesde");
 			UtilMfDto.pintaLog(fechaCorteHasta, "fechaCorteHasta");
@@ -177,7 +186,7 @@ public class PlatoController {
 		Map<String, Object> mapeo = null;
 		HttpStatus status = null;
 		try {
-			logger.info("recibiendo parametros");
+			logger.info("recibiendo parametros platosNoConsumidos "+this.getClass().getName());
 			UtilMfDto.pintaLog(idPersona, "idPersona");
 			UtilMfDto.pintaLog(fechaCorteDesde, "fechaCorteDesde");
 			UtilMfDto.pintaLog(fechaCorteHasta, "fechaCorteHasta");
@@ -213,7 +222,7 @@ public class PlatoController {
 		Map<String, Object> mapeo = null;
 		HttpStatus status = null;
 		try {
-			logger.info("recibiendo parametros");
+			logger.debug("recibiendo parametros consultaIngredientesPlato "+this.getClass().getName());
 			UtilMfDto.pintaLog(idPlato, "idPlato");
 			
 			status = HttpStatus.NO_CONTENT;
@@ -250,6 +259,9 @@ public class PlatoController {
 		HttpStatus status = null;
 		
 		try {
+			logger.debug("recibiendo parametros consultarPlato "+this.getClass().getName());
+			UtilMfDto.pintaLog(idPlato, "idPlato");
+			
 			status = HttpStatus.NO_CONTENT;
 			Optional<Plato> platoEntity = platoRepository.findById(idPlato);
 			
@@ -276,6 +288,9 @@ public class PlatoController {
 		HttpStatus status = null;
 		
 		try {
+			logger.debug("recibiendo parametros consultarPlatoNombre "+this.getClass().getName());
+			UtilMfDto.pintaLog(nombrePlato, "nombrePlato");
+			
 			PlatoDto platoDto = null;
 			status = HttpStatus.NO_CONTENT;
 			List<Plato> listaPlatos = platoRepository.findByDePlato(nombrePlato);

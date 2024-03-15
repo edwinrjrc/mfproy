@@ -41,7 +41,7 @@ public class PlatoRecetaController {
 		Map<String, Object> mapeo = null;
 		HttpStatus status = null;
 
-		log.info("Recibiendo parametros en consultaCompletaPlato");
+		log.debug("Recibiendo parametros en consultaCompletaPlato "+this.getClass().getName());
 		try {
 			status = HttpStatus.NO_CONTENT;
 			

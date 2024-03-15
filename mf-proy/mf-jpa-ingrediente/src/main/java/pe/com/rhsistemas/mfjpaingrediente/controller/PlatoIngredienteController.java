@@ -53,7 +53,7 @@ public class PlatoIngredienteController {
 		Map<String, Object> mapeo = null;
 		
 		try {
-			log.info("Recibiendo parametros");
+			log.debug("Recibiendo parametros en registraIngredientesPlato PlatoIngredienteController");
 			UtilMfDto.pintaLog(listaIngredientePlatoDto, "listaIngredientePlatoDto");
 			
 			List<PlatoIngrediente> entities = new ArrayList<PlatoIngrediente>();
@@ -89,7 +89,7 @@ public class PlatoIngredienteController {
 		Map<String, Object> mapeo = null;
 		
 		try {
-			log.info("Recibiendo parametros");
+			log.debug("Recibiendo parametros consultaIngredientesPlato "+this.getClass().getName());
 			UtilMfDto.pintaLog(idPlato, "idPlato");
 			
 			List<PlatoIngrediente> listaIngredientes = platoIngredienteRepository.findAllByPlato(idPlato);
@@ -127,7 +127,7 @@ public class PlatoIngredienteController {
 		Map<String, Object> mapeo = null;
 		
 		try {
-			log.info("Recibiendo parametros consultaIngredientesPlatoMenu");
+			log.debug("Recibiendo parametros consultaIngredientesPlatoMenu "+this.getClass().getName());
 			UtilMfDto.pintaLog(idMenu, "idMenu");
 			estadoHttp = HttpStatus.NO_CONTENT;
 			
@@ -176,7 +176,7 @@ public class PlatoIngredienteController {
 		Map<String, Object> mapeo = null;
 		
 		try {
-			log.info("Recibiendo parametros");
+			log.debug("Recibiendo parametros eliminarIngredientesPlato "+this.getClass().getName());
 			UtilMfDto.pintaLog(idPlato, "idPlato");
 			
 			this.platoIngredienteRepository.eliminarIngredientesPlato(idPlato);

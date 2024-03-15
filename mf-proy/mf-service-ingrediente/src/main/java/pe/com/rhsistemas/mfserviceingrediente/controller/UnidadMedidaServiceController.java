@@ -43,7 +43,7 @@ public class UnidadMedidaServiceController {
 		HttpStatus status = null;
 		
 		try {
-			log.info("Recibiendo parametros UnidadMedidaServiceController");
+			log.debug("Recibiendo parametros UnidadMedidaServiceController "+this.getClass().getName());
 			status = HttpStatus.NO_CONTENT;
 			
 			List<UnidadMedidaDto> listaUnidades = ingredienteLogicaService.listarUnidadesMedida();

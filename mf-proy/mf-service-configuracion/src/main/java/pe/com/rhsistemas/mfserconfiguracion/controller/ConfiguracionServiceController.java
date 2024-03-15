@@ -49,7 +49,7 @@ public class ConfiguracionServiceController {
 		
 		try {
 			status = HttpStatus.NO_CONTENT;
-			log.info("Recibiendo parametros guardaConfiguracionCuenta");
+			log.debug("Recibiendo parametros guardaConfiguracionCuenta "+this.getClass().getName());
 			UtilMfDto.pintaLog(configuracionCuentaDto, "configuracionCuentaDto");
 			
 			String diasCocina = configuracionCuentaDto.getConfiguracionCuentaDto().getDiasCocinaSemana();
@@ -89,7 +89,7 @@ public class ConfiguracionServiceController {
 		
 		try {
 			status = HttpStatus.NO_CONTENT;
-			log.info("Recibiendo parametros consultarConfiguracionCuenta");
+			log.debug("Recibiendo parametros consultarConfiguracionCuenta "+this.getClass().getName());
 			UtilMfDto.pintaLog(idPersona, "idPersona");
 			
 			ConfiguracionCuentaDto resultadoConsulta = configuracionCuentaService.consultarConfiguracionFamilia(idPersona);

@@ -66,7 +66,7 @@ public class RecetaController {
 
 		try {
 			status = HttpStatus.NO_CONTENT;
-			log.info("Recibiendo parametros en guardarModificacionReceta");
+			log.debug("Recibiendo parametros en guardarModificacionReceta "+this.getClass().getName());
 			UtilMfDto.pintaLog(preparacionModificada, "preparacionModificada");
 			
 			List<Map<String,Object>> listaPreparacion = (List<Map<String,Object>>) preparacionModificada.get("preparacionModificada");
@@ -112,7 +112,7 @@ public class RecetaController {
 
 		try {
 			status = HttpStatus.NO_CONTENT;
-			log.info("Recibiendo parametros en guardarComentarioReceta");
+			log.debug("Recibiendo parametros en guardarComentarioReceta "+this.getClass().getName());
 			UtilMfDto.pintaLog(recetaComentarioDto, "recetaComentarioDto");
 			
 			recetaComentarioDto.setFechaRegistro(UtilMfDto.hoyTimestamp());
@@ -147,7 +147,7 @@ public class RecetaController {
 
 		try {
 			status = HttpStatus.NO_CONTENT;
-			log.info("Recibiendo parametros en eliminarComentarioReceta");
+			log.debug("Recibiendo parametros en eliminarComentarioReceta "+this.getClass().getName());
 			UtilMfDto.pintaLog(idComentarioReceta, "idComentarioReceta");
 			UtilMfDto.pintaLog(idUsuario, "idUsuario");
 			
@@ -186,7 +186,7 @@ public class RecetaController {
 
 		try {
 			status = HttpStatus.NO_CONTENT;
-			log.info("Recibiendo parametros en guardarComentarioReceta");
+			log.debug("Recibiendo parametros en guardarComentarioReceta "+this.getClass().getName());
 			UtilMfDto.pintaLog(idPlato, "idPlato");
 			
 			List<RecetaComentarioDto> listaComentarios = recetaService.consultarComentario(idPlato);
@@ -220,8 +220,8 @@ public class RecetaController {
 
 		try {
 			status = HttpStatus.NO_CONTENT;
-			log.info("Recibiendo parametros en guardarComentarioReceta");
-			log.info("tamano ::"+files.length);
+			log.debug("Recibiendo parametros en guardarComentarioReceta "+this.getClass().getName());
+			log.debug("tamano ::"+files.length);
 			UtilMfDto.pintaLog(idPlato, "idPlato");
 			UtilMfDto.pintaLog(idUsuario, "idUsuario");
 			

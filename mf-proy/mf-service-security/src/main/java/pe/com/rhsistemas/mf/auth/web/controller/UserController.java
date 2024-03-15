@@ -52,13 +52,13 @@ public class UserController {
 
     @GetMapping("")
     public List<Usuario> getUsers() {
-        //log.info("process=get-users");
+        //log.debug("process=get-users");
         return userService.getAllUsers();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Usuario> getUser(@PathVariable Long id) {
-        //log.info("process=get-user, user_id={}", id);
+        //log.debug("process=get-user, user_id={}", id);
         Optional<Usuario> user = userService.getUserById(id);
         return user.map( u -> ResponseEntity.ok(u))
                    .orElse(ResponseEntity.notFound().build());
@@ -67,13 +67,13 @@ public class UserController {
     @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping("/users")
     public ResponseEntity<Map<String, Object>> createUser(@RequestBody UsuarioBeanDto usuarioBean) {
-    	log.info("creacion de usuario");
+    	log.debug("creacion de usuario");
     	Map<String, Object> mapeo = null;
     	HttpStatus status = null;
     	ResponseEntity<Map<String, Object>> salida = null;
     	try {
     		status = HttpStatus.NO_CONTENT;
-			log.info(UtilMfDto.escribeObjetoEnLog(usuarioBean));
+			log.debug(UtilMfDto.escribeObjetoEnLog(usuarioBean));
 			
 			personaService.registrarUsuario(usuarioBean.getUsuario());
 			
@@ -125,7 +125,7 @@ public class UserController {
     @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping("/userCorreo")
     public ResponseEntity<Map<String, Object>> enviarCorreoRecupera(@RequestBody String correoUsuario){
-    	log.info("creacion de usuario");
+    	log.debug("creacion de usuario");
     	Map<String, Object> mapeo = null;
     	HttpStatus status = null;
     	ResponseEntity<Map<String, Object>> salida = null;
@@ -138,14 +138,14 @@ public class UserController {
     @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping("/userCorreo")
     public ResponseEntity<Map<String, Object>> validaCorreoUsario(@RequestParam(name = "correoUsuario", required = true) String correoUsuario){
-    	log.info("creacion de usuario");
+    	log.debug("creacion de usuario");
     	Map<String, Object> mapeo = null;
     	HttpStatus status = null;
     	ResponseEntity<Map<String, Object>> salida = null;
     	
     	try {
     		status = HttpStatus.NO_CONTENT;
-			log.info("Recibiendo parametros en validaCorreoUsario");
+			log.debug("Recibiendo parametros en validaCorreoUsario");
 			UtilMfDto.pintaLog(correoUsuario, "correoUsuario");
 			
 			personaService.recuperarContrasena(correoUsuario);
@@ -171,14 +171,14 @@ public class UserController {
     @CrossOrigin(origins = "http://localhost:4200")
     @PutMapping("/codigoSeguridad")
     public ResponseEntity<Map<String, Object>> validaCodigoSeguridad(@RequestBody(required = true) ValidaCodigoBeanDto validaCodigoBeanDto){
-    	log.info("creacion de usuario");
+    	log.debug("creacion de usuario");
     	Map<String, Object> mapeo = null;
     	HttpStatus status = null;
     	ResponseEntity<Map<String, Object>> salida = null;
     	
     	try {
     		status = HttpStatus.NO_CONTENT;
-			log.info("Recibiendo parametros en validaCorreoUsario");
+			log.debug("Recibiendo parametros en validaCorreoUsario");
 			UtilMfDto.pintaLog(validaCodigoBeanDto, "validaCodigoBeanDto");
 			
 			boolean resultado = personaService.validaCodigoSeguridad(validaCodigoBeanDto.getValidacionCodigoSeguridad());
@@ -189,7 +189,7 @@ public class UserController {
 			mapeo.put(Constantes.VALOR_DATA_MAP, resultado);
 			status = HttpStatus.OK;
 			
-			log.info(mapeo.toString());
+			log.debug(mapeo.toString());
 			
 		} catch (MfServiceSecurityException e) {
 			log.error(e.getMessage(),e);
@@ -207,7 +207,7 @@ public class UserController {
     @CrossOrigin(origins = "http://localhost:4200")
     @PutMapping("/{id}")
     public Usuario updateUser(@PathVariable Long id, @RequestBody Usuario user) {
-        //log.info("process=update-user, user_id={}", id);
+        //log.debug("process=update-user, user_id={}", id);
         //user.setId(id);
         return userService.updateUser(user);
     }
@@ -215,14 +215,14 @@ public class UserController {
     @CrossOrigin(origins = "http://localhost:4200")
     @PutMapping("/credencialNueva")
     public ResponseEntity<Map<String, Object>> actualizaCredencial(@RequestBody ActualizaCredencialDto actualizaCredencialDto) {
-    	log.info("Actualizacion de credencial de usuario");
+    	log.debug("Actualizacion de credencial de usuario");
     	Map<String, Object> mapeo = null;
     	HttpStatus status = null;
     	ResponseEntity<Map<String, Object>> salida = null;
     	
     	try {
     		status = HttpStatus.NO_CONTENT;
-			log.info("Recibiendo parametros en actualizaCredencial");
+			log.debug("Recibiendo parametros en actualizaCredencial");
 			UtilMfDto.pintaLog(actualizaCredencialDto, "actualizaCredencialDto");
 			
 			UsuarioDto usuarioDto = new UsuarioDto();
@@ -238,7 +238,7 @@ public class UserController {
 			mapeo.put(Constantes.VALOR_DATA_MAP, null);
 			status = HttpStatus.OK;
 			
-			log.info(mapeo.toString());
+			log.debug(mapeo.toString());
 			
 		} catch (MfServiceSecurityException e) {
 			log.error(e.getMessage(),e);

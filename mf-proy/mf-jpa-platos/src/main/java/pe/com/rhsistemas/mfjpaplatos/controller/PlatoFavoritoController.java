@@ -53,7 +53,7 @@ public class PlatoFavoritoController {
 		HttpStatus status = null;
 
 		try {
-			log.info("recibiendo parametros en " + this.getClass().getName() + " en guardarPlatoFavorito");
+			log.debug("recibiendo parametros en " + this.getClass().getName() + " en guardarPlatoFavorito");
 			UtilMfDto.pintaLog(platoFavoritoDto, "platoFavoritoDto");
 			
 			Optional<PlatoFavorito> platoFavoritoOptional = platoFavoritoRepository.findById(Utilmfjpa.parseaPlatoFavoritoPk(platoFavoritoDto.getIdPersona(), platoFavoritoDto.getIdPlato()));
@@ -99,7 +99,7 @@ public class PlatoFavoritoController {
 		HttpStatus status = null;
 
 		try {
-			log.info("recibiendo parametros en " + this.getClass().getName() + " en consultarPlatoFavorito");
+			log.debug("recibiendo parametros en " + this.getClass().getName() + " en consultarPlatoFavorito");
 			UtilMfDto.pintaLog(listaPlatoFavorito, "listaPlatoFavorito");
 			UtilMfDto.pintaLog(idPersona, "idPersona");
 
@@ -152,7 +152,7 @@ public class PlatoFavoritoController {
 		HttpStatus status = null;
 
 		try {
-			log.info("recibiendo parametros en " + this.getClass().getName() + " en consultarPlatosFavoritos");
+			log.debug("recibiendo parametros en " + this.getClass().getName() + " en consultarPlatosFavoritos");
 			UtilMfDto.pintaLog(idPersona, "idPersona");
 
 			status = HttpStatus.NO_CONTENT;

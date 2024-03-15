@@ -53,7 +53,7 @@ public class UsuariosController {
 
 		try {
 			status = HttpStatus.NO_CONTENT;
-			log.debug("Parametros recibidos registrarUsuario");
+			log.debug("Parametros recibidos registrarUsuario "+this.getClass().getName());
 			UtilMfDto.pintaLog(usuarioDto, "usuarioDto");
 			
 			Usuario usuarioEntity = Utilmfjpa.paseUsuario(usuarioDto);
@@ -94,7 +94,7 @@ public class UsuariosController {
 		HttpStatus status = null;
 		
 		try {
-			log.debug("Parametros recibidos consultarCorreoUsuario");
+			log.debug("Parametros recibidos consultarCorreoUsuario "+this.getClass().getName());
 			UtilMfDto.pintaLog(loginUsuario, "loginUsuario");
 			
 			List<Usuario> listaUsuarios = usuarioRepository.findByTxLogin(loginUsuario);
@@ -131,7 +131,7 @@ public class UsuariosController {
 		HttpStatus status = null;
 		
 		try {
-			log.debug("Parametros recibidos actualizaCredencial");
+			log.debug("Parametros recibidos actualizaCredencial "+this.getClass().getName());
 			UtilMfDto.pintaLog(usuarioDto, "usuarioDto");
 			
 			Usuario usuarioActualizado = usuarioRepository.save(Utilmfjpa.paseUsuario(usuarioDto));

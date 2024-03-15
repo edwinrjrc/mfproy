@@ -45,6 +45,8 @@ public class TipoPlatoController {
 		HttpStatus status = null;
 
 		try {
+			log.debug("recibiendo parametros listaTipoPlatos "+this.getClass().getName());
+			
 			List<TipoPlato> listaTipos = tipoPlatoRepository.findAll();
 			List<TipoPlatoDto> listaTipoPlato = null;
 
@@ -88,6 +90,8 @@ public class TipoPlatoController {
 		HttpStatus status = null;
 
 		try {
+			log.debug("recibiendo parametros listaTipoPlatosFondo "+this.getClass().getName());
+			
 			List<TipoPlato> listaTipos = tipoPlatoRepository.findByInFondo("S");
 			List<TipoPlatoDto> listaTipoPlato = null;
 
@@ -130,6 +134,8 @@ public class TipoPlatoController {
 		HttpStatus status = null;
 
 		try {
+			log.debug("recibiendo parametros listaTipoPlatosEntrada "+this.getClass().getName());
+			
 			List<TipoPlato> listaTipos = tipoPlatoRepository.findByInEntrada("S");
 			List<TipoPlatoDto> listaTipoPlato = null;
 
@@ -172,6 +178,8 @@ public class TipoPlatoController {
 		HttpStatus status = null;
 
 		try {
+			log.debug("recibiendo parametros listaTiposPlatosFondo "+this.getClass().getName());
+			
 			List<TipoPlato> listaTipos = tipoPlatoRepository.findByTiposxPlatoInFondo("S");
 			List<TipoPlatoDto> listaTipoPlato = null;
 

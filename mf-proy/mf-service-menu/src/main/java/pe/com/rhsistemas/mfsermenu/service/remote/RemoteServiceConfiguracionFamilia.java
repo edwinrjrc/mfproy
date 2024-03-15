@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -45,6 +46,7 @@ public class RemoteServiceConfiguracionFamilia {
 	private RestTemplate restTemplate;
 	
 	
+	@SuppressWarnings("rawtypes")
 	public ConfiguracionCuentaDto consultarConfiguracionCuenta(Integer idPersona) throws MfServiceMenuException {
 		ConfiguracionCuentaDto configuracion = null;
 		try {
@@ -55,13 +57,16 @@ public class RemoteServiceConfiguracionFamilia {
 			String url = URL_SERVICE_1;
 			url = URL_SERVICE_1 + "/" + idPersona;
 			
-			ResponseEntity<Map> respuesta = restTemplate.exchange(obtenerUri(url), metodoServicio, requestEntity,
-					responseType);
-
-			ObjectMapper mapper = obtenerMapper();
-			Map<?, ?> objetoResultado = respuesta.getBody();
+			ResponseEntity<Map> respuesta = restTemplate.exchange(obtenerUri(url), metodoServicio, requestEntity,responseType);
 			
-			configuracion = mapper.convertValue(objetoResultado.get(Constantes.VALOR_DATA_MAP), ConfiguracionCuentaDto.class);
+			HttpStatus codigoStatus = respuesta.getStatusCode();
+			
+			if (!HttpStatus.NO_CONTENT.equals(codigoStatus)) {
+				ObjectMapper mapper = obtenerMapper();
+				Map<?, ?> objetoResultado = respuesta.getBody();
+				
+				configuracion = mapper.convertValue(objetoResultado.get(Constantes.VALOR_DATA_MAP), ConfiguracionCuentaDto.class);
+			}
 
 		} catch (RestClientException e) {
 			log.error(e.getMessage(), e);

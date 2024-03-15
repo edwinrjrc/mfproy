@@ -45,7 +45,7 @@ public class IngredientesMenuServiceController {
 		HttpStatus status = null;
 		try {
 			status = HttpStatus.NO_CONTENT;
-			log.info("Recibiendo parametros ingredientesMenu");
+			log.debug("Recibiendo parametros ingredientesMenu "+this.getClass().getName());
 			UtilMfDto.pintaLog(idMenu, "idMenu");
 			UtilMfDto.pintaLog(idUsuario, "idUsuario");
 			
@@ -82,7 +82,7 @@ public class IngredientesMenuServiceController {
 		HttpStatus status = null;
 		try {
 			status = HttpStatus.NO_CONTENT;
-			log.info("Recibiendo parametros ingredientesMenu");
+			log.debug("Recibiendo parametros ingredientesMenu "+this.getClass().getName());
 			UtilMfDto.pintaLog(idMenu, "idMenu");
 			
 			Map<String, Object> salidaPdf = ingredienteLogicaService.listarPlatoIngredientesMenu(idMenu);

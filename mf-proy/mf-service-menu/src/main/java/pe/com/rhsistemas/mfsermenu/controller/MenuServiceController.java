@@ -53,7 +53,7 @@ public class MenuServiceController {
 
 		try {
 			status = HttpStatus.NO_CONTENT;
-			log.info("Recibiendo parametros");
+			log.debug("Recibiendo parametros generarMenu "+this.getClass().getName());
 			UtilMfDto.pintaLog(param, "generarMenuDto");
 
 			Integer idPersona = Integer.valueOf(param.getIdPersona());
@@ -109,7 +109,7 @@ public class MenuServiceController {
 		HttpStatus status = null;
 		try {
 			status = HttpStatus.NO_CONTENT;
-			log.info("Recibiendo parametros consultarMenu");
+			log.debug("Recibiendo parametros consultarMenu "+this.getClass().getName());
 			UtilMfDto.pintaLog(idPersona, "idPersona");
 
 			List<Map<String, Object>> menuSemanas = menuLogicaService.consultarMenuActivo(idPersona);
@@ -151,13 +151,13 @@ public class MenuServiceController {
 		HttpStatus status = null;
 		try {
 			status = HttpStatus.NO_CONTENT;
-			log.info("Recibiendo parametros cambiarPlatoMenu");
+			log.debug("Recibiendo parametros cambiarPlatoMenu "+this.getClass().getName());
 			UtilMfDto.pintaLog(datos, "datos");
 			
 			Date fechaInput = UtilMfDto.parseStringADate(datos.getFechaConsumo(), Constantes.FORMAT_DATE_MAPPER, null);
 			
-			log.info("fechaInput ::"+fechaInput);
-			log.info("fechaInput 2::"+fechaInput.toString());
+			log.debug("fechaInput ::"+fechaInput);
+			log.debug("fechaInput 2::"+fechaInput.toString());
 			
 			String fechaStr = UtilMfDto.parseDateAString(fechaInput, "dd/MM/yyyy");
 			

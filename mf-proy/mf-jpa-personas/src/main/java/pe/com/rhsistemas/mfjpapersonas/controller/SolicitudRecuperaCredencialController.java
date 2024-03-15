@@ -45,7 +45,7 @@ public class SolicitudRecuperaCredencialController {
 		HttpStatus status = null;
 		
 		try {
-			log.debug("Parametros recibidos");
+			log.debug("Parametros recibidos registrarSolicitudRecupero "+this.getClass().getName());
 			UtilMfDto.pintaLog(solicitudRecupera, "solicitudRecupera");
 			
 			SolicitudRecuperaCredencial salidaRegistro = solicitudRecuperoCredencialRepository.save(Utilmfjpa.parseaSolicitudRecuperaCredencial(solicitudRecupera));
@@ -74,7 +74,7 @@ public class SolicitudRecuperaCredencialController {
 		HttpStatus status = null;
 		
 		try {
-			log.debug("Parametros recibidos");
+			log.debug("Parametros recibidos consultaUltimaSolicitudRecupero "+this.getClass().getName());
 			UtilMfDto.pintaLog(idPersona, "idPersona");
 			
 			SolicitudRecuperaCredencial solicitud = solicitudRecuperoCredencialRepository.buscarUltimaSolicitud(idPersona);

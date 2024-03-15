@@ -44,6 +44,13 @@ public class PlatoTipoPlatoController {
 	@Autowired
 	private PlatoRepository platoRepository;
 	
+	/**
+	 * 
+	 * @param idPersona
+	 * @param fechaCorteDesde
+	 * @param fechaCorteHasta
+	 * @return
+	 */
 	@GetMapping(value = "/tipoPlatoPlato", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Map<String, Object>> consultarTiposPlato(
 			@RequestParam(name = "idPersona", required = true) Integer idPersona,
@@ -54,7 +61,7 @@ public class PlatoTipoPlatoController {
 		HttpStatus status = null;
 		
 		try {
-			log.info("recibiendo parametros");
+			log.debug("recibiendo parametros consultarTiposPlato "+this.getClass().getName());
 			UtilMfDto.pintaLog(idPersona, "idPersona");
 			UtilMfDto.pintaLog(fechaCorteDesde, "fechaCorteDesde");
 			UtilMfDto.pintaLog(fechaCorteHasta, "fechaCorteHasta");

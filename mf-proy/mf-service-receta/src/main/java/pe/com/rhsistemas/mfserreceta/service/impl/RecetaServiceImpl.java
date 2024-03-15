@@ -101,7 +101,7 @@ public class RecetaServiceImpl implements RecetaService {
 		Map<String, Integer> mapeoIngredientes = listaIngredientes.stream()
 				.collect(Collectors.toMap(IngredienteDto::getNombreIngrediente, IngredienteDto::getId));
 
-		List<PlatoIngredienteDto> listaIngredientesPlato = new ArrayList();
+		List<PlatoIngredienteDto> listaIngredientesPlato = new ArrayList<PlatoIngredienteDto>();
 		PlatoIngredienteDto platoIngredienteDto = null;
 		int i=0;
 		for (IngredientesPlatoCargaDto ingrePlatoCargaDto : listaIngredientesCarga) {

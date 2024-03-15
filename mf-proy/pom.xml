@@ -13,7 +13,9 @@
   	<module>mf-jpa-platos</module>
   	<module>mf-jpa-receta</module>
   	<module>mf-jpa-personas</module>
+  	<module>mf-jpa-configuracion</module>
   	<module>mf-service-ingrediente</module>
+  	<module>mf-service-mail</module>
   	<module>mf-service-menu</module>
   	<module>mf-service-plato</module>
   	<module>mf-service-receta</module>

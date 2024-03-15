@@ -22,12 +22,10 @@ import org.springframework.web.bind.annotation.RestController;
 import pe.com.rhsistemas.mf.cross.compartido.Constantes;
 import pe.com.rhsistemas.mf.cross.dto.PersonaJuridicaDto;
 import pe.com.rhsistemas.mf.cross.dto.PersonaNaturalDto;
-import pe.com.rhsistemas.mf.cross.dto.SolicitudRecuperaCredencialDto;
 import pe.com.rhsistemas.mf.cross.util.UtilMfDto;
 import pe.com.rhsistemas.mfjpapersonas.dao.PersonaJuridicaRepository;
 import pe.com.rhsistemas.mfjpapersonas.dao.PersonaNaturalRepository;
 import pe.com.rhsistemas.mfjpapersonas.dao.PersonaRepository;
-import pe.com.rhsistemas.mfjpapersonas.dao.SolicitudRecuperoCredencialRepository;
 import pe.com.rhsistemas.mfjpapersonas.entity.Persona;
 import pe.com.rhsistemas.mfjpapersonas.entity.PersonaNatural;
 import pe.com.rhsistemas.mfjpapersonas.util.Utilmfjpa;
@@ -58,7 +56,7 @@ public class PersonasController {
 		HttpStatus status = null;
 
 		try {
-			log.debug("Parametros recibidos");
+			log.debug("Parametros recibidos registrarPersonaNatural "+this.getClass().getName());
 			UtilMfDto.pintaLog(personaNaturalDto, "personaNaturalDto");
 			
 			Persona personaEntity = Utilmfjpa.parsePersonaDto(personaNaturalDto);
@@ -91,7 +89,7 @@ public class PersonasController {
 		HttpStatus status = null;
 
 		try {
-			log.debug("Parametros recibidos");
+			log.debug("Parametros recibidos consultarPersonaNatural "+this.getClass().getName());
 			UtilMfDto.pintaLog(idPersona, "idPersona");
 			
 			Optional<PersonaNatural> salidaPersona = personaNaturalRepository.findById( UtilMfDto.parseIntegerALong(idPersona));
@@ -123,10 +121,8 @@ public class PersonasController {
 		HttpStatus status = null;
 
 		try {
-			log.debug("Parametros recibidos");
+			log.debug("Parametros recibidos registrarPersonaJuridica "+this.getClass().getName());
 			UtilMfDto.pintaLog(personaJuridicaDto, "personaJuridicaDto");
-
-			//personaRepository.save(Utilmfjpa.parsePersonaDto(personaJuridicaDto));
 
 			personaJuridicaRepository.save(Utilmfjpa.parsePersonaJuridicaDto(personaJuridicaDto));
 

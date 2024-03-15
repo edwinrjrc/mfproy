@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -53,7 +54,7 @@ public class RemoteServiceSolicitudRecuperaCredencial {
 	private RestTemplate restTemplate;
 	
 	public SolicitudRecuperaCredencialDto registrarSolicitudRecuperaCredencial(SolicitudRecuperaCredencialDto solicitudDto) throws MfServiceSecurityException{
-		SolicitudRecuperaCredencialDto salidaSolicitud;
+		SolicitudRecuperaCredencialDto salidaSolicitud = null;
 		try {
 			HttpMethod metodoServicio = HttpMethod.POST;
 
@@ -62,12 +63,16 @@ public class RemoteServiceSolicitudRecuperaCredencial {
 			Class<Map> responseType = Map.class;
 			String url = URL_SERVICE_1;
 			ResponseEntity<Map> respuesta = restTemplate.exchange(obtenerUri(url), metodoServicio, requestEntity, responseType);
-		
-			ObjectMapper mapper = obtenerMapper();
 			
-			LinkedHashMap<?,?> dato = (LinkedHashMap<?,?>) respuesta.getBody().get(Constantes.VALOR_DATA_MAP);
-			salidaSolicitud = mapper.convertValue(dato, SolicitudRecuperaCredencialDto.class);
-
+			HttpStatus codigoStatus = respuesta.getStatusCode();
+			
+			if (!HttpStatus.NO_CONTENT.equals(codigoStatus)) {
+				ObjectMapper mapper = obtenerMapper();
+				
+				LinkedHashMap<?,?> dato = (LinkedHashMap<?,?>) respuesta.getBody().get(Constantes.VALOR_DATA_MAP);
+				salidaSolicitud = mapper.convertValue(dato, SolicitudRecuperaCredencialDto.class);
+			}
+		
 		} catch (HttpClientErrorException.Conflict e) {
 			log.error(e.getMessage());
 			throw new HttpClienteStatusConflict(e,e.getResponseBodyAsString());
@@ -78,7 +83,7 @@ public class RemoteServiceSolicitudRecuperaCredencial {
 	}
 	
 	public SolicitudRecuperaCredencialDto buscarUltimaSolicitudRecuperaCredencial(Long idPersona) throws MfServiceSecurityException{
-		SolicitudRecuperaCredencialDto salidaSolicitud;
+		SolicitudRecuperaCredencialDto salidaSolicitud = null;
 		try {
 			HttpMethod metodoServicio = HttpMethod.GET;
 
@@ -87,12 +92,16 @@ public class RemoteServiceSolicitudRecuperaCredencial {
 			Class<Map> responseType = Map.class;
 			String url = URL_SERVICE_1 + "/" + idPersona;
 			ResponseEntity<Map> respuesta = restTemplate.exchange(obtenerUri(url), metodoServicio, requestEntity, responseType);
-		
-			ObjectMapper mapper = obtenerMapper();
 			
-			LinkedHashMap<?,?> dato = (LinkedHashMap<?,?>) respuesta.getBody().get(Constantes.VALOR_DATA_MAP);
-			salidaSolicitud = mapper.convertValue(dato, SolicitudRecuperaCredencialDto.class);
-
+			HttpStatus codigoStatus = respuesta.getStatusCode();
+			
+			if (!HttpStatus.NO_CONTENT.equals(codigoStatus)) {
+				ObjectMapper mapper = obtenerMapper();
+				
+				LinkedHashMap<?,?> dato = (LinkedHashMap<?,?>) respuesta.getBody().get(Constantes.VALOR_DATA_MAP);
+				salidaSolicitud = mapper.convertValue(dato, SolicitudRecuperaCredencialDto.class);
+			}
+		
 		} catch (HttpClientErrorException.Conflict e) {
 			log.error(e.getMessage());
 			throw new HttpClienteStatusConflict(e,e.getResponseBodyAsString());

@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -73,7 +74,7 @@ public class RemoteServiceReceta {
 			ResponseEntity<Map> respuesta = restTemplate.exchange(builderURI.toUriString(), metodoServicio,
 					requestEntity, responseType);
 
-			log.info(respuesta.toString());
+			log.debug(respuesta.toString());
 
 		} catch (RestClientException e) {
 			log.error(e.getMessage(), e);
@@ -98,7 +99,7 @@ public class RemoteServiceReceta {
 			ResponseEntity<Map> respuesta = restTemplate.exchange(builderURI.toUriString(), metodoServicio,
 					requestEntity, responseType);
 
-			log.info(respuesta.toString());
+			log.debug(respuesta.toString());
 
 		} catch (RestClientException e) {
 			log.error(e.getMessage(), e);
@@ -123,13 +124,17 @@ public class RemoteServiceReceta {
 
 			ResponseEntity<Map> respuesta = restTemplate.exchange(builderURI.toUriString(), metodoServicio,
 					requestEntity, responseType);
+			
+			HttpStatus codigoStatus = respuesta.getStatusCode();
+			
+			if (!HttpStatus.NO_CONTENT.equals(codigoStatus)) {
+				ObjectMapper mapper = obtenerMapper();
 
-			ObjectMapper mapper = obtenerMapper();
-
-			List<?> datosLista = (List<?>) respuesta.getBody().get(Constantes.VALOR_DATA_MAP);
-			listaComentario = new ArrayList<>();
-			for (Object objeto : datosLista) {
-				listaComentario.add(mapper.convertValue((LinkedHashMap<?, ?>) objeto, RecetaComentarioDto.class));
+				List<?> datosLista = (List<?>) respuesta.getBody().get(Constantes.VALOR_DATA_MAP);
+				listaComentario = new ArrayList<>();
+				for (Object objeto : datosLista) {
+					listaComentario.add(mapper.convertValue((LinkedHashMap<?, ?>) objeto, RecetaComentarioDto.class));
+				}
 			}
 
 		} catch (RestClientException e) {
@@ -142,8 +147,8 @@ public class RemoteServiceReceta {
 		return listaComentario;
 	}
 	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void guardarIngredientesPlato(List<PlatoIngredienteDto> listaIngredientesCarga) throws MfServiceRecetaException {
-		List<RecetaComentarioDto> listaComentario = null;
 		try {
 			HttpMethod metodoServicio = HttpMethod.POST;
 
@@ -152,7 +157,7 @@ public class RemoteServiceReceta {
 
 			UriComponentsBuilder builderURI = UriComponentsBuilder.fromHttpUrl(URL_SERVICE_4);
 
-			ResponseEntity<Map> respuesta = restTemplate.exchange(builderURI.toUriString(), metodoServicio,
+			restTemplate.exchange(builderURI.toUriString(), metodoServicio,
 					requestEntity, responseType);
 
 		} catch (RestClientException e) {
@@ -164,6 +169,7 @@ public class RemoteServiceReceta {
 		}
 	}
 	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void eliminarIngredientesPlato(Integer idPlato) throws MfServiceRecetaException {
 		try {
 			HttpMethod metodoServicio = HttpMethod.DELETE;
@@ -173,7 +179,7 @@ public class RemoteServiceReceta {
 
 			UriComponentsBuilder builderURI = UriComponentsBuilder.fromHttpUrl(URL_SERVICE_4);
 
-			ResponseEntity<Map> respuesta = restTemplate.exchange(builderURI.toUriString(), metodoServicio,
+			restTemplate.exchange(builderURI.toUriString(), metodoServicio,
 					requestEntity, responseType);
 
 		} catch (RestClientException e) {
@@ -185,6 +191,7 @@ public class RemoteServiceReceta {
 		}
 	}
 	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void guardarPreparacionPlato(List<RecetaDto> listaPreparacionPlato) throws MfServiceRecetaException {
 		try {
 			HttpMethod metodoServicio = HttpMethod.POST;
@@ -194,7 +201,7 @@ public class RemoteServiceReceta {
 
 			UriComponentsBuilder builderURI = UriComponentsBuilder.fromHttpUrl(URL_SERVICE_5);
 
-			ResponseEntity<Map> respuesta = restTemplate.exchange(builderURI.toUriString(), metodoServicio,
+			restTemplate.exchange(builderURI.toUriString(), metodoServicio,
 					requestEntity, responseType);
 
 		} catch (RestClientException e) {
@@ -206,6 +213,7 @@ public class RemoteServiceReceta {
 		}
 	}
 	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void eliminarPreparacionPlato(Integer idPlato) throws MfServiceRecetaException {
 		try {
 			HttpMethod metodoServicio = HttpMethod.DELETE;
@@ -215,7 +223,7 @@ public class RemoteServiceReceta {
 
 			UriComponentsBuilder builderURI = UriComponentsBuilder.fromHttpUrl(URL_SERVICE_5);
 
-			ResponseEntity<Map> respuesta = restTemplate.exchange(builderURI.toUriString(), metodoServicio,
+			restTemplate.exchange(builderURI.toUriString(), metodoServicio,
 					requestEntity, responseType);
 
 		} catch (RestClientException e) {

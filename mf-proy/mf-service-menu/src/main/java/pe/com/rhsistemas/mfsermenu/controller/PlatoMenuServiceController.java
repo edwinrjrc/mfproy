@@ -46,7 +46,7 @@ public class PlatoMenuServiceController {
 
 		try {
 			status = HttpStatus.NO_CONTENT;
-			log.info("Recibiendo parametros");
+			log.debug("Recibiendo parametros cambiarPlatoMenuDia "+this.getClass().getName());
 			UtilMfDto.pintaLog(param, "cambiarPlatoMenuDia");
 			
 			Date fechaConsumo = UtilMfDto.parseStringADate(param.getFechaConsumo(), Constantes.FORMAT_DATE_MAPPER, null);

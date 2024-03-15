@@ -51,7 +51,7 @@ public class MenuDetalleController {
 		Map<String, Object> mapeo = null;
 		HttpStatus status = null;
 
-		log.info("Recibiendo parametros");
+		log.debug("Recibiendo parametros consultarDetalleMenu "+this.getClass().getName());
 		UtilMfDto.pintaLog(idMenuGenerado, "idMenuGenerado");
 
 		try {
@@ -95,7 +95,7 @@ public class MenuDetalleController {
 		Map<String, Object> mapeo = null;
 		HttpStatus status = null;
 
-		log.info("Recibiendo parametros");
+		log.debug("Recibiendo parametros grabarDetalleMenuDia "+this.getClass().getName());
 		UtilMfDto.pintaLog(menudetalleDto, "menudetalleDto");
 
 		try {
@@ -124,7 +124,7 @@ public class MenuDetalleController {
 		Map<String, Object> mapeo = null;
 		HttpStatus status = null;
 
-		log.info("Recibiendo parametros");
+		log.debug("Recibiendo parametros actualizaMenuDia "+this.getClass().getName());
 		UtilMfDto.pintaLog(menudetalleDto, "menudetalleDto");
 
 		try {

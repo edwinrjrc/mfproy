@@ -33,7 +33,7 @@ public class AutorizacionFilter extends OncePerRequestFilter {
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
 		String header = request.getHeader("Authorization");
-		log.info("header ::" + header);
+		log.debug("header ::" + header);
 		if (header == null || !header.startsWith("Bearer ")) {
 			chain.doFilter(request, response);
 			return;

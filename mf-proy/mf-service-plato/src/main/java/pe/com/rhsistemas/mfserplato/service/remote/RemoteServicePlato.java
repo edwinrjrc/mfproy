@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -68,7 +69,7 @@ public class RemoteServicePlato {
 			
 			ResponseEntity<Map> respuesta = restTemplate.exchange(builderURI.toUriString(), metodoServicio, requestEntity, responseType);
 			
-			log.info(respuesta.toString());
+			log.debug(respuesta.toString());
 			
 		} catch (RestClientException e) {
 			log.error(e.getMessage(),e);
@@ -90,12 +91,16 @@ public class RemoteServicePlato {
 			
 			ResponseEntity<Map> respuesta = restTemplate.exchange(obtenerUri(URL_SERVICE_2), metodoServicio, requestEntity, responseType);
 			
-		    ObjectMapper mapper = obtenerMapper();
+			HttpStatus codigoStatus = respuesta.getStatusCode();
 			
-		    List<?> datosLista = (List<?>) respuesta.getBody().get(Constantes.VALOR_DATA_MAP);
-		    listaPlatos = new ArrayList<>();
-		    for (Object objeto : datosLista) {
-		    	listaPlatos.add(mapper.convertValue((LinkedHashMap<?,?>) objeto, PlatoDto.class));
+			if (!HttpStatus.NO_CONTENT.equals(codigoStatus)) {
+				ObjectMapper mapper = obtenerMapper();
+				
+			    List<?> datosLista = (List<?>) respuesta.getBody().get(Constantes.VALOR_DATA_MAP);
+			    listaPlatos = new ArrayList<>();
+			    for (Object objeto : datosLista) {
+			    	listaPlatos.add(mapper.convertValue((LinkedHashMap<?,?>) objeto, PlatoDto.class));
+				}
 			}
 			
 		} catch (RestClientException e) {
@@ -122,12 +127,20 @@ public class RemoteServicePlato {
 			
 			ResponseEntity<Map> respuesta = restTemplate.exchange(builderURI.toUriString(), metodoServicio, requestEntity, responseType);
 			
-			ObjectMapper mapper = obtenerMapper();
+			HttpStatus codigoStatus = respuesta.getStatusCode();
 			
-		    List<?> datosLista = (List<?>) respuesta.getBody().get(Constantes.VALOR_DATA_MAP);
-		    listaFavoritos = new ArrayList<>();
-		    for (Object objeto : datosLista) {
-		    	listaFavoritos.add(mapper.convertValue((LinkedHashMap<?,?>) objeto, PlatoFavoritoDto.class));
+			if (!HttpStatus.NO_CONTENT.equals(codigoStatus)) {
+				Object objeto0 = respuesta.getBody().get(Constantes.VALOR_DATA_MAP);
+				
+				if (objeto0 != null) {
+					ObjectMapper mapper = obtenerMapper();
+					
+					List<?> datosLista = (List<?>) objeto0;
+				    listaFavoritos = new ArrayList<>();
+				    for (Object objeto : datosLista) {
+				    	listaFavoritos.add(mapper.convertValue((LinkedHashMap<?,?>) objeto, PlatoFavoritoDto.class));
+					}
+				}
 			}
 			
 		} catch (RestClientException e) {
@@ -154,10 +167,14 @@ public class RemoteServicePlato {
 			
 			ResponseEntity<Map> respuesta = restTemplate.exchange(builderURI.toUriString(), metodoServicio, requestEntity, responseType);
 			
-			ObjectMapper mapper = obtenerMapper();
+			HttpStatus codigoStatus = respuesta.getStatusCode();
 			
-		    LinkedHashMap<?,?> dato = (LinkedHashMap<?,?>) respuesta.getBody().get(Constantes.VALOR_DATA_MAP);
-		    platoDto = mapper.convertValue(dato, PlatoDto.class);
+			if (!HttpStatus.NO_CONTENT.equals(codigoStatus)) {
+				ObjectMapper mapper = obtenerMapper();
+				
+			    LinkedHashMap<?,?> dato = (LinkedHashMap<?,?>) respuesta.getBody().get(Constantes.VALOR_DATA_MAP);
+			    platoDto = mapper.convertValue(dato, PlatoDto.class);
+			}
 			
 		} catch (RestClientException e) {
 			log.error(e.getMessage(),e);

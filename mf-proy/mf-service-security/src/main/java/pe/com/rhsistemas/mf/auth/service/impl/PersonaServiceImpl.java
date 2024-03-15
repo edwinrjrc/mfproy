@@ -232,27 +232,27 @@ public class PersonaServiceImpl implements PersonaService {
 				String codigoSeguridad = calculoCodigoValidacion(solicitud.getIdSolicitud().doubleValue(), solicitud.getFechaSolicitud());
 				
 				if (codigoSeguridad.equals(validacionCodigoSeguridad.getCodigoSeguridad())) {
-					log.info("codigo de seguridad de validacion correcto");
+					log.debug("codigo de seguridad de validacion correcto");
 					validacionCodigo = false;
 					
 					if (UtilMfDto.hoyTimestamp().before(solicitud.getFechaCaducaSolicitud())) {
 						validacionCodigo = true;
-						log.info("codigo esta a tiempo");
+						log.debug("codigo esta a tiempo");
 					}
 					else if (UtilMfDto.hoyTimestamp().equals(solicitud.getFechaCaducaSolicitud())){
 						validacionCodigo = true;
-						log.info("codigo es igual");
+						log.debug("codigo es igual");
 					}
 					else {
 						validacionCodigo = false;
-						log.info("codigo no esta a tiempo");
+						log.debug("codigo no esta a tiempo");
 					}
 				}
 				else {
-					log.info("codigo de seguridad de validacion incorrecto");
+					log.debug("codigo de seguridad de validacion incorrecto");
 				}
 				
-				log.info(UtilMfDto.escribeObjetoEnLog(solicitud));
+				log.debug(UtilMfDto.escribeObjetoEnLog(solicitud));
 			}
 			return validacionCodigo;
 		} catch (MfServiceSecurityException e) {
@@ -310,7 +310,7 @@ public class PersonaServiceImpl implements PersonaService {
 		
 		codigoValidacion = calculoCodigoValidacion.toString();
 		
-		log.info("Codigo Validacion ::"+codigoValidacion);
+		log.debug("Codigo Validacion ::"+codigoValidacion);
 		
 		return codigoValidacion;
 	}

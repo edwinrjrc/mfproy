@@ -111,7 +111,7 @@ public class RemoteServiceIngrediente {
 			ResponseEntity<Map> respuesta = restTemplate.exchange(obtenerUri(url), metodoServicio, requestEntity,
 					responseType);
 
-			log.info(respuesta.toString());
+			log.debug(respuesta.toString());
 
 		} catch (RestClientException e) {
 			log.error(e.getMessage(), e);
@@ -164,7 +164,7 @@ public class RemoteServiceIngrediente {
 			UriComponentsBuilder builderURI = UriComponentsBuilder.fromHttpUrl(URL_SERVICE_5);
 			String url = builderURI.toUriString() + "/" + idMenu;
 
-			log.info(url);
+			log.debug(url);
 			ResponseEntity<Map> respuesta = restTemplate.exchange(url, metodoServicio,
 					requestEntity, responseType);
 
@@ -206,7 +206,7 @@ public class RemoteServiceIngrediente {
 			UriComponentsBuilder builderURI = UriComponentsBuilder.fromHttpUrl(URL_SERVICE_4);
 			String url = builderURI.toUriString() + "/" + idMenu;
 
-			log.info(url);
+			log.debug(url);
 
 			ResponseEntity<Map> respuesta = restTemplate.exchange(url, metodoServicio, requestEntity, responseType);
 

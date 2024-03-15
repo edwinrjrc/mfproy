@@ -47,7 +47,7 @@ public class IngredienteController {
 		HttpStatus status = null;
 
 		try {
-			log.info("Parametros recibidos");
+			log.debug("Parametros recibidos registraIngrediente "+this.getClass().getName());
 			UtilMfDto.pintaLog(dto, "ingredienteDto");
 
 			ingredienteRepository.save(Utilmfjpa.parseIngredienteDto(dto));
@@ -75,7 +75,7 @@ public class IngredienteController {
 		HttpStatus status = null;
 
 		try {
-			log.debug("Parametros recibidos");
+			log.debug("Parametros recibidos eliminarIngrediente "+this.getClass().getName());
 			UtilMfDto.pintaLog(idIngrediente, "idIngrediente");
 
 			Ingrediente entity = new Ingrediente();
@@ -104,7 +104,7 @@ public class IngredienteController {
 		HttpStatus status = null;
 
 		try {
-			log.debug("Parametros recibidos");
+			log.debug("Parametros recibidos registraIngredientes "+this.getClass().getName());
 			UtilMfDto.pintaLog(lista, "listaIngredientes");
 			ingredienteRepository.saveAll(Utilmfjpa.parseListaIngredienteDto(lista));
 
@@ -131,7 +131,7 @@ public class IngredienteController {
 		HttpStatus status = null;
 
 		try {
-			log.debug("Parametros recibidos");
+			log.debug("Parametros recibidos ingredientesPlato "+this.getClass().getName());
 			UtilMfDto.pintaLog(idPlato, "idPlato");
 
 			List<PlatoIngrediente> listaPlatoIngredientes = platoIngredienteRepository.findAllByPlato(idPlato);

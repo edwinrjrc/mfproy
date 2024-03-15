@@ -43,7 +43,7 @@ public class CorreoController {
 
 		try {
 			status = HttpStatus.NO_CONTENT;
-			log.info("Recibiendo parametros");
+			log.debug("Recibiendo parametros enviaCorreoSinAdjunto "+this.getClass().getName());
 			UtilMfDto.pintaLog(datosCorreo, "datosCorreo");
 			
 			correoService.enviarCorreoSinAdjunto(datosCorreo);

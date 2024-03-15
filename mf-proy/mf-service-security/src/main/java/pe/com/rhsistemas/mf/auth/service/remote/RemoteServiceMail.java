@@ -59,12 +59,12 @@ public class RemoteServiceMail {
 			Class<Map> responseType = Map.class;
 			String url = URL_SERVICE_1;
 			
-			ResponseEntity<Map> respuesta = restTemplate.exchange(obtenerUri(url), metodoServicio, requestEntity, responseType);
+			restTemplate.exchange(obtenerUri(url), metodoServicio, requestEntity, responseType);
 			
 			envio = true;
 			
 		} catch (RestClientException e) {
-			log.info(e.getMessage());
+			log.debug(e.getMessage());
 			log.error(e.getMessage(), e);
 			throw new MfServiceSecurityException(e,e.getMessage());
 		}

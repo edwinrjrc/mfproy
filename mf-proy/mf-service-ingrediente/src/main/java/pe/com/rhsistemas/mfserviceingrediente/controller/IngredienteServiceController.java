@@ -48,7 +48,7 @@ public class IngredienteServiceController {
 		HttpStatus status = null;
 		try {
 			status = HttpStatus.NO_CONTENT;
-			log.info("Recibiendo parametros ingredientesPlato");
+			log.debug("Recibiendo parametros ingredientesPlato "+this.getClass().getName());
 			UtilMfDto.pintaLog(idPlato, "idPlato");
 			
 			List<PlatoIngredienteDto> listaIngredientes = ingredienteLogicaService.ingredientesPlato(idPlato);
@@ -86,7 +86,7 @@ public class IngredienteServiceController {
 		
 		try {
 			status = HttpStatus.NO_CONTENT;
-			log.info("Recibiendo parametros ingredientesPlato");
+			log.debug("Recibiendo parametros ingredientesPlato "+this.getClass().getName());
 			UtilMfDto.pintaLog(ingredientesPlatoDto, "ingredientesPlatoDto");
 			
 			ingredienteLogicaService.registrarIngredientesPlato(ingredientesPlatoDto.getIngredientes());
@@ -121,7 +121,7 @@ public class IngredienteServiceController {
 		HttpStatus status = null;
 		try {
 			status = HttpStatus.NO_CONTENT;
-			log.info("Recibiendo parametros listarIngredientes");
+			log.debug("Recibiendo parametros listarIngredientes "+this.getClass().getName());
 			
 			List<IngredienteDto> listaIngredientes = ingredienteLogicaService.listarIngredientes();
 			if (UtilMfDto.listaNoVacia(listaIngredientes)) {

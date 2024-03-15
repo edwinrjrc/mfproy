@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -67,12 +68,16 @@ public class RemoteServiceReceta {
 			
 			ResponseEntity<Map> respuesta = restTemplate.exchange(builderURI.toUriString(), metodoServicio, requestEntity, responseType);
 			
-			ObjectMapper mapper = obtenerMapper();
+			HttpStatus codigoStatus = respuesta.getStatusCode();
 			
-		    List<?> datosLista = (List<?>) respuesta.getBody().get(Constantes.VALOR_DATA_MAP);
-		    listaIngredientesPlato = new ArrayList<>();
-		    for (Object objeto : datosLista) {
-		    	listaIngredientesPlato.add(mapper.convertValue((LinkedHashMap<?,?>) objeto, PlatoIngredienteDto.class));
+			if (!HttpStatus.NO_CONTENT.equals(codigoStatus)) {
+				ObjectMapper mapper = obtenerMapper();
+				
+			    List<?> datosLista = (List<?>) respuesta.getBody().get(Constantes.VALOR_DATA_MAP);
+			    listaIngredientesPlato = new ArrayList<>();
+			    for (Object objeto : datosLista) {
+			    	listaIngredientesPlato.add(mapper.convertValue((LinkedHashMap<?,?>) objeto, PlatoIngredienteDto.class));
+				}
 			}
 			
 		} catch (RestClientException e) {
@@ -99,12 +104,16 @@ public class RemoteServiceReceta {
 			
 			ResponseEntity<Map> respuesta = restTemplate.exchange(builderURI.toUriString(), metodoServicio, requestEntity, responseType);
 			
-			ObjectMapper mapper = obtenerMapper();
+			HttpStatus codigoStatus = respuesta.getStatusCode();
 			
-		    List<?> datosLista = (List<?>) respuesta.getBody().get(Constantes.VALOR_DATA_MAP);
-		    listaReceta = new ArrayList<>();
-		    for (Object objeto : datosLista) {
-		    	listaReceta.add(mapper.convertValue((LinkedHashMap<?,?>) objeto, RecetaDto.class));
+			if (!HttpStatus.NO_CONTENT.equals(codigoStatus)) {
+				ObjectMapper mapper = obtenerMapper();
+				
+			    List<?> datosLista = (List<?>) respuesta.getBody().get(Constantes.VALOR_DATA_MAP);
+			    listaReceta = new ArrayList<>();
+			    for (Object objeto : datosLista) {
+			    	listaReceta.add(mapper.convertValue((LinkedHashMap<?,?>) objeto, RecetaDto.class));
+				}
 			}
 			
 		} catch (RestClientException e) {
@@ -131,15 +140,19 @@ public class RemoteServiceReceta {
 			
 			ResponseEntity<Map> respuesta = restTemplate.exchange(builderURI.toUriString(), metodoServicio, requestEntity, responseType);
 			
-			ObjectMapper mapper = obtenerMapper();
+			HttpStatus codigoStatus = respuesta.getStatusCode();
 			
-		    List<?> datosLista = (List<?>) respuesta.getBody().get(Constantes.VALOR_DATA_MAP);
-		    if (UtilMfDto.listaNoVacia(datosLista)) {
-		    	listaComentario = new ArrayList<>();
-			    for (Object objeto : datosLista) {
-			    	listaComentario.add(mapper.convertValue((LinkedHashMap<?,?>) objeto, RecetaComentarioDto.class));
-				}
-		    }
+			if (!HttpStatus.NO_CONTENT.equals(codigoStatus)) {
+				ObjectMapper mapper = obtenerMapper();
+				
+			    List<?> datosLista = (List<?>) respuesta.getBody().get(Constantes.VALOR_DATA_MAP);
+			    if (UtilMfDto.listaNoVacia(datosLista)) {
+			    	listaComentario = new ArrayList<>();
+				    for (Object objeto : datosLista) {
+				    	listaComentario.add(mapper.convertValue((LinkedHashMap<?,?>) objeto, RecetaComentarioDto.class));
+					}
+			    }
+			}
 			
 		} catch (RestClientException e) {
 			log.error(e.getMessage(),e);
