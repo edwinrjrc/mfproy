@@ -17,4 +17,5 @@ import pe.com.rhsistemas.mfjpaingrediente.entity.Ingrediente;
 public interface IngredienteRepository extends JpaRepository<Ingrediente, Integer>{
 	
 	public List<Ingrediente> findByOrderByDeIngredienteAsc();
+	
 }
