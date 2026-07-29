@@ -3,6 +3,7 @@
  */
 package pe.com.rhsistemas.mfsermenu.security.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -23,6 +24,8 @@ import pe.com.rhsistemas.mfsermenu.security.AutorizacionFilter;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	//private static final Logger log = LoggerFactory.getLogger(SecurityConfig.class);
+	@Autowired
+	private AutorizacionFilter autorizacionFilter;
 
 	public SecurityConfig() {
 		// TODO Auto-generated constructor stub
@@ -40,7 +43,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().exceptionHandling().and()
 				.authorizeRequests().antMatchers("/mf-service-menu/**").permitAll()
-				.and().addFilterBefore(new AutorizacionFilter(), BasicAuthenticationFilter.class);
+				.and().addFilterBefore(autorizacionFilter, BasicAuthenticationFilter.class);
 
 		http.csrf().disable();
 	}

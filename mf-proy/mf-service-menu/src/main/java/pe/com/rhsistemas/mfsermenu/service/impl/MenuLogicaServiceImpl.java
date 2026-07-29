@@ -246,8 +246,8 @@ public class MenuLogicaServiceImpl implements MenuLogicaService {
 				menuDetalleDto = new MenuDetalleDto();
 				menuDetalleDto.setFechaRegistro(UtilMfDto.parseDateASqlTimestamp(fechaHoy));
 				String feConsumo = UtilMfDto.parseDateAString(dateCocinar,null);
-				feConsumo = feConsumo + " 01:00:00 PM";
-				menuDetalleDto.setFechaConsumo(UtilMfDto.parseStringADate(feConsumo, "dd/MM/yyyy hh:mm:ss a",null));
+				feConsumo = feConsumo + " 13:00:00";
+				menuDetalleDto.setFechaConsumo(UtilMfDto.parseStringADate(feConsumo, "dd/MM/yyyy HH:mm:ss",null));
 				menuDetalleDto.getPlatoDto().setId(idPlatoElegido);
 				menuDetalleDto.setIdTipoPlato(mapeoTipoPlato.get(ca.get(Calendar.DAY_OF_WEEK)).intValue());
 				menuDetalleDto.setIdUsuarioRegistro(idUsuario);
