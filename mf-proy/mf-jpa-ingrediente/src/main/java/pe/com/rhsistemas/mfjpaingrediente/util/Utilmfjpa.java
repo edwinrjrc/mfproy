@@ -151,7 +151,6 @@ public class Utilmfjpa {
 		}
 		
 		return listaSalida;
-		
 	}
 	
 	public static PlatoIngrediente parsePlatoIngredienteDto(PlatoIngredienteDto dto) throws UtilMfDtoException {
